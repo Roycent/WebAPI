@@ -1,0 +1,1571 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WebAPIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="AdministratorID" />
+          </Key>
+          <Property Name="AdministratorID" Type="bigint" Nullable="false" />
+          <Property Name="AdminName" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Attention">
+          <Key>
+            <PropertyRef Name="AttentionID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="Exp_UserID" Type="bigint" />
+          <Property Name="AttentionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="bigint" Nullable="false" />
+          <Property Name="PatentID" Type="bigint" />
+          <Property Name="PaperID" Type="bigint" />
+          <Property Name="Type" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Download">
+          <Key>
+            <PropertyRef Name="DownloadID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="PaperID" Type="bigint" />
+          <Property Name="DownloadID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExpertInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Workstation" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsPass" Type="bit" />
+        </EntityType>
+        <EntityType Name="ExpertPaper">
+          <Key>
+            <PropertyRef Name="ExpertPaperID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="PaperID" Type="bigint" />
+          <Property Name="ExpertPaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExpertPatent">
+          <Key>
+            <PropertyRef Name="ExpertPatentID" />
+          </Key>
+          <Property Name="PatentID" Type="bigint" />
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="ExpertPatentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Like">
+          <Key>
+            <PropertyRef Name="LikeID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="PaperID" Type="bigint" />
+          <Property Name="PatentID" Type="bigint" />
+          <Property Name="LikeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ManageExpert">
+          <Key>
+            <PropertyRef Name="ManageExpertID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="AdministratorID" Type="bigint" />
+          <Property Name="Operate" Type="varchar" MaxLength="100" />
+          <Property Name="OperateDate" Type="datetime" />
+          <Property Name="ManageExpertID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ManagePaper">
+          <Key>
+            <PropertyRef Name="ManagePaperID" />
+          </Key>
+          <Property Name="PaperID" Type="bigint" />
+          <Property Name="AdministratorID" Type="bigint" />
+          <Property Name="Operate" Type="varchar" MaxLength="100" />
+          <Property Name="OperateDate" Type="datetime" />
+          <Property Name="ManagePaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ManagePatent">
+          <Key>
+            <PropertyRef Name="ManagePatentID" />
+          </Key>
+          <Property Name="PatentID" Type="bigint" />
+          <Property Name="AdministratorID" Type="bigint" />
+          <Property Name="Operate" Type="varchar" MaxLength="100" />
+          <Property Name="OperateDate" Type="datetime" />
+          <Property Name="ManagePatentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ManageUser">
+          <Key>
+            <PropertyRef Name="ManageUserID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="AdministratorID" Type="bigint" />
+          <Property Name="Operate" Type="varchar" MaxLength="100" />
+          <Property Name="OperateDate" Type="datetime" />
+          <Property Name="ManageUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Paper">
+          <Key>
+            <PropertyRef Name="PaperID" />
+          </Key>
+          <Property Name="PaperID" Type="bigint" Nullable="false" />
+          <Property Name="UpID" Type="bigint" />
+          <Property Name="Title" Type="varchar" MaxLength="100" />
+          <Property Name="UpDate" Type="datetime" />
+          <Property Name="IPC" Type="varchar" MaxLength="20" />
+          <Property Name="Abstract" Type="varchar" MaxLength="1" />
+          <Property Name="Type" Type="varchar" MaxLength="20" />
+          <Property Name="ReferencedNum" Type="int" />
+          <Property Name="DOI" Type="varchar" MaxLength="40" />
+          <Property Name="Publisher" Type="varchar" MaxLength="50" />
+          <Property Name="KeyWord" Type="varchar" MaxLength="200" />
+          <Property Name="HasFullText" Type="smallint" />
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="IsFree" Type="bit" />
+          <Property Name="Price" Type="int" />
+          <Property Name="IsPass" Type="bit" />
+        </EntityType>
+        <EntityType Name="Patent">
+          <Key>
+            <PropertyRef Name="PatentID" />
+          </Key>
+          <Property Name="PatentID" Type="bigint" Nullable="false" />
+          <Property Name="UpID" Type="bigint" />
+          <Property Name="Title" Type="varchar" MaxLength="100" />
+          <Property Name="UpDate" Type="datetime" />
+          <Property Name="IPC" Type="varchar" MaxLength="20" />
+          <Property Name="Abstract" Type="varchar" MaxLength="100" />
+          <Property Name="ApplyNum" Type="smallint" />
+          <Property Name="ApplyDate" Type="datetime" />
+          <Property Name="Applicant" Type="varchar" MaxLength="50" />
+          <Property Name="ApplicantAddress" Type="varchar" MaxLength="100" />
+          <Property Name="SIPC" Type="varchar" MaxLength="20" />
+          <Property Name="State" Type="varchar" MaxLength="20" />
+          <Property Name="Agencies" Type="varchar" MaxLength="50" />
+          <Property Name="Agent" Type="varchar" MaxLength="50" />
+          <Property Name="PublicNum" Type="varchar" MaxLength="50" />
+          <Property Name="IsPass" Type="bit" />
+        </EntityType>
+        <EntityType Name="Reviewer">
+          <Key>
+            <PropertyRef Name="ReviewerID" />
+          </Key>
+          <Property Name="ReviewerID" Type="bigint" Nullable="false" />
+          <Property Name="UserID" Type="bigint" />
+          <Property Name="PatentID" Type="bigint" />
+          <Property Name="PaperID" Type="bigint" />
+          <Property Name="ReviewName" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nickname" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsExpert" Type="bit" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="integral" Type="int" />
+        </EntityType>
+        <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Attention">
+              <PropertyRef Name="Exp_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ATTENTIO_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Attention">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOWNLOAD_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Download" Type="Self.Download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Download">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOWNLOAD_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Download" Type="Self.Download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Download">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTIN_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPA_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="ExpertPaper" Type="Self.ExpertPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpertPaper">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPA_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="ExpertPaper" Type="Self.ExpertPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="ExpertPaper">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPA_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="ExpertPatent" Type="Self.ExpertPatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="ExpertPatent">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPATENT_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="ExpertPatent" Type="Self.ExpertPatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpertPatent">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIKE_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Like" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIKE_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="Like" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIKE_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Like" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEEX_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManageExpert" Type="Self.ManageExpert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManageExpert">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEEX_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="ManageExpert" Type="Self.ManageExpert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ManageExpert">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPA_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManagePaper" Type="Self.ManagePaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManagePaper">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPA_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="ManagePaper" Type="Self.ManagePaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="ManagePaper">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPA_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="ManagePatent" Type="Self.ManagePatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="ManagePatent">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPATENT_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManagePatent" Type="Self.ManagePatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManagePatent">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEUS_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManageUser" Type="Self.ManageUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManageUser">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEUS_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="ManageUser" Type="Self.ManageUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ManageUser">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAPER_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Paper" Type="Self.Paper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Paper">
+              <PropertyRef Name="UpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PATENT_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Patent" Type="Self.Patent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Patent">
+              <PropertyRef Name="UpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Reviewer">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Reviewer">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Reviewer">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebAPIModelStoreContainer">
+          <EntitySet Name="Administrator" EntityType="Self.Administrator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attention" EntityType="Self.Attention" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Download" EntityType="Self.Download" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpertInfo" EntityType="Self.ExpertInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpertPaper" EntityType="Self.ExpertPaper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpertPatent" EntityType="Self.ExpertPatent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Like" EntityType="Self.Like" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ManageExpert" EntityType="Self.ManageExpert" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ManagePaper" EntityType="Self.ManagePaper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ManagePatent" EntityType="Self.ManagePatent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ManageUser" EntityType="Self.ManageUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paper" EntityType="Self.Paper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patent" EntityType="Self.Patent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviewer" EntityType="Self.Reviewer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="Self.FK_ATTENTIO_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="Attention" EntitySet="Attention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ATTENTIO_REFERENCE_USERS" Association="Self.FK_ATTENTIO_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Attention" EntitySet="Attention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_REFERENCE_PAPER" Association="Self.FK_COMMENT_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_REFERENCE_PATENT" Association="Self.FK_COMMENT_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_REFERENCE_USERS" Association="Self.FK_COMMENT_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOWNLOAD_REFERENCE_PAPER" Association="Self.FK_DOWNLOAD_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Download" EntitySet="Download" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOWNLOAD_REFERENCE_USERS" Association="Self.FK_DOWNLOAD_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Download" EntitySet="Download" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTIN_REFERENCE_USERS" Association="Self.FK_EXPERTIN_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPA_REFERENCE_EXPERTIN" Association="Self.FK_EXPERTPA_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPA_REFERENCE_PAPER" Association="Self.FK_EXPERTPA_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPA_REFERENCE_PATENT" Association="Self.FK_EXPERTPA_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="ExpertPatent" EntitySet="ExpertPatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPATENT_REFERENCE_EXPERTIN" Association="Self.FK_EXPERTPATENT_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ExpertPatent" EntitySet="ExpertPatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIKE_REFERENCE_PAPER" Association="Self.FK_LIKE_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Like" EntitySet="Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIKE_REFERENCE_PATENT" Association="Self.FK_LIKE_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Like" EntitySet="Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIKE_REFERENCE_USERS" Association="Self.FK_LIKE_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Like" EntitySet="Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEEX_REFERENCE_ADMINIST" Association="Self.FK_MANAGEEX_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManageExpert" EntitySet="ManageExpert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEEX_REFERENCE_EXPERTIN" Association="Self.FK_MANAGEEX_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ManageExpert" EntitySet="ManageExpert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPA_REFERENCE_ADMINIST" Association="Self.FK_MANAGEPA_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManagePaper" EntitySet="ManagePaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPA_REFERENCE_PAPER" Association="Self.FK_MANAGEPA_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="ManagePaper" EntitySet="ManagePaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPA_REFERENCE_PATENT" Association="Self.FK_MANAGEPA_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="ManagePatent" EntitySet="ManagePatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPATENT_REFERENCE_ADMINIST" Association="Self.FK_MANAGEPATENT_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManagePatent" EntitySet="ManagePatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEUS_REFERENCE_ADMINIST" Association="Self.FK_MANAGEUS_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManageUser" EntitySet="ManageUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEUS_REFERENCE_USERS" Association="Self.FK_MANAGEUS_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ManageUser" EntitySet="ManageUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAPER_REFERENCE_USERS" Association="Self.FK_PAPER_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Paper" EntitySet="Paper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PATENT_REFERENCE_USERS" Association="Self.FK_PATENT_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Patent" EntitySet="Patent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_EXPERTIN" Association="Self.FK_REVIEWER_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="Reviewer" EntitySet="Reviewer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_PAPER" Association="Self.FK_REVIEWER_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Reviewer" EntitySet="Reviewer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_PATENT" Association="Self.FK_REVIEWER_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Reviewer" EntitySet="Reviewer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WebAPIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="AdministratorID" />
+          </Key>
+          <Property Name="AdministratorID" Type="Int64" Nullable="false" />
+          <Property Name="AdminName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ManageExpert" Relationship="Self.FK_MANAGEEX_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManageExpert" />
+          <NavigationProperty Name="ManagePaper" Relationship="Self.FK_MANAGEPA_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManagePaper" />
+          <NavigationProperty Name="ManagePatent" Relationship="Self.FK_MANAGEPATENT_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManagePatent" />
+          <NavigationProperty Name="ManageUser" Relationship="Self.FK_MANAGEUS_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManageUser" />
+        </EntityType>
+        <EntityType Name="Attention">
+          <Key>
+            <PropertyRef Name="AttentionID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="Exp_UserID" Type="Int64" />
+          <Property Name="AttentionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ExpertInfo" Relationship="Self.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="Attention" ToRole="ExpertInfo" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_ATTENTIO_REFERENCE_USERS" FromRole="Attention" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="Int64" Nullable="false" />
+          <Property Name="PatentID" Type="Int64" />
+          <Property Name="PaperID" Type="Int64" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK_COMMENT_REFERENCE_PAPER" FromRole="Comment" ToRole="Paper" />
+          <NavigationProperty Name="Patent" Relationship="Self.FK_COMMENT_REFERENCE_PATENT" FromRole="Comment" ToRole="Patent" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_COMMENT_REFERENCE_USERS" FromRole="Comment" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Download">
+          <Key>
+            <PropertyRef Name="DownloadID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="PaperID" Type="Int64" />
+          <Property Name="DownloadID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK_DOWNLOAD_REFERENCE_PAPER" FromRole="Download" ToRole="Paper" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_DOWNLOAD_REFERENCE_USERS" FromRole="Download" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ExpertInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Workstation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsPass" Type="Boolean" />
+          <NavigationProperty Name="Attention" Relationship="Self.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Attention" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_EXPERTIN_REFERENCE_USERS" FromRole="ExpertInfo" ToRole="Users" />
+          <NavigationProperty Name="ExpertPaper" Relationship="Self.FK_EXPERTPA_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="ExpertPaper" />
+          <NavigationProperty Name="ExpertPatent" Relationship="Self.FK_EXPERTPATENT_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="ExpertPatent" />
+          <NavigationProperty Name="ManageExpert" Relationship="Self.FK_MANAGEEX_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="ManageExpert" />
+          <NavigationProperty Name="Reviewer" Relationship="Self.FK_REVIEWER_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Reviewer" />
+        </EntityType>
+        <EntityType Name="ExpertPaper">
+          <Key>
+            <PropertyRef Name="ExpertPaperID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="PaperID" Type="Int64" />
+          <Property Name="ExpertPaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ExpertInfo" Relationship="Self.FK_EXPERTPA_REFERENCE_EXPERTIN" FromRole="ExpertPaper" ToRole="ExpertInfo" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK_EXPERTPA_REFERENCE_PAPER" FromRole="ExpertPaper" ToRole="Paper" />
+        </EntityType>
+        <EntityType Name="ExpertPatent">
+          <Key>
+            <PropertyRef Name="ExpertPatentID" />
+          </Key>
+          <Property Name="PatentID" Type="Int64" />
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="ExpertPatentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ExpertInfo" Relationship="Self.FK_EXPERTPATENT_REFERENCE_EXPERTIN" FromRole="ExpertPatent" ToRole="ExpertInfo" />
+          <NavigationProperty Name="Patent" Relationship="Self.FK_EXPERTPA_REFERENCE_PATENT" FromRole="ExpertPatent" ToRole="Patent" />
+        </EntityType>
+        <EntityType Name="Like">
+          <Key>
+            <PropertyRef Name="LikeID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="PaperID" Type="Int64" />
+          <Property Name="PatentID" Type="Int64" />
+          <Property Name="LikeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK_LIKE_REFERENCE_PAPER" FromRole="Like" ToRole="Paper" />
+          <NavigationProperty Name="Patent" Relationship="Self.FK_LIKE_REFERENCE_PATENT" FromRole="Like" ToRole="Patent" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_LIKE_REFERENCE_USERS" FromRole="Like" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ManageExpert">
+          <Key>
+            <PropertyRef Name="ManageExpertID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="AdministratorID" Type="Int64" />
+          <Property Name="Operate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OperateDate" Type="DateTime" Precision="3" />
+          <Property Name="ManageExpertID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Administrator" Relationship="Self.FK_MANAGEEX_REFERENCE_ADMINIST" FromRole="ManageExpert" ToRole="Administrator" />
+          <NavigationProperty Name="ExpertInfo" Relationship="Self.FK_MANAGEEX_REFERENCE_EXPERTIN" FromRole="ManageExpert" ToRole="ExpertInfo" />
+        </EntityType>
+        <EntityType Name="ManagePaper">
+          <Key>
+            <PropertyRef Name="ManagePaperID" />
+          </Key>
+          <Property Name="PaperID" Type="Int64" />
+          <Property Name="AdministratorID" Type="Int64" />
+          <Property Name="Operate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OperateDate" Type="DateTime" Precision="3" />
+          <Property Name="ManagePaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Administrator" Relationship="Self.FK_MANAGEPA_REFERENCE_ADMINIST" FromRole="ManagePaper" ToRole="Administrator" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK_MANAGEPA_REFERENCE_PAPER" FromRole="ManagePaper" ToRole="Paper" />
+        </EntityType>
+        <EntityType Name="ManagePatent">
+          <Key>
+            <PropertyRef Name="ManagePatentID" />
+          </Key>
+          <Property Name="PatentID" Type="Int64" />
+          <Property Name="AdministratorID" Type="Int64" />
+          <Property Name="Operate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OperateDate" Type="DateTime" Precision="3" />
+          <Property Name="ManagePatentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Administrator" Relationship="Self.FK_MANAGEPATENT_REFERENCE_ADMINIST" FromRole="ManagePatent" ToRole="Administrator" />
+          <NavigationProperty Name="Patent" Relationship="Self.FK_MANAGEPA_REFERENCE_PATENT" FromRole="ManagePatent" ToRole="Patent" />
+        </EntityType>
+        <EntityType Name="ManageUser">
+          <Key>
+            <PropertyRef Name="ManageUserID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="AdministratorID" Type="Int64" />
+          <Property Name="Operate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OperateDate" Type="DateTime" Precision="3" />
+          <Property Name="ManageUserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Administrator" Relationship="Self.FK_MANAGEUS_REFERENCE_ADMINIST" FromRole="ManageUser" ToRole="Administrator" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_MANAGEUS_REFERENCE_USERS" FromRole="ManageUser" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Paper">
+          <Key>
+            <PropertyRef Name="PaperID" />
+          </Key>
+          <Property Name="PaperID" Type="Int64" Nullable="false" />
+          <Property Name="UpID" Type="Int64" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpDate" Type="DateTime" Precision="3" />
+          <Property Name="IPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Abstract" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ReferencedNum" Type="Int32" />
+          <Property Name="DOI" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Publisher" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="KeyWord" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="HasFullText" Type="Int16" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsFree" Type="Boolean" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="IsPass" Type="Boolean" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK_COMMENT_REFERENCE_PAPER" FromRole="Paper" ToRole="Comment" />
+          <NavigationProperty Name="Download" Relationship="Self.FK_DOWNLOAD_REFERENCE_PAPER" FromRole="Paper" ToRole="Download" />
+          <NavigationProperty Name="ExpertPaper" Relationship="Self.FK_EXPERTPA_REFERENCE_PAPER" FromRole="Paper" ToRole="ExpertPaper" />
+          <NavigationProperty Name="Like" Relationship="Self.FK_LIKE_REFERENCE_PAPER" FromRole="Paper" ToRole="Like" />
+          <NavigationProperty Name="ManagePaper" Relationship="Self.FK_MANAGEPA_REFERENCE_PAPER" FromRole="Paper" ToRole="ManagePaper" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_PAPER_REFERENCE_USERS" FromRole="Paper" ToRole="Users" />
+          <NavigationProperty Name="Reviewer" Relationship="Self.FK_REVIEWER_REFERENCE_PAPER" FromRole="Paper" ToRole="Reviewer" />
+        </EntityType>
+        <EntityType Name="Patent">
+          <Key>
+            <PropertyRef Name="PatentID" />
+          </Key>
+          <Property Name="PatentID" Type="Int64" Nullable="false" />
+          <Property Name="UpID" Type="Int64" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpDate" Type="DateTime" Precision="3" />
+          <Property Name="IPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Abstract" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApplyNum" Type="Int16" />
+          <Property Name="ApplyDate" Type="DateTime" Precision="3" />
+          <Property Name="Applicant" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicantAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SIPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Agencies" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Agent" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PublicNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsPass" Type="Boolean" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK_COMMENT_REFERENCE_PATENT" FromRole="Patent" ToRole="Comment" />
+          <NavigationProperty Name="ExpertPatent" Relationship="Self.FK_EXPERTPA_REFERENCE_PATENT" FromRole="Patent" ToRole="ExpertPatent" />
+          <NavigationProperty Name="Like" Relationship="Self.FK_LIKE_REFERENCE_PATENT" FromRole="Patent" ToRole="Like" />
+          <NavigationProperty Name="ManagePatent" Relationship="Self.FK_MANAGEPA_REFERENCE_PATENT" FromRole="Patent" ToRole="ManagePatent" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_PATENT_REFERENCE_USERS" FromRole="Patent" ToRole="Users" />
+          <NavigationProperty Name="Reviewer" Relationship="Self.FK_REVIEWER_REFERENCE_PATENT" FromRole="Patent" ToRole="Reviewer" />
+        </EntityType>
+        <EntityType Name="Reviewer">
+          <Key>
+            <PropertyRef Name="ReviewerID" />
+          </Key>
+          <Property Name="ReviewerID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="PatentID" Type="Int64" />
+          <Property Name="PaperID" Type="Int64" />
+          <Property Name="ReviewName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ExpertInfo" Relationship="Self.FK_REVIEWER_REFERENCE_EXPERTIN" FromRole="Reviewer" ToRole="ExpertInfo" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK_REVIEWER_REFERENCE_PAPER" FromRole="Reviewer" ToRole="Paper" />
+          <NavigationProperty Name="Patent" Relationship="Self.FK_REVIEWER_REFERENCE_PATENT" FromRole="Reviewer" ToRole="Patent" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nickname" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsExpert" Type="Boolean" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="integral" Type="Int32" />
+          <NavigationProperty Name="Attention" Relationship="Self.FK_ATTENTIO_REFERENCE_USERS" FromRole="Users" ToRole="Attention" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK_COMMENT_REFERENCE_USERS" FromRole="Users" ToRole="Comment" />
+          <NavigationProperty Name="Download" Relationship="Self.FK_DOWNLOAD_REFERENCE_USERS" FromRole="Users" ToRole="Download" />
+          <NavigationProperty Name="ExpertInfo" Relationship="Self.FK_EXPERTIN_REFERENCE_USERS" FromRole="Users" ToRole="ExpertInfo" />
+          <NavigationProperty Name="Like" Relationship="Self.FK_LIKE_REFERENCE_USERS" FromRole="Users" ToRole="Like" />
+          <NavigationProperty Name="ManageUser" Relationship="Self.FK_MANAGEUS_REFERENCE_USERS" FromRole="Users" ToRole="ManageUser" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK_PAPER_REFERENCE_USERS" FromRole="Users" ToRole="Paper" />
+          <NavigationProperty Name="Patent" Relationship="Self.FK_PATENT_REFERENCE_USERS" FromRole="Users" ToRole="Patent" />
+        </EntityType>
+        <Association Name="FK_MANAGEEX_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManageExpert" Type="Self.ManageExpert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManageExpert">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPA_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManagePaper" Type="Self.ManagePaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManagePaper">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPATENT_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManagePatent" Type="Self.ManagePatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManagePatent">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEUS_REFERENCE_ADMINIST">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="0..1" />
+          <End Role="ManageUser" Type="Self.ManageUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="ManageUser">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Attention">
+              <PropertyRef Name="Exp_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ATTENTIO_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Attention" Type="Self.Attention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Attention">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOWNLOAD_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Download" Type="Self.Download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Download">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOWNLOAD_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Download" Type="Self.Download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Download">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTIN_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPA_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="ExpertPaper" Type="Self.ExpertPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpertPaper">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPATENT_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="ExpertPatent" Type="Self.ExpertPatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpertPatent">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEEX_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="ManageExpert" Type="Self.ManageExpert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ManageExpert">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_EXPERTIN">
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Reviewer">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPA_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="ExpertPaper" Type="Self.ExpertPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="ExpertPaper">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPERTPA_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="ExpertPatent" Type="Self.ExpertPatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="ExpertPatent">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIKE_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Like" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIKE_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="Like" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIKE_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Like" Type="Self.Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPA_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="ManagePaper" Type="Self.ManagePaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="ManagePaper">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEPA_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="ManagePatent" Type="Self.ManagePatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="ManagePatent">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANAGEUS_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="ManageUser" Type="Self.ManageUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ManageUser">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAPER_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Paper" Type="Self.Paper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Paper">
+              <PropertyRef Name="UpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_PAPER">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Reviewer">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PATENT_REFERENCE_USERS">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Patent" Type="Self.Patent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Patent">
+              <PropertyRef Name="UpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_PATENT">
+          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Reviewer">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebAPIEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrator" EntityType="Self.Administrator" />
+          <EntitySet Name="Attention" EntityType="Self.Attention" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" />
+          <EntitySet Name="Download" EntityType="Self.Download" />
+          <EntitySet Name="ExpertInfo" EntityType="Self.ExpertInfo" />
+          <EntitySet Name="ExpertPaper" EntityType="Self.ExpertPaper" />
+          <EntitySet Name="ExpertPatent" EntityType="Self.ExpertPatent" />
+          <EntitySet Name="Like" EntityType="Self.Like" />
+          <EntitySet Name="ManageExpert" EntityType="Self.ManageExpert" />
+          <EntitySet Name="ManagePaper" EntityType="Self.ManagePaper" />
+          <EntitySet Name="ManagePatent" EntityType="Self.ManagePatent" />
+          <EntitySet Name="ManageUser" EntityType="Self.ManageUser" />
+          <EntitySet Name="Paper" EntityType="Self.Paper" />
+          <EntitySet Name="Patent" EntityType="Self.Patent" />
+          <EntitySet Name="Reviewer" EntityType="Self.Reviewer" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_MANAGEEX_REFERENCE_ADMINIST" Association="Self.FK_MANAGEEX_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManageExpert" EntitySet="ManageExpert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPA_REFERENCE_ADMINIST" Association="Self.FK_MANAGEPA_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManagePaper" EntitySet="ManagePaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPATENT_REFERENCE_ADMINIST" Association="Self.FK_MANAGEPATENT_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManagePatent" EntitySet="ManagePatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEUS_REFERENCE_ADMINIST" Association="Self.FK_MANAGEUS_REFERENCE_ADMINIST">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="ManageUser" EntitySet="ManageUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="Self.FK_ATTENTIO_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="Attention" EntitySet="Attention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ATTENTIO_REFERENCE_USERS" Association="Self.FK_ATTENTIO_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Attention" EntitySet="Attention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_REFERENCE_PAPER" Association="Self.FK_COMMENT_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_REFERENCE_PATENT" Association="Self.FK_COMMENT_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_REFERENCE_USERS" Association="Self.FK_COMMENT_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOWNLOAD_REFERENCE_PAPER" Association="Self.FK_DOWNLOAD_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Download" EntitySet="Download" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOWNLOAD_REFERENCE_USERS" Association="Self.FK_DOWNLOAD_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Download" EntitySet="Download" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTIN_REFERENCE_USERS" Association="Self.FK_EXPERTIN_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPA_REFERENCE_EXPERTIN" Association="Self.FK_EXPERTPA_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPATENT_REFERENCE_EXPERTIN" Association="Self.FK_EXPERTPATENT_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ExpertPatent" EntitySet="ExpertPatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEEX_REFERENCE_EXPERTIN" Association="Self.FK_MANAGEEX_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ManageExpert" EntitySet="ManageExpert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_EXPERTIN" Association="Self.FK_REVIEWER_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="Reviewer" EntitySet="Reviewer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPA_REFERENCE_PAPER" Association="Self.FK_EXPERTPA_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPERTPA_REFERENCE_PATENT" Association="Self.FK_EXPERTPA_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="ExpertPatent" EntitySet="ExpertPatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIKE_REFERENCE_PAPER" Association="Self.FK_LIKE_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Like" EntitySet="Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIKE_REFERENCE_PATENT" Association="Self.FK_LIKE_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Like" EntitySet="Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIKE_REFERENCE_USERS" Association="Self.FK_LIKE_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Like" EntitySet="Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPA_REFERENCE_PAPER" Association="Self.FK_MANAGEPA_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="ManagePaper" EntitySet="ManagePaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEPA_REFERENCE_PATENT" Association="Self.FK_MANAGEPA_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="ManagePatent" EntitySet="ManagePatent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANAGEUS_REFERENCE_USERS" Association="Self.FK_MANAGEUS_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ManageUser" EntitySet="ManageUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAPER_REFERENCE_USERS" Association="Self.FK_PAPER_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Paper" EntitySet="Paper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_PAPER" Association="Self.FK_REVIEWER_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Reviewer" EntitySet="Reviewer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PATENT_REFERENCE_USERS" Association="Self.FK_PATENT_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Patent" EntitySet="Patent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_PATENT" Association="Self.FK_REVIEWER_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Reviewer" EntitySet="Reviewer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WebAPIModelStoreContainer" CdmEntityContainer="WebAPIEntities">
+          <EntitySetMapping Name="Administrator">
+            <EntityTypeMapping TypeName="WebAPIModel.Administrator">
+              <MappingFragment StoreEntitySet="Administrator">
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="AdminName" ColumnName="AdminName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attention">
+            <EntityTypeMapping TypeName="WebAPIModel.Attention">
+              <MappingFragment StoreEntitySet="Attention">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Exp_UserID" ColumnName="Exp_UserID" />
+                <ScalarProperty Name="AttentionID" ColumnName="AttentionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comment">
+            <EntityTypeMapping TypeName="WebAPIModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Download">
+            <EntityTypeMapping TypeName="WebAPIModel.Download">
+              <MappingFragment StoreEntitySet="Download">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="DownloadID" ColumnName="DownloadID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpertInfo">
+            <EntityTypeMapping TypeName="WebAPIModel.ExpertInfo">
+              <MappingFragment StoreEntitySet="ExpertInfo">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Workstation" ColumnName="Workstation" />
+                <ScalarProperty Name="IsPass" ColumnName="IsPass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpertPaper">
+            <EntityTypeMapping TypeName="WebAPIModel.ExpertPaper">
+              <MappingFragment StoreEntitySet="ExpertPaper">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="ExpertPaperID" ColumnName="ExpertPaperID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpertPatent">
+            <EntityTypeMapping TypeName="WebAPIModel.ExpertPatent">
+              <MappingFragment StoreEntitySet="ExpertPatent">
+                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ExpertPatentID" ColumnName="ExpertPatentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Like">
+            <EntityTypeMapping TypeName="WebAPIModel.Like">
+              <MappingFragment StoreEntitySet="Like">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
+                <ScalarProperty Name="LikeID" ColumnName="LikeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ManageExpert">
+            <EntityTypeMapping TypeName="WebAPIModel.ManageExpert">
+              <MappingFragment StoreEntitySet="ManageExpert">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="Operate" ColumnName="Operate" />
+                <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+                <ScalarProperty Name="ManageExpertID" ColumnName="ManageExpertID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ManagePaper">
+            <EntityTypeMapping TypeName="WebAPIModel.ManagePaper">
+              <MappingFragment StoreEntitySet="ManagePaper">
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="Operate" ColumnName="Operate" />
+                <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+                <ScalarProperty Name="ManagePaperID" ColumnName="ManagePaperID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ManagePatent">
+            <EntityTypeMapping TypeName="WebAPIModel.ManagePatent">
+              <MappingFragment StoreEntitySet="ManagePatent">
+                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="Operate" ColumnName="Operate" />
+                <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+                <ScalarProperty Name="ManagePatentID" ColumnName="ManagePatentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ManageUser">
+            <EntityTypeMapping TypeName="WebAPIModel.ManageUser">
+              <MappingFragment StoreEntitySet="ManageUser">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="Operate" ColumnName="Operate" />
+                <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+                <ScalarProperty Name="ManageUserID" ColumnName="ManageUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paper">
+            <EntityTypeMapping TypeName="WebAPIModel.Paper">
+              <MappingFragment StoreEntitySet="Paper">
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="UpID" ColumnName="UpID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UpDate" ColumnName="UpDate" />
+                <ScalarProperty Name="IPC" ColumnName="IPC" />
+                <ScalarProperty Name="Abstract" ColumnName="Abstract" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ReferencedNum" ColumnName="ReferencedNum" />
+                <ScalarProperty Name="DOI" ColumnName="DOI" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="KeyWord" ColumnName="KeyWord" />
+                <ScalarProperty Name="HasFullText" ColumnName="HasFullText" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IsFree" ColumnName="IsFree" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="IsPass" ColumnName="IsPass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patent">
+            <EntityTypeMapping TypeName="WebAPIModel.Patent">
+              <MappingFragment StoreEntitySet="Patent">
+                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
+                <ScalarProperty Name="UpID" ColumnName="UpID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UpDate" ColumnName="UpDate" />
+                <ScalarProperty Name="IPC" ColumnName="IPC" />
+                <ScalarProperty Name="Abstract" ColumnName="Abstract" />
+                <ScalarProperty Name="ApplyNum" ColumnName="ApplyNum" />
+                <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+                <ScalarProperty Name="Applicant" ColumnName="Applicant" />
+                <ScalarProperty Name="ApplicantAddress" ColumnName="ApplicantAddress" />
+                <ScalarProperty Name="SIPC" ColumnName="SIPC" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Agencies" ColumnName="Agencies" />
+                <ScalarProperty Name="Agent" ColumnName="Agent" />
+                <ScalarProperty Name="PublicNum" ColumnName="PublicNum" />
+                <ScalarProperty Name="IsPass" ColumnName="IsPass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviewer">
+            <EntityTypeMapping TypeName="WebAPIModel.Reviewer">
+              <MappingFragment StoreEntitySet="Reviewer">
+                <ScalarProperty Name="ReviewerID" ColumnName="ReviewerID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="ReviewName" ColumnName="ReviewName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="WebAPIModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsExpert" ColumnName="IsExpert" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="integral" ColumnName="integral" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
