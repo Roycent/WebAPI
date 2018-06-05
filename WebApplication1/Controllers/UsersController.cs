@@ -14,6 +14,11 @@ using WebAPI;
 
 namespace WebAPI.Controllers
 {
+    public class PasswordModify
+    {
+        public string oldPasswd { get; set; }
+        public string newPasswd { get; set; }
+    }
     public class UsersController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
@@ -22,28 +27,29 @@ namespace WebAPI.Controllers
         //调试web api可以用postman 
         //body的类型选"x-www-form-urlencoded"
         //下面是一个读取数据库并添加cookie的例子
-        [Route("Users/Login")]
+        [Route("User/Login")]
         public string Login(Users user)
         {
-            Users find = db.Users.Find(user.UserID);
+            Users find = db.Users.First(Users => Users.UserName == user.UserName);
             if (find == null)
             {
-                return "not found";
+                return "failed";
             }
             else
             {
                 if (user.Password != find.Password)
                 {
-                    return "wrong password";
+                    return "failed";
                 }
                 else
                 {
-                    HttpCookie cookie = new HttpCookie(find.UserName);
+                    HttpCookie cookie = new HttpCookie("account");
                     cookie["name"] = find.UserName;
                     cookie["isExpert"] = find.IsExpert.ToString();
                     cookie["Email"] = find.Email;
                     cookie["Phone"] = find.Phone;
                     cookie["point"] = find.integral.ToString();
+                    cookie["UserID"] = find.UserID.ToString();
                     cookie.Expires = DateTime.Now.AddMinutes(120);
                     HttpContext.Current.Response.Cookies.Add(cookie);
                     return "success";
@@ -51,11 +57,47 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Route("User/Logout")]
+        public string Logout()
+        {
+            HttpContext.Current.Response.Cookies.Remove("account");
+            return "success";
+        }
+
+        [Route("User/Info")]
+        public IHttpActionResult Info()
+        {
+            int userID = int.Parse(HttpContext.Current.Request.Cookies["account"]["UserID"]);
+            Users find = db.Users.Find(userID);
+            return Ok(find);
+        }
+
+        [Route("User/ModifyPassword")]
+        public string ModifyPassword(PasswordModify pw)
+        {
+            int userID =  int.Parse(HttpContext.Current.Request.Cookies["account"]["UserID"]);
+            Users find = db.Users.Find(userID);
+            if (find.Password == pw.oldPasswd)
+            {
+                find.Password = pw.newPasswd;
+                db.SaveChanges();
+                return "success";
+            }
+            else if (find.Password != pw.oldPasswd)
+            {
+                return "wrong password";
+            }
+            else
+            {
+                return "error";
+            }
+
+        }
         //下面是一个读取cookie的例子
-        [Route("Users/TestCookie")]
+        [Route("User/TestCookie")]
         public string TestCookie()
         {
-            return HttpContext.Current.Request.Cookies["user1"]["Email"].ToString();
+            return HttpContext.Current.Request.Cookies["account"]["Email"].ToString();
         }
 
         // GET: api/Users
