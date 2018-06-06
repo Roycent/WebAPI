@@ -14,7 +14,10 @@ using System.Web.Http.Description;
 using WebAPI;
 
 namespace WebAPI.Controllers
-{
+{   
+    /// <summary>
+    /// Paper相关控制器 by 邢智涣
+    /// </summary>
     public class PapersController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
@@ -34,13 +37,11 @@ namespace WebAPI.Controllers
         }
         /// <summary>
         /// 文件上传
-        /// </summary>
-        /// <param name="fileContent">
         /// 此接口为form-data形式的文件上传接口，title直接写在url中
         /// 如： post [www.xxx.com]/expert/UploadPaper?title=paperTitle
         /// paperID、UpID、Title、HasFullText会自动生成
         /// IPC、Abstract、Type、ReferencedNum、DOI、Publisher、Keyword、IsFree、Price等请调用ModifyPaperInfo接口进行设置
-        /// </param>
+        /// </summary>
         /// <returns>上传paper后生成的paperID</returns>
         [HttpPost]
         [Route("expert/UploadPaper")]

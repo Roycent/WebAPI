@@ -207,11 +207,9 @@
     <Compile Include="Comment.cs">
       <DependentUpon>WebAPI.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AdministratorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PapersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Download.cs">
       <DependentUpon>WebAPI.tt</DependentUpon>
     </Compile>
@@ -312,6 +310,7 @@
       <DependentUpon>WebAPI.edmx</DependentUpon>
       <LastGenOutput>WebAPI.cs</LastGenOutput>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -327,7 +326,9 @@
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
