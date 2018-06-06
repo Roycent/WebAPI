@@ -10,11 +10,21 @@
             </summary>
             <param name="fileContent">
             此接口为form-data形式的文件上传接口，title直接写在url中
-            如： post [www.xxx.com]/expert/paper?title=paperTitle
+            如： post [www.xxx.com]/expert/UploadPaper?title=paperTitle
             paperID、UpID、Title、HasFullText会自动生成
             IPC、Abstract、Type、ReferencedNum、DOI、Publisher、Keyword、IsFree、Price等请调用ModifyPaperInfo接口进行设置
             </param>
             <returns>上传paper后生成的paperID</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PapersController.UpdatePaper(System.Int64)">
+            <summary>
+            更新上传的文件
+            </summary>
+            <param name="paperID">
+            接口同上传文件接口,url中写入要更改的paperID
+            如： post [www.xxx.com]/expert/UpdatePaper?paperID=61234539523
+            </param>
+            <returns>"success"或"failed"</returns>
         </member>
         <member name="M:WebAPI.Controllers.PapersController.ModifyPaperInfo(WebAPI.Paper)">
             <summary>
