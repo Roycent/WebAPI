@@ -87,6 +87,7 @@ namespace WebAPI.Controllers
                 }
             }
         }
+
         /// <summary>
         /// 用户登出
         /// </summary>
@@ -106,6 +107,7 @@ namespace WebAPI.Controllers
 
             return "success";
         }
+
         /// <summary>
         /// 当前用户信息
         /// </summary>
@@ -125,6 +127,7 @@ namespace WebAPI.Controllers
             Users find = db.Users.Find(userID);
             return find;
         }
+
 
         /// <summary>
         /// 更改密码
@@ -157,12 +160,7 @@ namespace WebAPI.Controllers
             }
 
         }
-        //下面是一个读取cookie的例子
-        [Route("User/TestCookie")]
-        public string TestCookie()
-        {
-            return HttpContext.Current.Request.Cookies["account"]["Email"].ToString();
-        }
+
         /// <summary>
         /// 用户注册
         /// </summary>
@@ -191,5 +189,6 @@ namespace WebAPI.Controllers
 
             return "success";
         }
+
     }
 }
