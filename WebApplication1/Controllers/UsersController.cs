@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Description;
-using WebAPI;
+using System.Web.Script.Serialization;
+
 
 namespace WebAPI.Controllers
 {
+    
     /// <summary>
     /// 更改密码
     /// </summary>
@@ -189,6 +184,8 @@ namespace WebAPI.Controllers
 
             return "success";
         }
+
+
 
     }
 }
