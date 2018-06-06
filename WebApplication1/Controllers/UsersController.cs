@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
         public string newPasswd { get; set; }
     }
     /// <summary>
-    /// 用户信息相关控制器
+    /// 用户信息相关控制器 by 邢智涣
     /// </summary>
     public class UsersController : ApiController
     {
