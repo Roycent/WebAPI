@@ -4,12 +4,31 @@
         <name>WebAPI</name>
     </assembly>
     <members>
-        <member name="M:WebAPI.Controllers.PapersController.UploadPaper(System.Byte[])">
+        <member name="M:WebAPI.Controllers.PapersController.UploadPaper(System.String)">
             <summary>
             文件上传
             </summary>
-            <param name="fileContent"></param>
-            <returns></returns>
+            <param name="fileContent">
+            此接口为form-data形式的文件上传接口，title直接写在url中
+            如： post [www.xxx.com]/expert/paper?title=paperTitle
+            paperID、UpID、Title、HasFullText会自动生成
+            IPC、Abstract、Type、ReferencedNum、DOI、Publisher、Keyword、IsFree、Price等请调用ModifyPaperInfo接口进行设置
+            </param>
+            <returns>上传paper后生成的paperID</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PapersController.ModifyPaperInfo(WebAPI.Paper)">
+            <summary>
+            更改论文信息 也可以在首次上传后直接调用增加信息
+            </summary>
+            <param name="newPaper">Paper的各项需要手动提供的数据</param>
+            <returns>"success"或"failed"</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PapersController.DeletePaper(WebAPI.Paper)">
+            <summary>
+            删除paper,前提为登录者为paper上传者或管理员
+            </summary>
+            <param name="p">PaperID</param>
+            <returns>"forbidden"无权限 "failed" 失败 "success" 成功</returns>
         </member>
         <member name="T:WebAPI.Controllers.PasswordModify">
             <summary>

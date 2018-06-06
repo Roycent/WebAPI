@@ -29,6 +29,21 @@ namespace WebAPI.Controllers
     {
         private WebAPIEntities db = new WebAPIEntities();
 
+
+        private long GenUserID()
+        {
+            Random rd = new Random();
+            int r = rd.Next(1000);
+            long userID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
+            Users tryFind = db.Users.Find(userID);
+            while (tryFind != null)
+            {
+                userID = GenUserID();
+                tryFind = db.Users.Find(userID);
+            }
+            return userID;
+        }
+
         //controller前加Route,可以直接设置该函数的URL,比如下面的这个URL就是http://localhost:xxxx/Users/Login
         //调试web api可以用postman 
         //body的类型选"raw" 并用json格式进行输入
@@ -59,6 +74,7 @@ namespace WebAPI.Controllers
                 else
                 {
                     HttpCookie cookie = new HttpCookie("account");
+                    cookie["role"] = "user";
                     cookie["name"] = find.UserName;
                     cookie["isExpert"] = find.IsExpert.ToString();
                     cookie["Email"] = find.Email;
@@ -161,16 +177,7 @@ namespace WebAPI.Controllers
             {
                 return "user name exists";
             }
-            Random rd = new Random();
-            int r = rd.Next(1000);
-            long newUserID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
-            tryFind = db.Users.Find(newUserID);
-            while(tryFind != null)
-            {
-                r = rd.Next(1000);
-                newUserID = newUserID + r;
-            }
-            newUser.UserID = newUserID;
+            newUser.UserID = GenUserID();
             newUser.integral = 100;//用户初始积分
             try
             {

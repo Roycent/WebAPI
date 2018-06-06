@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WebAPIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WebAPIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Administrator">
           <Key>
             <PropertyRef Name="AdministratorID" />
@@ -123,7 +123,7 @@
           <Property Name="Title" Type="varchar" MaxLength="100" />
           <Property Name="UpDate" Type="datetime" />
           <Property Name="IPC" Type="varchar" MaxLength="20" />
-          <Property Name="Abstract" Type="varchar" MaxLength="1" />
+          <Property Name="Abstract" Type="varchar" MaxLength="1000" />
           <Property Name="Type" Type="varchar" MaxLength="20" />
           <Property Name="ReferencedNum" Type="int" />
           <Property Name="DOI" Type="varchar" MaxLength="40" />
@@ -646,8 +646,7 @@
             <End Role="Reviewer" EntitySet="Reviewer" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WebAPIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -801,7 +800,7 @@
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UpDate" Type="DateTime" Precision="3" />
           <Property Name="IPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Abstract" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Abstract" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ReferencedNum" Type="Int32" />
           <Property Name="DOI" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
