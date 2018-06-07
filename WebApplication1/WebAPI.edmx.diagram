@@ -4,23 +4,23 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1">
-        <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="0.75" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="5.25" PointY="21.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="5.25" PointY="30.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="5.25" PointY="26.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="3" PointY="22.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="8.25" PointY="29.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertPatent" Width="1.5" PointX="5.25" PointY="34.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Like" Width="1.5" PointX="8.25" PointY="36.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManageExpert" Width="1.5" PointX="8.25" PointY="23" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManagePaper" Width="1.5" PointX="5.25" PointY="36.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManagePatent" Width="1.5" PointX="5.25" PointY="40.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManageUser" Width="1.5" PointX="3" PointY="19.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="3" PointY="32.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Patent" Width="1.5" PointX="3" PointY="38.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Reviewer" Width="1.5" PointX="8.25" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="0.75" PointY="19.5" IsExpanded="true" />
+      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="116">
+        <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="21.5" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="26" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="26" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="23.75" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="29" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertPatent" Width="1.5" PointX="26" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Like" Width="1.5" PointX="29" PointY="36.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManageExpert" Width="1.5" PointX="29" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManagePaper" Width="1.5" PointX="26" PointY="36.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManagePatent" Width="1.5" PointX="26" PointY="40.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManageUser" Width="1.5" PointX="23.75" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="23.75" PointY="32.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Patent" Width="1.5" PointX="23.75" PointY="38.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Reviewer" Width="1.5" PointX="29" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="21.5" PointY="19.5" IsExpanded="true" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEEX_REFERENCE_ADMINIST" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_ADMINIST" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPATENT_REFERENCE_ADMINIST" ManuallyRouted="false" />

@@ -43,6 +43,36 @@
             <param name="p">PaperID</param>
             <returns>"forbidden"无权限 "failed" 失败 "success" 成功</returns>
         </member>
+        <member name="T:WebAPI.Controllers.Returnpapers">
+            <summary>
+            返回Papers数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.Returnpatents">
+            <summary>
+            返回Patents数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.Returnexperts">
+            <summary>
+            返回Patents数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.ReturnPaper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.ReturnPatent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.ReturnExpert">
+            <summary>
+            这个还有有问题需要修改
+            </summary>
+        </member>
         <member name="T:WebAPI.Controllers.PasswordModify">
             <summary>
             更改密码
