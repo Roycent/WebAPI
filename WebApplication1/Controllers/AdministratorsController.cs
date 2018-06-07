@@ -23,14 +23,14 @@ namespace WebAPI.Controllers
         /// </summary>
         public class Returnreviewers
         {
-            public List<Reviewer> reviewers{ get; set; }
+            public List<Dictionary<string,string>> reviewers{ get; set; }
         }
 
         /// <summary>
         /// 查询reviewer对象
         /// </summary>
         /// </param>无 </param>
-        /// <return>success:以id和name为一单位的reviewer对象，json格式。error:权限不够"Authority Deficiency"
+        /// <returns>success:以id和name为一单位的reviewer对象，json格式。error:权限不够"Authority Deficiency"</returns>
         [Route("Administrator/GetReviewer")]
         public string GetReviewer()
         {
@@ -48,6 +48,17 @@ namespace WebAPI.Controllers
                 JavaScriptSerializer Json = new JavaScriptSerializer();
                 Returnreviewers returnreviewers = new Returnreviewers();
                 ///returnreviewers.reviewers.GetEnumerator();
+                returnreviewers.reviewers = new List<Dictionary<string, string>>();
+                var results =
+                    from Reviewer in db.Reviewer
+                    select Reviewer;
+                foreach(var result in results)
+                {
+                    Dictionary<string, string> mid = new Dictionary<string, string>();
+                    mid.Add("ReviewerID", result.ReviewerID.ToString());
+                    mid.Add("ReviewerName", result.ReviewName);
+                    returnreviewers.reviewers.Add(mid);
+                }
                 return Json.Serialize(returnreviewers);
             }
         }
@@ -55,10 +66,11 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 创建reviewer对象
         /// </summary>
-        /// </param> name, passwd
+        /// <param name="name"> 
         /// eg:{"name":"user1","passwd":"123456"}
         /// </param>
-        /// <return>success: "success" or "failed"。error:权限不够"Authority Deficiency"
+        /// <param name="passwd"></param>
+        /// <returns>success: "success" or "failed"。error:权限不够"Authority Deficiency"</returns>
         [HttpPost,Route("Administrator/CreateReviewer")]
         public string CreateReviewer(string name, string passwd)
         {
@@ -98,10 +110,11 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 删除Reviewer对象
         /// </summary>
-        /// </param> name 把api文档中传的id改成了审核者名字
+        /// <param name="name">
+        /// name 把api文档中传的id改成了审核者名字
         /// eg:{"name":"zhao"}
         /// </param>
-        /// <return>success: "success" or "failed"。error:权限不够"Authority Deficiency"
+        /// <returns>success: "success" or "failed"。error:权限不够"Authority Deficiency"</returns>
         [HttpPost, Route("Administrator/DeleteReviewer")]
         public string DeleteReviewer(string name)
         {
@@ -136,10 +149,12 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 更新reviewer对象（BUG等待改库😭）
         /// </summary>
-        /// </param> oldName,newName,newPasswd
+        /// <param name="oldName"> 
         /// eg:{"oldName":"zhao","newName":"afadf","newPasswd":"123345"}
         /// </param>
-        /// <return>success: "success" or "failed"。error:权限不够"Authority Deficiency"
+        /// <param name="newName"></param>
+        /// <param name="newPasswd"></param>
+        /// <returns>success: "success" or "failed"。error:权限不够"Authority Deficiency"</returns>
         [HttpPost, Route("Administrator/UpdateReviewer")]
         public string UpdateReviewer( string oldName, string newName, string newPasswd)
         {
