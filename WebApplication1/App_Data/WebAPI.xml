@@ -4,6 +4,15 @@
         <name>WebAPI</name>
     </assembly>
     <members>
+        <member name="T:WebAPI.Controllers.AdministratorsController.Returnreviewers">
+            <summary>
+            返回reviewver数据
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:WebAPI.Controllers.AdministratorsController.GetReviewer" -->
+        <!-- Badly formed XML comment ignored for member "M:WebAPI.Controllers.AdministratorsController.CreateReviewer(System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:WebAPI.Controllers.AdministratorsController.DeleteReviewer(System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:WebAPI.Controllers.AdministratorsController.UpdateReviewer(System.String,System.String,System.String)" -->
         <member name="T:WebAPI.Controllers.PapersController">
             <summary>
             Paper相关控制器 by 邢智涣
@@ -42,6 +51,21 @@
             </summary>
             <param name="p">PaperID</param>
             <returns>"forbidden"无权限 "failed" 失败 "success" 成功</returns>
+        </member>
+        <member name="T:WebAPI.Controllers.Returnpapers">
+            <summary>
+            返回Paper数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.Returnpatent">
+            <summary>
+            返回Patent数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.Returnexpert">
+            <summary>
+            返回Patent数据
+            </summary>
         </member>
         <member name="T:WebAPI.Controllers.PasswordModify">
             <summary>
