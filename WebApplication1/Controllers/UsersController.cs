@@ -93,7 +93,9 @@ namespace WebAPI.Controllers
         {
             try
             {
-                HttpContext.Current.Response.Cookies.Remove("account");
+                var cookie = HttpContext.Current.Request.Cookies["account"];
+                cookie.Expires = DateTime.Now.AddDays(-7);
+                HttpContext.Current.Response.Cookies.Add(cookie);
             }
             catch
             {
@@ -101,6 +103,24 @@ namespace WebAPI.Controllers
             }
 
             return "success";
+        }
+
+        /// <summary>
+        /// 用以测试cookie是否被正确操作
+        /// </summary>
+        /// <returns></returns>
+        [Route("User/TestCookie")]
+        public string TestCookie()
+        {
+            var cookie = HttpContext.Current.Request.Cookies["account"];
+            if (cookie == null)
+            {
+                return "no cookie";
+            }
+            else
+            {
+                return "cookie";
+            }
         }
 
         /// <summary>
