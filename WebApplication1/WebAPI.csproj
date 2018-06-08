@@ -208,6 +208,7 @@
     <Compile Include="Comment.cs">
       <DependentUpon>WebAPI.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AdministratorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PapersController.cs" />
     <Compile Include="Controllers\RecourceController.cs" />
