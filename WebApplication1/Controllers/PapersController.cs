@@ -156,8 +156,9 @@ namespace WebAPI.Controllers
         /// <param name="newPaper">Paper的各项需要手动提供的数据</param>
         /// <returns>"success"或"failed"</returns>
         [Route("expert/ModifyPaperInfo")]
-        public string ModifyPaperInfo(Paper newPaper)
+        public HttpResponseMessage ModifyPaperInfo(Paper newPaper)
         {
+            Dictionary<string, string> res = new Dictionary<string, string>;
             try
             {
                 Paper find = db.Paper.Find(newPaper.PaperID);
@@ -172,13 +173,15 @@ namespace WebAPI.Controllers
                 find.Price = newPaper.Price;
                 db.SaveChanges();
             }
-            catch
+            catch(Exception e)
             {
-                return "failed";
+                res.Add("Message", "failed");
+                res.Add("Details", e.Message);
+                return ConvertToJson(res);
             }
 
-
-            return "success";
+            res.Add("Message", "success");
+            return ConvertToJson(res);
         }
 
         /// <summary>
