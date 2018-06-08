@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
         public async Task<HttpResponseMessage> UploadPaper(string title)
         {
             long paperID = GenPaperID();
-            Dictionary<string, string> res = new Dictionary<string, string>;
+            Dictionary<string, string> res = new Dictionary<string, string>();
             try
             {
                 var root = System.Web.Hosting.HostingEnvironment.MapPath("/paper");
@@ -103,7 +103,7 @@ namespace WebAPI.Controllers
         [HttpPost, Route("expert/UpdatePaper")]
         public async Task<HttpResponseMessage> UpdatePaper(long paperID)
         {
-            Dictionary<string, string> res = new Dictionary<string, string>;
+            Dictionary<string, string> res = new Dictionary<string, string>();
             Paper find = db.Paper.Find(paperID);
             if(find == null)
             {
