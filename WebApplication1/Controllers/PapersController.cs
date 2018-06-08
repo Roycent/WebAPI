@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI;
+using static WebAPI.Controllers.Utils;
 
 namespace WebAPI.Controllers
 {   
@@ -42,12 +43,13 @@ namespace WebAPI.Controllers
         /// paperID、UpID、Title、HasFullText会自动生成
         /// IPC、Abstract、Type、ReferencedNum、DOI、Publisher、Keyword、IsFree、Price等请调用ModifyPaperInfo接口进行设置
         /// </summary>
-        /// <returns>上传paper后生成的paperID</returns>
+        /// <returns>上传paper后生成的paperID或失败</returns>
         [HttpPost]
         [Route("expert/UploadPaper")]
-        public async Task<string> UploadPaper(string title)
+        public async Task<HttpResponseMessage> UploadPaper(string title)
         {
             long paperID = GenPaperID();
+            Dictionary<string, string> res = new Dictionary<string, string>;
             try
             {
                 var root = System.Web.Hosting.HostingEnvironment.MapPath("/paper");
@@ -78,11 +80,15 @@ namespace WebAPI.Controllers
                     db.Paper.Add(newPaper);
                     db.SaveChanges();
                 }
-                return paperID.ToString();
+                res.Add("Message", "success");
+                res.Add("paperID", paperID.ToString());
+                return ConvertToJson(res);
             }
             catch(Exception e)
             {
-                return "failed";
+                res.Add("Message", "failed");
+                res.Add("Details", e.Message);
+                return ConvertToJson(res);
             }
         }
 
@@ -93,19 +99,23 @@ namespace WebAPI.Controllers
         /// 接口同上传文件接口,url中写入要更改的paperID
         /// 如： post [www.xxx.com]/expert/UpdatePaper?paperID=61234539523
         /// </param>
-        /// <returns>"success"或"failed"</returns>
+        /// <returns>Message: "success"或"failed" Details: 错误具体信息</returns>
         [HttpPost, Route("expert/UpdatePaper")]
-        public async Task<string> UpdatePaper(long paperID)
+        public async Task<HttpResponseMessage> UpdatePaper(long paperID)
         {
+            Dictionary<string, string> res = new Dictionary<string, string>;
             Paper find = db.Paper.Find(paperID);
             if(find == null)
             {
-                return "failed";
+                res.Add("Message", "failed");
+                res.Add("Details", "paper not found");
+                return ConvertToJson(res);
             }
             long userID = long.Parse(HttpContext.Current.Request.Cookies["account"]["userID"]);
             if(userID != find.UpID)
             {
-                return "forbidden";
+                res.Add("Message", "forbidden");
+                return ConvertToJson(res);
             }
             string title = find.Title;
             try
@@ -129,11 +139,14 @@ namespace WebAPI.Controllers
                     find.Address = saveUrl;
                     db.SaveChanges();
                 }
-                return "success";
+                res.Add("Message", "success");
+                return ConvertToJson(res);
             }
             catch (Exception e)
             {
-                return "failed";
+                res.Add("Message", "failed");
+                res.Add("Details", e.Message);
+                return ConvertToJson(res);
             }
         }
 

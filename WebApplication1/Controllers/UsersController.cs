@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-
+using static WebAPI.Controllers.Utils;
 
 namespace WebAPI.Controllers
 {
@@ -52,19 +53,22 @@ namespace WebAPI.Controllers
         /// </param>
         /// <returns>"failed":登录失败 "success":登录成功
         /// </returns>
-        [Route("User/Login")]
-        public string Login(Users user)
+        [HttpPost,Route("User/Login")]
+        public HttpResponseMessage Login(Users user)
         {
+            Dictionary<string, string> res = new Dictionary<string, string>();
             Users find = db.Users.FirstOrDefault(Users => Users.UserName == user.UserName);
             if (find == null)
             {
-                return "failed";
+                res.Add("Message", "failed");
+                return ConvertToJson(res);
             }
             else
             {
                 if (user.Password != find.Password)
                 {
-                    return "failed";
+                    res.Add("Message", "failed");
+                    return ConvertToJson(res);
                 }
                 else
                 {
@@ -78,7 +82,8 @@ namespace WebAPI.Controllers
                     cookie["UserID"] = find.UserID.ToString();
                     cookie.Expires = DateTime.Now.AddMinutes(120);
                     HttpContext.Current.Response.Cookies.Add(cookie);
-                    return "success";
+                    res.Add("Message", "success");
+                    return ConvertToJson(res);
                 }
             }
         }
@@ -89,8 +94,9 @@ namespace WebAPI.Controllers
         /// <param>无，直接读取cookie</param>
         /// <returns>"success":登出成功；"failed":登出失败</returns>
         [Route("User/Logout")]
-        public string Logout()
+        public HttpResponseMessage Logout()
         {
+            Dictionary<string, string> res = new Dictionary<string, string>();
             try
             {
                 var cookie = HttpContext.Current.Request.Cookies["account"];
@@ -99,9 +105,11 @@ namespace WebAPI.Controllers
             }
             catch
             {
-                return "failed";
+                res.Add("Message", "failed");
+                return ConvertToJson(res);
             }
-            return "success";
+            res.Add("Message", "success");
+            return ConvertToJson(res);
         }
 
         /// <summary>
@@ -151,26 +159,33 @@ namespace WebAPI.Controllers
         /// </param>
         /// <returns>"success":更改成功,"wrong password":更改失败,"error":错误（如登录态失效等）</returns>
         [Route("User/ModifyPassword")]
-        public string ModifyPassword(PasswordModify pw)
+        public HttpResponseMessage ModifyPassword(PasswordModify pw)
         {
+            Dictionary<string, string> res = new Dictionary<string, string>();
             var cookie = HttpContext.Current.Request.Cookies["account"];
             if (cookie == null)
-                return "error";
+            {
+                res.Add("Message","Cookie不存在");
+                return ConvertToJson(res);
+            }
             int userID =  int.Parse(cookie["UserID"]);
             Users find = db.Users.Find(userID);
             if (find.Password == pw.oldPasswd)
             {
                 find.Password = pw.newPasswd;
                 db.SaveChanges();
-                return "success";
+                res.Add("Message", "success");
+                return ConvertToJson(res);
             }
             else if (find.Password != pw.oldPasswd)
             {
-                return "wrong password";
+                res.Add("Message", "密码错误");
+                return ConvertToJson(res);
             }
             else
             {
-                return "error";
+                res.Add("Message", "未知错误");
+                return ConvertToJson(res);
             }
 
         }
@@ -185,9 +200,12 @@ namespace WebAPI.Controllers
         {
             string newUserName = newUser.UserName;
             Users tryFind = db.Users.FirstOrDefault(Users => Users.UserName == newUserName);
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            Dictionary<string, string> res = new Dictionary<string, string>();
             if (tryFind != null)
             {
-                return "user name exists";
+                res.Add("Message", "user name exists");
+                return Json.Serialize(res);
             }
             newUser.UserID = GenUserID();
             newUser.integral = 100;//用户初始积分
@@ -198,10 +216,11 @@ namespace WebAPI.Controllers
             }
             catch
             {
-                return "error";
+                res.Add("Message", "error");
+                return Json.Serialize(res);
             }
-
-            return "success";
+            res.Add("Message", "success");
+            return Json.Serialize(res);
         }
 
 

@@ -212,6 +212,7 @@
     <Compile Include="Controllers\PapersController.cs" />
     <Compile Include="Controllers\RecourceController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\Utils.cs" />
     <Compile Include="Download.cs">
       <DependentUpon>WebAPI.tt</DependentUpon>
     </Compile>
@@ -346,6 +347,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
