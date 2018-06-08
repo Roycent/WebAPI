@@ -158,7 +158,7 @@ namespace WebAPI.Controllers
         [Route("expert/ModifyPaperInfo")]
         public HttpResponseMessage ModifyPaperInfo(Paper newPaper)
         {
-            Dictionary<string, string> res = new Dictionary<string, string>;
+            Dictionary<string, string> res = new Dictionary<string, string>();
             try
             {
                 Paper find = db.Paper.Find(newPaper.PaperID);
@@ -190,28 +190,36 @@ namespace WebAPI.Controllers
         /// <param name="p">PaperID</param>
         /// <returns>"forbidden"无权限 "failed" 失败 "success" 成功</returns>
         [HttpPost, Route("expert/DeletePaper")]
-        public string DeletePaper(Paper p)
+        public HttpResponseMessage DeletePaper(Paper p)
         {
+            Dictionary<string, string> res = new Dictionary<string, string>();
             long userID = long.Parse(HttpContext.Current.Request.Cookies["account"]["userID"]);
             string role = HttpContext.Current.Request.Cookies["account"]["role"];
             Paper find = db.Paper.Find(p.PaperID);
             if(userID != find.UpID && role != "admin")
             {
-                return "forbidden";
+                res.Add("Message", "forbidden");
+                return ConvertToJson(res);
             }
             if (find == null)
-                return "failed";
+            {
+                res.Add("Message", "failed");
+                return ConvertToJson(res);
+
+            }
 
             try
             {
                 db.Paper.Remove(find);
                 db.SaveChanges();
             }
-            catch
+            catch(Exception e)
             {
-                return "failed";
+                res.Add("Message", "failed");
+                res.Add("Details", e.Message);
             }
-            return "success";
+            res.Add("Message", "success");
+            return ConvertToJson(res);
         }
 
     }
