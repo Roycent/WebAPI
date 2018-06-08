@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
@@ -134,21 +136,26 @@ namespace WebAPI.Controllers
         /// 当前用户信息
         /// </summary>
         /// <param>无，直接读取cookie</param>
-        /// <returns>用户所有信息,若无cookie则返回一个用户名为null的用户</returns>
+        /// <returns>用户所有信息,若无cookie则返回Message: failed</returns>
         [Route("User/Info")]
-        public Users Info()
+        public HttpResponseMessage Info()
         {
             var cookie = HttpContext.Current.Request.Cookies["account"];
+            Dictionary<string, string> res = new Dictionary<string, string>();
             if (cookie == null)
             {
-                Users nullUser = new Users();
-                nullUser.UserName = null;
-                return nullUser;
+                res.Add("Message", "failed");
             }
             int userID = int.Parse(cookie["UserID"]);
             Users find = db.Users.Find(userID);
-            return find;
+            res.Add("UserName", find.UserName);
+            res.Add("UserID", find.UserID.ToString());
+            res.Add("IsExpert", find.IsExpert.ToString());
+            res.Add("Email", find.Email);
+            res.Add("integral", find.integral.ToString());
+            return ConvertToJson(res);
         }
+
 
 
         /// <summary>

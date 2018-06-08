@@ -10,10 +10,11 @@ namespace WebAPI.Controllers
 {
     public class Utils
     {
-        public static HttpResponseMessage ConvertToJson(Dictionary<string,string> res)
+        public static HttpResponseMessage ConvertToJson<T>(T res)
         {
             JavaScriptSerializer json = new JavaScriptSerializer();
-            return new HttpResponseMessage { Content = new StringContent(json.Serialize(res), System.Text.Encoding.GetEncoding("UTF-8"), "applcation/json") };
+            StringContent sc = new StringContent(json.Serialize(res), System.Text.Encoding.GetEncoding("UTF-8"), "applcation/json");
+            return new HttpResponseMessage { Content = sc };
         }
     }
 }
