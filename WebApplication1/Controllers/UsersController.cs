@@ -146,7 +146,7 @@ namespace WebAPI.Controllers
             {
                 res.Add("Message", "failed");
             }
-            int userID = int.Parse(cookie["UserID"]);
+            long userID = long.Parse(cookie["UserID"]);
             Users find = db.Users.Find(userID);
             res.Add("UserName", find.UserName);
             res.Add("UserID", find.UserID.ToString());
