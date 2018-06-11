@@ -200,16 +200,15 @@ namespace WebAPI.Controllers
         /// <param name="newUser">用户信息，必选字段为用户名、密码，可选字段为电话、邮箱等</param>
         /// <returns>"success":注册成功  "user name exists":用户名存在  "error":错误</returns>
         [Route("User/Register")]
-        public string Register(Users newUser)
+        public HttpResponseMessage Register(Users newUser)
         {
             string newUserName = newUser.UserName;
             Users tryFind = db.Users.FirstOrDefault(Users => Users.UserName == newUserName);
-            JavaScriptSerializer Json = new JavaScriptSerializer();
             Dictionary<string, string> res = new Dictionary<string, string>();
             if (tryFind != null)
             {
                 res.Add("Message", "user name exists");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             newUser.UserID = GenUserID();
             newUser.integral = 100;//用户初始积分
@@ -221,10 +220,10 @@ namespace WebAPI.Controllers
             catch
             {
                 res.Add("Message", "error");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             res.Add("Message", "success");
-            return Json.Serialize(res);
+            return ConvertToJson(res);
         }
     }
 }
