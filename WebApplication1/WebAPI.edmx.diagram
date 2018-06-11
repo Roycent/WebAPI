@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="26" PointY="21.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="26" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="23.75" PointY="22.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="29" PointY="29.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.ExpertPatent" Width="1.5" PointX="26" PointY="34.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Like" Width="1.5" PointX="29" PointY="36.375" IsExpanded="true" />
@@ -24,17 +23,19 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_ADMINIST" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPATENT_REFERENCE_ADMINIST" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_ADMINIST" ManuallyRouted="false" />
-        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PATENT" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_USERS" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_USERS" ManuallyRouted="false" />
+<<<<<<< HEAD
         <AssociationConnector Association="WebAPIModel.FK_EXPERTIN_REFERENCE_USERS" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPA_REFERENCE_EXPERTIN" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPATENT_REFERENCE_EXPERTIN" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEEX_REFERENCE_EXPERTIN" ManuallyRouted="false" />
+=======
+>>>>>>> 225c29666e5856cd053ed4ac081978fc49879895
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPA_REFERENCE_PAPER" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPA_REFERENCE_PATENT" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER" ManuallyRouted="false" />
@@ -45,12 +46,25 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_USERS" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_PATENT_REFERENCE_USERS" ManuallyRouted="false" />
+<<<<<<< HEAD
         <EntityTypeShape EntityType="WebAPIModel.Review" Width="1.5" PointX="30" PointY="31.75" />
         <EntityTypeShape EntityType="WebAPIModel.Reviewer" Width="1.5" PointX="30.5" PointY="40" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.Review_Reviewer_ReviewerID_fk" />
+=======
+        
+        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER1" />
+        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT1" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="23.75" PointY="22.625" />
+        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
+        
+        
+        
+        
+        
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 225c29666e5856cd053ed4ac081978fc49879895
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
