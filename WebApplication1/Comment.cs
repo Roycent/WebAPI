@@ -19,6 +19,7 @@ namespace WebAPI
         public Nullable<long> PaperID { get; set; }
         public string Type { get; set; }
         public System.DateTime Time { get; set; }
+        public string Content { get; set; }
     
         public virtual Paper Paper { get; set; }
         public virtual Patent Patent { get; set; }
