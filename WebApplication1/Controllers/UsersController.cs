@@ -155,9 +155,6 @@ namespace WebAPI.Controllers
             res.Add("integral", find.integral.ToString());
             return ConvertToJson(res);
         }
-
-
-
         /// <summary>
         /// 更改密码
         /// </summary>
@@ -229,8 +226,5 @@ namespace WebAPI.Controllers
             res.Add("Message", "success");
             return Json.Serialize(res);
         }
-
-
-
     }
 }

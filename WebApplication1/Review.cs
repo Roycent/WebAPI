@@ -12,19 +12,17 @@ namespace WebAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class Reviewer
+    public partial class Review
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Reviewer()
-        {
-            this.Review = new HashSet<Review>();
-        }
-    
-        public string Name { get; set; }
         public long ReviewerID { get; set; }
-        public string Password { get; set; }
+        public Nullable<long> UserID { get; set; }
+        public Nullable<long> PatentID { get; set; }
+        public Nullable<long> PaperID { get; set; }
+        public int ID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Review> Review { get; set; }
+        public virtual ExpertInfo ExpertInfo { get; set; }
+        public virtual Paper Paper { get; set; }
+        public virtual Patent Patent { get; set; }
+        public virtual Reviewer Reviewer { get; set; }
     }
 }
