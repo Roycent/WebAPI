@@ -21,7 +21,7 @@ namespace WebAPI
             this.ExpertPatent = new HashSet<ExpertPatent>();
             this.Like = new HashSet<Like>();
             this.ManagePatent = new HashSet<ManagePatent>();
-            this.Reviewer = new HashSet<Reviewer>();
+            this.Review = new HashSet<Review>();
         }
     
         public long PatentID { get; set; }
@@ -51,6 +51,6 @@ namespace WebAPI
         public virtual ICollection<ManagePatent> ManagePatent { get; set; }
         public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reviewer> Reviewer { get; set; }
+        public virtual ICollection<Review> Review { get; set; }
     }
 }

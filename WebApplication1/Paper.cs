@@ -22,7 +22,7 @@ namespace WebAPI
             this.ExpertPaper = new HashSet<ExpertPaper>();
             this.Like = new HashSet<Like>();
             this.ManagePaper = new HashSet<ManagePaper>();
-            this.Reviewer = new HashSet<Reviewer>();
+            this.Review = new HashSet<Review>();
         }
     
         public long PaperID { get; set; }
@@ -54,6 +54,6 @@ namespace WebAPI
         public virtual ICollection<ManagePaper> ManagePaper { get; set; }
         public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reviewer> Reviewer { get; set; }
+        public virtual ICollection<Review> Review { get; set; }
     }
 }

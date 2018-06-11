@@ -15,14 +15,7 @@ namespace WebAPI
     public partial class Reviewer
     {
         public long ReviewerID { get; set; }
-        public Nullable<long> UserID { get; set; }
-        public Nullable<long> PatentID { get; set; }
-        public Nullable<long> PaperID { get; set; }
-        public string ReviewName { get; set; }
         public string Password { get; set; }
-    
-        public virtual ExpertInfo ExpertInfo { get; set; }
-        public virtual Paper Paper { get; set; }
-        public virtual Patent Patent { get; set; }
+        public string Name { get; set; }
     }
 }

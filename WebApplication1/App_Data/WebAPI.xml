@@ -4,6 +4,43 @@
         <name>WebAPI</name>
     </assembly>
     <members>
+        <member name="T:WebAPI.Controllers.AdministratorsController.Returnreviewers">
+            <summary>
+            返回reviewver数据
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:WebAPI.Controllers.AdministratorsController.GetReviewer" -->
+        <member name="M:WebAPI.Controllers.AdministratorsController.CreateReviewer(System.String,System.String)">
+            <summary>
+            创建reviewer对象
+            </summary>
+            <param name="name"> 
+            eg:{"name":"user1","passwd":"123456"}
+            </param>
+            <param name="passwd"></param>
+            <returns>success: "success" or "failed"。error:权限不够"Authority Deficiency"</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.DeleteReviewer(System.String)">
+            <summary>
+            删除Reviewer对象
+            </summary>
+            <param name="name">
+            name 把api文档中传的id改成了审核者名字
+            eg:{"name":"zhao"}
+            </param>
+            <returns>success: "success" or "failed"。error:权限不够"Authority Deficiency"</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.UpdateReviewer(System.String,System.String,System.String)">
+            <summary>
+            更新reviewer对象（BUG等待改库😭）
+            </summary>
+            <param name="oldName"> 
+            eg:{"oldName":"zhao","newName":"afadf","newPasswd":"123345"}
+            </param>
+            <param name="newName"></param>
+            <param name="newPasswd"></param>
+            <returns>success: "success" or "failed"。error:权限不够"Authority Deficiency"</returns>
+        </member>
         <member name="T:WebAPI.Controllers.PapersController">
             <summary>
             Paper相关控制器 by 邢智涣
@@ -17,7 +54,7 @@
             paperID、UpID、Title、HasFullText会自动生成
             IPC、Abstract、Type、ReferencedNum、DOI、Publisher、Keyword、IsFree、Price等请调用ModifyPaperInfo接口进行设置
             </summary>
-            <returns>上传paper后生成的paperID</returns>
+            <returns>上传paper后生成的paperID或失败</returns>
         </member>
         <member name="M:WebAPI.Controllers.PapersController.UpdatePaper(System.Int64)">
             <summary>
@@ -27,7 +64,7 @@
             接口同上传文件接口,url中写入要更改的paperID
             如： post [www.xxx.com]/expert/UpdatePaper?paperID=61234539523
             </param>
-            <returns>"success"或"failed"</returns>
+            <returns>Message: "success"或"failed" Details: 错误具体信息</returns>
         </member>
         <member name="M:WebAPI.Controllers.PapersController.ModifyPaperInfo(WebAPI.Paper)">
             <summary>
@@ -100,12 +137,18 @@
             <param>无，直接读取cookie</param>
             <returns>"success":登出成功；"failed":登出失败</returns>
         </member>
+        <member name="M:WebAPI.Controllers.UsersController.TestCookie">
+            <summary>
+            用以测试cookie是否被正确操作
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.UsersController.Info">
             <summary>
             当前用户信息
             </summary>
             <param>无，直接读取cookie</param>
-            <returns>用户所有信息,若无cookie则返回一个用户名为null的用户</returns>
+            <returns>用户所有信息,若无cookie则返回Message: failed</returns>
         </member>
         <member name="M:WebAPI.Controllers.UsersController.ModifyPassword(WebAPI.Controllers.PasswordModify)">
             <summary>

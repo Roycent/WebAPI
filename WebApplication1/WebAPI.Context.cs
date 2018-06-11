@@ -29,7 +29,6 @@ namespace WebAPI
         public virtual DbSet<Attention> Attention { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<Download> Download { get; set; }
-        public virtual DbSet<ExpertInfo> ExpertInfo { get; set; }
         public virtual DbSet<ExpertPaper> ExpertPaper { get; set; }
         public virtual DbSet<ExpertPatent> ExpertPatent { get; set; }
         public virtual DbSet<Like> Like { get; set; }
@@ -41,5 +40,7 @@ namespace WebAPI
         public virtual DbSet<Patent> Patent { get; set; }
         public virtual DbSet<Reviewer> Reviewer { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Review> Review { get; set; }
+        public virtual DbSet<ExpertInfo> ExpertInfo { get; set; }
     }
 }
