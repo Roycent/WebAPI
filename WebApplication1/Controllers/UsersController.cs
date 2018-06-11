@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
             {
                 if (user.Password != find.Password)
                 {
-                    res.Add("Message", "failed");
+                    res.Add("Message", "Password error!");
                     return ConvertToJson(res);
                 }
                 else
@@ -107,7 +107,7 @@ namespace WebAPI.Controllers
             }
             catch
             {
-                res.Add("Message", "failed");
+                res.Add("Message", "Cookie error!");
                 return ConvertToJson(res);
             }
             res.Add("Message", "success");
@@ -141,18 +141,23 @@ namespace WebAPI.Controllers
         public HttpResponseMessage Info()
         {
             var cookie = HttpContext.Current.Request.Cookies["account"];
-            Dictionary<string, string> res = new Dictionary<string, string>();
+            Dictionary<string, string> info = new Dictionary<string, string>();
             if (cookie == null)
             {
-                res.Add("Message", "failed");
+                info.Add("Message", "Cookie error!");
+                return ConvertToJson(info);
             }
             long userID = long.Parse(cookie["UserID"]);
             Users find = db.Users.Find(userID);
-            res.Add("UserName", find.UserName);
-            res.Add("UserID", find.UserID.ToString());
-            res.Add("IsExpert", find.IsExpert.ToString());
-            res.Add("Email", find.Email);
-            res.Add("integral", find.integral.ToString());
+            info.Add("UserName", find.UserName);
+            info.Add("UserID", find.UserID.ToString());
+            info.Add("IsExpert", find.IsExpert.ToString());
+            info.Add("Email", find.Email);
+            info.Add("integral", find.integral.ToString());
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            res.Add("Message", "success");
+            res.Add("Data",serializer.Serialize(info));
             return ConvertToJson(res);
         }
         /// <summary>
@@ -207,7 +212,7 @@ namespace WebAPI.Controllers
             Dictionary<string, string> res = new Dictionary<string, string>();
             if (tryFind != null)
             {
-                res.Add("Message", "user name exists");
+                res.Add("Message", "User has existed!");
                 return ConvertToJson(res);
             }
             newUser.UserID = GenUserID();
