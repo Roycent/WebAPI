@@ -18,7 +18,7 @@ namespace WebAPI
         public Nullable<long> PaperID { get; set; }
         public int ExpertPaperID { get; set; }
     
-        public virtual ExpertInfo ExpertInfo { get; set; }
         public virtual Paper Paper { get; set; }
+        public virtual ExpertInfo ExpertInfo { get; set; }
     }
 }

@@ -54,7 +54,7 @@
             paperID、UpID、Title、HasFullText会自动生成
             IPC、Abstract、Type、ReferencedNum、DOI、Publisher、Keyword、IsFree、Price等请调用ModifyPaperInfo接口进行设置
             </summary>
-            <returns>上传paper后生成的paperID</returns>
+            <returns>上传paper后生成的paperID或失败</returns>
         </member>
         <member name="M:WebAPI.Controllers.PapersController.UpdatePaper(System.Int64)">
             <summary>
@@ -64,7 +64,7 @@
             接口同上传文件接口,url中写入要更改的paperID
             如： post [www.xxx.com]/expert/UpdatePaper?paperID=61234539523
             </param>
-            <returns>"success"或"failed"</returns>
+            <returns>Message: "success"或"failed" Details: 错误具体信息</returns>
         </member>
         <member name="M:WebAPI.Controllers.PapersController.ModifyPaperInfo(WebAPI.Paper)">
             <summary>
@@ -148,7 +148,7 @@
             当前用户信息
             </summary>
             <param>无，直接读取cookie</param>
-            <returns>用户所有信息,若无cookie则返回一个用户名为null的用户</returns>
+            <returns>用户所有信息,若无cookie则返回Message: failed</returns>
         </member>
         <member name="M:WebAPI.Controllers.UsersController.ModifyPassword(WebAPI.Controllers.PasswordModify)">
             <summary>
