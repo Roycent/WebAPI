@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         /// </summary>
         public class ReviewerdModify
         {
-            public long Id { get; set; }
+            public string oldName { get; set; }
             public string newName { get; set; }
             public string newPasswd{ get; set; }
         }
@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
         /// 查询reviewer对象
         /// </summary>
         /// <param>无 </param>
-        /// <returns>success:{"ReviewerID":"12333","ReviewerName":"zhaojiemin"}。error:{"Message","forbidden"}</returns>
+        /// <returns>success:{"ReviewerID":"12333","Name":"zhaojiemin"}。error:{"Message","forbidden"}</returns>
         [Route("Administrator/GetReviewer")]
         public string GetReviewer()
         {
@@ -78,7 +78,7 @@ namespace WebAPI.Controllers
                     {
                         Dictionary<string, string> mid = new Dictionary<string, string>();
                         mid.Add("ReviewerID", result.ReviewerID.ToString());
-                        mid.Add("ReviewerName", result.ReviewName);
+                        mid.Add("Name", result.Name);
                         returnreviewers.reviewers.Add(mid);
                     }
                 }
@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
         /// 创建reviewer对象
         /// </summary>
         /// <param name="reviewer"> 
-        /// eg:{"ReviewName":"user1","Password":"123456"}
+        /// eg:{"Name":"user1","Password":"123456"}
         /// </param>
         /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
         [HttpPost,Route("Administrator/CreateReviewer")]
@@ -112,7 +112,7 @@ namespace WebAPI.Controllers
             }
             else
             {
-                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.ReviewName == reviewer.ReviewName);
+                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.Name == reviewer.Name);
                 //在reviewer表中插入name passwd参数
                 if (find == null)//name不在表中
                 {
@@ -120,7 +120,7 @@ namespace WebAPI.Controllers
                     {
                         Reviewer reviewer1 = new Reviewer
                         {
-                            ReviewName = reviewer.ReviewName,
+                            Name = reviewer.Name,
                             Password = reviewer.Password
                         };
                         db.Reviewer.Add(reviewer1);
@@ -147,7 +147,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="reviewer">
         /// name 把api文档中传的id改成了审核者名字
-        /// eg:{"ReviewName":"zhao"}
+        /// eg:{"Name":"zhao"}
         /// </param>
         /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
         [HttpPost, Route("Administrator/DeleteReviewer")]
@@ -165,7 +165,7 @@ namespace WebAPI.Controllers
             else
             {
                 //在reviewer表中匹配对应id，删除表记录
-                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.ReviewName == reviewer.ReviewName);
+                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.Name == reviewer.Name);
                 if (find != null)//name在表中
                 {
                     try
@@ -190,10 +190,10 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// 更新reviewer对象（BUG等待改库😭）
+        /// 更新reviewer对象
         /// </summary>
         /// <param name="rm"> 
-        /// eg:{"id":"102303","newName":"afadf","newPasswd":"123345"}
+        /// eg:{"oldName":"102303","newName":"afadf","newPasswd":"123345"}
         /// </param>
         /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
         [HttpPost, Route("Administrator/UpdateReviewer")]
@@ -210,12 +210,12 @@ namespace WebAPI.Controllers
             else
             {
                 //在reviewer表中匹配对应name，更新name，password
-                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.ReviewerID == rm.Id);
+                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.Name == rm.oldName);
                 if (find != null)//id在表中
                 {
                     try
                     {
-                        find.ReviewName = rm.newName;
+                        find.Name = rm.newName;
                         find.Password = rm.newPasswd;
                         db.SaveChanges();
                     }
@@ -287,7 +287,7 @@ namespace WebAPI.Controllers
         /// eg:{"CommentID":"12333"}
         /// </param>
         /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
-        [HttpPost, Route("Administrator/DeleteReviewer")]
+        [HttpPost, Route("Administrator/DeleteComment")]
         public string DeleteComment(Comment comment)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
@@ -324,120 +324,6 @@ namespace WebAPI.Controllers
                     return Json.Serialize(res);//没有该审核者
                 }
             }
-        }
-
-        // GET: api/Administrators
-        public IQueryable<Administrator> GetAdministrator()
-        {
-            return db.Administrator;
-        }
-
-        // GET: api/Administrators/5
-        [ResponseType(typeof(Administrator))]
-        public IHttpActionResult GetAdministrator(long id)
-        {
-            Administrator administrator = db.Administrator.Find(id);
-            if (administrator == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(administrator);
-        }
-
-        // PUT: api/Administrators/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutAdministrator(long id, Administrator administrator)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != administrator.AdministratorID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(administrator).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AdministratorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Administrators
-        [ResponseType(typeof(Administrator))]
-        public IHttpActionResult PostAdministrator(Administrator administrator)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Administrator.Add(administrator);
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (AdministratorExists(administrator.AdministratorID))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = administrator.AdministratorID }, administrator);
-        }
-
-        // DELETE: api/Administrators/5
-        [ResponseType(typeof(Administrator))]
-        public IHttpActionResult DeleteAdministrator(long id)
-        {
-            Administrator administrator = db.Administrator.Find(id);
-            if (administrator == null)
-            {
-                return NotFound();
-            }
-
-            db.Administrator.Remove(administrator);
-            db.SaveChanges();
-
-            return Ok(administrator);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool AdministratorExists(long id)
-        {
-            return db.Administrator.Count(e => e.AdministratorID == id) > 0;
         }
     }
 }

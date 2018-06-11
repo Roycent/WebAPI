@@ -4,6 +4,72 @@
         <name>WebAPI</name>
     </assembly>
     <members>
+        <member name="T:WebAPI.Controllers.AdministratorsController.ReturnReviewers">
+            <summary>
+            返回reviewver数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.AdministratorsController.ReturnComments">
+            <summary>
+            返回comment数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.AdministratorsController.ReviewerdModify">
+            <summary>
+            更改reviewer信息
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.GetReviewer">
+            <summary>
+            查询reviewer对象
+            </summary>
+            <param>无 </param>
+            <returns>success:{"ReviewerID":"12333","Name":"zhaojiemin"}。error:{"Message","forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.CreateReviewer(WebAPI.Reviewer)">
+            <summary>
+            创建reviewer对象
+            </summary>
+            <param name="reviewer"> 
+            eg:{"Name":"user1","Password":"123456"}
+            </param>
+            <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.DeleteReviewer(WebAPI.Reviewer)">
+            <summary>
+            删除Reviewer对象
+            </summary>
+            <param name="reviewer">
+            name 把api文档中传的id改成了审核者名字
+            eg:{"Name":"zhao"}
+            </param>
+            <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.UpdateReviewer(WebAPI.Controllers.AdministratorsController.ReviewerdModify)">
+            <summary>
+            更新reviewer对象（BUG等待改库😭）
+            </summary>
+            <param name="rm"> 
+            eg:{"oldName":"102303","newName":"afadf","newPasswd":"123345"}
+            </param>
+            <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.GetComment">
+            <summary>
+            查询comment
+            </summary>
+            <param>无 </param>
+            <returns>success:{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.DeleteComment(WebAPI.Comment)">
+            <summary>
+            删除comment
+            </summary>
+            <param>
+            eg:{"CommentID":"12333"}
+            </param>
+            <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        </member>
         <member name="T:WebAPI.Controllers.PapersController">
             <summary>
             Paper相关控制器 by 邢智涣
