@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 using System.Collections.Generic;
+using static WebAPI.Controllers.Utils;
 
 namespace WebAPI.Controllers
 {
@@ -70,12 +71,12 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("resource")]
-        public string SearchSource(string type,string keywords)
+        public HttpResponseMessage SearchSource(string type, string keywords)
         {
             JavaScriptSerializer Json = new JavaScriptSerializer();
             Dictionary<string, string> map = new Dictionary<string, string>();
             map.Add("error", "TypeError");
-            if (type== "paper")
+            if (type == "paper")
             {
                 Returnpapers Papers = new Returnpapers();
                 Papers.type = "paper";
@@ -84,7 +85,7 @@ namespace WebAPI.Controllers
                 from Paper in db.Paper
                 where Paper.Title.IndexOf(keywords) != -1
                 select Paper;
-                foreach(var result in results)
+                foreach (var result in results)
                 {
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.PaperID.ToString());
@@ -93,7 +94,7 @@ namespace WebAPI.Controllers
                     mid.Add("summary", result.Abstract);
                     Papers.papers.Add(mid);
                 }
-                return Json.Serialize(Papers);
+                return ConvertToJson(Papers);
             }
             if (type == "patent")
             {
@@ -113,58 +114,57 @@ namespace WebAPI.Controllers
                     mid.Add("Abstract", result.Abstract);
                     Patents.patents.Add(mid);
                 }
-                return Json.Serialize(Patents);
+                return ConvertToJson(Patents);
             }
-            if(type== "expert")
+            if (type == "expert")
             {
                 Returnexperts Expect = new Returnexperts();
                 Expect.type = "expert";
                 Expect.experts = new List<Dictionary<string, string>>();
                 var results =
                 from ExpertInfo in db.ExpertInfo
-                where ExpertInfo.FirstName.IndexOf(keywords) != -1
+                where ExpertInfo.Name.IndexOf(keywords) != -1
                 select ExpertInfo;
                 foreach (var result in results)
                 {
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.UserID.ToString());
-                    mid.Add("firstname", result.FirstName);
-                    mid.Add("listname", result.LastName);
+                    mid.Add("name", result.Name);
                     mid.Add("workstation", result.Workstation);
                     Expect.experts.Add(mid);
                 }
-                return Json.Serialize(Expect);
+                return ConvertToJson(Expect);
             }
-            return Json.Serialize(map);
+            return ConvertToJson(map);
         }
 
         [HttpPost]
         [Route("resource/paper")]
-        public string RequestPaper(int id)
+        public HttpResponseMessage RequestPaper(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnPaper paper = new ReturnPaper();
             paper.access = "success";
-            paper.data=db.Paper.Find(id);
-            return Json.Serialize(paper);
+            paper.data = db.Paper.Find(id);
+            return ConvertToJson(paper);
         }
 
         [HttpPost]
         [Route("resource/patent")]
-        public string RequestPatent(int id)
+        public HttpResponseMessage RequestPatent(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnPatent patent = new ReturnPatent();
             patent.access = "success";
             patent.data = db.Patent.Find(id);
-            return Json.Serialize(patent);
+            return ConvertToJson(patent);
         }
 
         [HttpPost]
         [Route("resource/expert")]
-        public string GetExpertInformation(int id)
+        public HttpResponseMessage GetExpertInformation(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -174,7 +174,64 @@ namespace WebAPI.Controllers
             expert.access = "succcess";
             expert.data = db.ExpertInfo.Find(id);
             //TODO：这要是找不到好的方法就直接用第一个函数的那种方法。
-            return Json.Serialize(expert);
+            return ConvertToJson(expert);
+        }
+
+        /// <summary>
+        /// 爬虫接口PostExpert
+        /// </summary>
+        [HttpPost]
+        [Route("resource/PostExpert")]
+        public string PostExpert(ExpertInfo expert)
+        {
+            try
+            {
+                db.ExpertInfo.Add(expert);
+                db.SaveChanges();
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error    "+ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 爬虫接口PostPaper
+        /// </summary>
+        [HttpPost]
+        [Route("resource/PostPaper")]
+        public string PostPaper(Paper paper)
+        {
+            try
+            {
+                db.Paper.Add(paper);
+                db.SaveChanges();
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error    " + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 爬虫接口PostPatent
+        /// </summary>
+        [HttpPost]
+        [Route("resource/PostPatent")]
+        public string PostPatent(Patent patent)
+        {
+            try
+            {
+                db.Patent.Add(patent);
+                db.SaveChanges();
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error    " + ex.Message;
+            }
         }
     }
 }
