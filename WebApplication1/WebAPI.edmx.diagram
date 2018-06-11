@@ -19,7 +19,6 @@
         <EntityTypeShape EntityType="WebAPIModel.ManageUser" Width="1.5" PointX="23.75" PointY="19.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="23.75" PointY="32.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Patent" Width="1.5" PointX="23.75" PointY="38.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Reviewer" Width="1.5" PointX="29" PointY="32.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="21.5" PointY="19.5" IsExpanded="true" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEEX_REFERENCE_ADMINIST" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_ADMINIST" ManuallyRouted="false" />
@@ -36,7 +35,6 @@
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPA_REFERENCE_EXPERTIN" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPATENT_REFERENCE_EXPERTIN" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEEX_REFERENCE_EXPERTIN" ManuallyRouted="false" />
-        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPA_REFERENCE_PAPER" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_EXPERTPA_REFERENCE_PATENT" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER" ManuallyRouted="false" />
@@ -46,9 +44,13 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_USERS" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" ManuallyRouted="false" />
-        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" ManuallyRouted="false" />
         <AssociationConnector Association="WebAPIModel.FK_PATENT_REFERENCE_USERS" ManuallyRouted="false" />
-        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WebAPIModel.Review" Width="1.5" PointX="30" PointY="31.75" />
+        <EntityTypeShape EntityType="WebAPIModel.Reviewer" Width="1.5" PointX="30.5" PointY="40" />
+        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN" />
+        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
+        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" />
+        <AssociationConnector Association="WebAPIModel.Review_Reviewer_ReviewerID_fk" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

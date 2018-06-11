@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
     }
 
     /// <summary>
-    /// 返回Patents数据
+    /// 返回experts数据
     /// </summary>
     public class Returnexperts
     {
@@ -55,17 +55,20 @@ namespace WebAPI.Controllers
     }
 
     /// <summary>
-    /// 这个还有有问题需要修改
+    /// 这个当后面修改数据库的时候需要进行修改。
     /// </summary>
     public class ReturnExpert
     {
         public string access { get; set; }
         public ExpertInfo data { get; set; }
+        public List<Paper> paperlist { get; set; }
+        public List<Patent> paptentlist { get; set; }
     }
     public class RecourceController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
-        
+
+        [HttpPost]
         [Route("resource")]
         public string SearchSource(string type,string keywords)
         {
@@ -133,25 +136,45 @@ namespace WebAPI.Controllers
                 return Json.Serialize(Expect);
             }
             return Json.Serialize(map);
-            
         }
 
+        [HttpPost]
         [Route("resource/paper")]
         public string RequestPaper(int id)
         {
-            return "success";
+            db.Configuration.ProxyCreationEnabled = false;
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnPaper paper = new ReturnPaper();
+            paper.access = "success";
+            paper.data=db.Paper.Find(id);
+            return Json.Serialize(paper);
         }
 
-        [Route("resource/paper")]
+        [HttpPost]
+        [Route("resource/patent")]
         public string RequestPatent(int id)
         {
-            return "success";
+            db.Configuration.ProxyCreationEnabled = false;
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnPatent patent = new ReturnPatent();
+            patent.access = "success";
+            patent.data = db.Patent.Find(id);
+            return Json.Serialize(patent);
         }
 
-        [Route("resource/paper")]
+        [HttpPost]
+        [Route("resource/expert")]
         public string GetExpertInformation(int id)
         {
-            return "success";
+            db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnExpert expert = new ReturnExpert();
+            expert.paperlist = new List<Paper>();
+            expert.paptentlist = new List<Patent>();
+            expert.access = "succcess";
+            expert.data = db.ExpertInfo.Find(id);
+            //TODO：这要是找不到好的方法就直接用第一个函数的那种方法。
+            return Json.Serialize(expert);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace WebAPI
         public Nullable<long> UserID { get; set; }
         public int ExpertPatentID { get; set; }
     
-        public virtual ExpertInfo ExpertInfo { get; set; }
         public virtual Patent Patent { get; set; }
+        public virtual ExpertInfo ExpertInfo { get; set; }
     }
 }
