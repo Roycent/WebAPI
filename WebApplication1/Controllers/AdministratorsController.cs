@@ -14,39 +14,39 @@ using WebAPI;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// 返回reviewver数据
+    /// </summary>
+    public class ReturnReviewers
+    {
+        public List<Dictionary<string, string>> reviewers { get; set; }
+    }
+    /// <summary>
+    /// 返回comment数据
+    /// </summary>
+    public class ReturnComments
+    {
+        public List<Dictionary<string, string>> comments { get; set; }
+    }
+    /// <summary>
+    /// 更改reviewer信息
+    /// </summary>
+    public class ReviewerdModify
+    {
+        public string oldName { get; set; }
+        public string newName { get; set; }
+        public string newPasswd { get; set; }
+    }
+
     public class AdministratorsController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
 
         /// <summary>
-        /// 返回reviewver数据
-        /// </summary>
-        public class ReturnReviewers
-        {
-            public List<Dictionary<string,string>> reviewers{ get; set; }
-        }
-        /// <summary>
-        /// 返回comment数据
-        /// </summary>
-        public class ReturnComments
-        {
-            public List<Dictionary<string, string>> comments { get; set; }
-        }
-        /// <summary>
-        /// 更改reviewer信息
-        /// </summary>
-        public class ReviewerdModify
-        {
-            public string oldName { get; set; }
-            public string newName { get; set; }
-            public string newPasswd{ get; set; }
-        }
-
-        /// <summary>
         /// 查询reviewer对象
         /// </summary>
         /// <param>无 </param>
-        /// <returns>success:{"ReviewerID":"12333","Name":"zhaojiemin"}。error:{"Message","forbidden"}</returns>
+        /// <returns>success:{"ReviewerID":"12333","Name":"zhaojiemin"};error:{"Message","forbidden"}</returns>
         [Route("Administrator/GetReviewer")]
         public string GetReviewer()
         {
@@ -97,7 +97,7 @@ namespace WebAPI.Controllers
         /// <param name="reviewer"> 
         /// eg:{"Name":"user1","Password":"123456"}
         /// </param>
-        /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        /// <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         [HttpPost,Route("Administrator/CreateReviewer")]
         public string CreateReviewer(Reviewer reviewer)
         {
@@ -149,7 +149,7 @@ namespace WebAPI.Controllers
         /// name 把api文档中传的id改成了审核者名字
         /// eg:{"Name":"zhao"}
         /// </param>
-        /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        /// <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         [HttpPost, Route("Administrator/DeleteReviewer")]
         public string DeleteReviewer(Reviewer reviewer)
         {
@@ -195,7 +195,7 @@ namespace WebAPI.Controllers
         /// <param name="rm"> 
         /// eg:{"oldName":"102303","newName":"afadf","newPasswd":"123345"}
         /// </param>
-        /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        /// <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         [HttpPost, Route("Administrator/UpdateReviewer")]
         public string UpdateReviewer( ReviewerdModify rm )
         {
@@ -241,7 +241,7 @@ namespace WebAPI.Controllers
         /// 查询comment
         /// </summary>
         /// <param>无 </param>
-        /// <returns>success:{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        /// <returns>success:{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         [Route("Administrator/GetComment")]
         public string GetComment()
         {
@@ -283,10 +283,10 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 删除comment
         /// </summary>
-        /// <param>
+        /// <param name="comment">
         /// eg:{"CommentID":"12333"}
         /// </param>
-        /// <returns>success:{"Message", "success"}。failed:{"Message", "failed"}。error:{"Message","forbidden"}</returns>
+        /// <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         [HttpPost, Route("Administrator/DeleteComment")]
         public string DeleteComment(Comment comment)
         {
@@ -324,6 +324,131 @@ namespace WebAPI.Controllers
                     return Json.Serialize(res);//没有该审核者
                 }
             }
+        }
+
+        /// <summary>
+        /// 管理员登录
+        /// </summary>
+        /// <param name="administrator">
+        /// eg:{"UserName":"user1","Password":"123456"}
+        /// </param>
+        /// <returns>success:{"Message", "success"};failed:{"Message", "failed"}
+        /// </returns>
+        [HttpPost, Route("Administrator/Login")]
+        public string AdministratorLogin(Administrator administrator)
+        {
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            Administrator find = db.Administrator.FirstOrDefault(Administrator => Administrator.AdminName == administrator.AdminName);
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            if (find == null)
+            {
+                res.Add("Message", "failed");
+                return Json.Serialize(res);
+            }
+            else
+            {
+                if (administrator.Password != find.Password)
+                {
+                    res.Add("Message", "Password error!");
+                    return Json.Serialize(res);
+                }
+                else
+                {
+                    HttpCookie cookie = new HttpCookie("account");
+                    cookie["role"] = "admin";
+                    cookie["name"] = find.AdminName;
+                    cookie["AdminID"] = find.AdministratorID.ToString();
+                    cookie.Expires = DateTime.Now.AddMinutes(120);
+                    HttpContext.Current.Response.Cookies.Add(cookie);
+                    res.Add("Message", "success");
+                    return Json.Serialize(res);
+                }
+            }
+        }
+        /// <summary>
+        /// 管理员登出
+        /// </summary>
+        /// <param>无，直接读取cookie</param>
+        /// <returns>success:{"Message", "success"};failed:{"Message", "failed"}
+        /// </returns>
+        [Route("Administrator/Logout")]
+        public string Logout()
+        {
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            try
+            {
+                var cookie = HttpContext.Current.Request.Cookies["account"];
+                cookie.Expires = DateTime.Now.AddDays(-7);
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
+            catch
+            {
+                res.Add("Message", "Cookie error!");
+                return Json.Serialize(res);
+            }
+            res.Add("Message", "success");
+            return Json.Serialize(res);
+        }
+
+        /// <summary>
+        /// 用以测试cookie是否被正确操作
+        /// </summary>
+        /// <returns>有cookie:"cookie";没有cookie:"no cookie"</returns>
+        [Route("Administrator/TestCookie")]
+        public string TestCookie()
+        {
+            var cookie = HttpContext.Current.Request.Cookies["account"];
+            if (cookie == null)
+            {
+                return "no cookie";
+            }
+            else
+            {
+                return "cookie";
+            }
+        }
+
+        /// <summary>
+        /// 管理员更改密码
+        /// </summary>
+        /// <param name="pw">oldPasswd,newPasswd
+        /// eg:{"oldPasswd":"12345","newPasswd":"123456"}
+        /// </param>
+        /// <returns>成功:{"Message", "success"};cookie不存在:{"Message", "Cookie不存在"};
+        /// 原密码输入错误:{"Message", "密码错误"};未知错误:{"Message", "未知错误"}
+        /// </returns>
+        [Route("Administrator/ModifyPassword")]
+        public string ModifyPassword(PasswordModify pw)
+        {
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            var cookie = HttpContext.Current.Request.Cookies["account"];
+            if (cookie == null)
+            {
+                res.Add("Message", "Cookie不存在");
+                return Json.Serialize(res);
+            }
+            int AdministratorID = int.Parse(cookie["AdminID"]);
+            Administrator find = db.Administrator.Find(AdministratorID);
+            if (find.Password == pw.oldPasswd)
+            {
+                find.Password = pw.newPasswd;
+                db.SaveChanges();
+                res.Add("Message", "success");
+                return Json.Serialize(res);
+            }
+            else if (find.Password != pw.oldPasswd)
+            {
+                res.Add("Message", "密码错误");
+                return Json.Serialize(res);
+            }
+            else
+            {
+                res.Add("Message", "未知错误");
+                return Json.Serialize(res);
+            }
+
         }
     }
 }
