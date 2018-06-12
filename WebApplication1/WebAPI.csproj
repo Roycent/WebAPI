@@ -258,6 +258,9 @@
     <Compile Include="Reviewer.cs">
       <DependentUpon>WebAPI.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserExpert.cs">
+      <DependentUpon>WebAPI.tt</DependentUpon>
+    </Compile>
     <Compile Include="Users.cs">
       <DependentUpon>WebAPI.tt</DependentUpon>
     </Compile>

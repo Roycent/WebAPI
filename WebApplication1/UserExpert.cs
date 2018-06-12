@@ -12,13 +12,13 @@ namespace WebAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class ExpertPaper
+    public partial class UserExpert
     {
-        public Nullable<long> PaperID { get; set; }
-        public int ExpertPaperID { get; set; }
+        public Nullable<long> UserID { get; set; }
         public Nullable<long> ExpertID { get; set; }
+        public int ID { get; set; }
     
-        public virtual Paper Paper { get; set; }
+        public virtual Users Users { get; set; }
         public virtual ExpertInfo ExpertInfo { get; set; }
     }
 }

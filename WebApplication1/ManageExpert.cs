@@ -14,11 +14,11 @@ namespace WebAPI
     
     public partial class ManageExpert
     {
-        public Nullable<long> UserID { get; set; }
         public Nullable<long> AdministratorID { get; set; }
         public string Operate { get; set; }
         public Nullable<System.DateTime> OperateDate { get; set; }
         public int ManageExpertID { get; set; }
+        public Nullable<long> ExpertID { get; set; }
     
         public virtual Administrator Administrator { get; set; }
         public virtual ExpertInfo ExpertInfo { get; set; }
