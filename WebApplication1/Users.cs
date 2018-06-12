@@ -19,11 +19,11 @@ namespace WebAPI
         {
             this.Review = new HashSet<Review>();
             this.UserExpert = new HashSet<UserExpert>();
-            this.Attention = new HashSet<Attention>();
             this.Download = new HashSet<Download>();
             this.ManageUser = new HashSet<ManageUser>();
             this.Paper = new HashSet<Paper>();
             this.Patent = new HashSet<Patent>();
+            this.Attention = new HashSet<Attention>();
         }
     
         public long UserID { get; set; }
@@ -39,8 +39,6 @@ namespace WebAPI
         public virtual ICollection<Review> Review { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserExpert> UserExpert { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attention> Attention { get; set; }
         public virtual Comment Comment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Download> Download { get; set; }
@@ -50,5 +48,7 @@ namespace WebAPI
         public virtual ICollection<Paper> Paper { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patent> Patent { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attention> Attention { get; set; }
     }
 }

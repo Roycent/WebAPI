@@ -18,7 +18,7 @@ namespace WebAPI
         public Nullable<long> Exp_UserID { get; set; }
         public int AttentionID { get; set; }
     
-        public virtual Users Users { get; set; }
         public virtual ExpertInfo ExpertInfo { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

@@ -101,7 +101,7 @@
             <param name="pw">oldPasswd,newPasswd
             eg:{"oldPasswd":"12345","newPasswd":"123456"}
             </param>
-            <returns>成功:{"Message", "success"};cookie不存在:{"Message", "Cookie不存在"}
+            <returns>成功:{"Message", "success"};cookie不存在:{"Message", "Cookie不存在"};
             原密码输入错误:{"Message", "密码错误"};未知错误:{"Message", "未知错误"}
             </returns>
         </member>
@@ -174,17 +174,17 @@
             这个当后面修改数据库的时候需要进行修改。
             </summary>
         </member>
-        <member name="M:WebAPI.Controllers.RecourceController.PostExpert(WebAPI.ExpertInfo)">
+        <member name="M:WebAPI.Controllers.ResourceController.PostExpert(WebAPI.ExpertInfo)">
             <summary>
             爬虫接口PostExpert
             </summary>
         </member>
-        <member name="M:WebAPI.Controllers.RecourceController.PostPaper(WebAPI.Paper)">
+        <member name="M:WebAPI.Controllers.ResourceController.PostPaper(WebAPI.Paper)">
             <summary>
             爬虫接口PostPaper
             </summary>
         </member>
-        <member name="M:WebAPI.Controllers.RecourceController.PostPatent(WebAPI.Patent)">
+        <member name="M:WebAPI.Controllers.ResourceController.PostPatent(WebAPI.Patent)">
             <summary>
             爬虫接口PostPatent
             </summary>

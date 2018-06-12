@@ -17,12 +17,12 @@ namespace WebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ExpertInfo()
         {
-            this.Attention = new HashSet<Attention>();
             this.ExpertPaper = new HashSet<ExpertPaper>();
             this.ExpertPatent = new HashSet<ExpertPatent>();
             this.Like = new HashSet<Like>();
             this.ManageExpert = new HashSet<ManageExpert>();
             this.UserExpert = new HashSet<UserExpert>();
+            this.Attention = new HashSet<Attention>();
         }
     
         public long ExpertID { get; set; }
@@ -47,8 +47,6 @@ namespace WebAPI
         public string Others { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attention> Attention { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpertPaper> ExpertPaper { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpertPatent> ExpertPatent { get; set; }
@@ -58,5 +56,7 @@ namespace WebAPI
         public virtual ICollection<ManageExpert> ManageExpert { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserExpert> UserExpert { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attention> Attention { get; set; }
     }
 }

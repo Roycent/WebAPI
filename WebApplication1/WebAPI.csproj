@@ -212,7 +212,7 @@
     <Compile Include="Controllers\AdministratorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PapersController.cs" />
-    <Compile Include="Controllers\RecourceController.cs" />
+    <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\Utils.cs" />
     <Compile Include="Download.cs">

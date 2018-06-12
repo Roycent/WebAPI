@@ -136,7 +136,7 @@
           </Key>
           <Property Name="PaperID" Type="bigint" Nullable="false" />
           <Property Name="UpID" Type="bigint" />
-          <Property Name="Title" Type="varchar" MaxLength="100" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="UpDate" Type="datetime" />
           <Property Name="IPC" Type="varchar" MaxLength="20" />
           <Property Name="Abstract" Type="varchar" MaxLength="1000" />
@@ -157,7 +157,7 @@
           </Key>
           <Property Name="PatentID" Type="bigint" Nullable="false" />
           <Property Name="UpID" Type="bigint" />
-          <Property Name="Title" Type="varchar" MaxLength="100" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="UpDate" Type="datetime" />
           <Property Name="IPC" Type="varchar" MaxLength="20" />
           <Property Name="Abstract" Type="varchar" MaxLength="100" />
@@ -727,16 +727,6 @@
           <NavigationProperty Name="ManagePatent" Relationship="WebAPIModel.FK_MANAGEPATENT_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManagePatent" />
           <NavigationProperty Name="ManageUser" Relationship="WebAPIModel.FK_MANAGEUS_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManageUser" />
         </EntityType>
-        <EntityType Name="Attention">
-          <Key>
-            <PropertyRef Name="AttentionID" />
-          </Key>
-          <Property Name="UserID" Type="Int64" />
-          <Property Name="Exp_UserID" Type="Int64" />
-          <Property Name="AttentionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" FromRole="Attention" ToRole="Users" />
-          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="Attention" ToRole="ExpertInfo" />
-        </EntityType>
         <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="CommentID" />
@@ -847,7 +837,7 @@
           </Key>
           <Property Name="PaperID" Type="Int64" Nullable="false" />
           <Property Name="UpID" Type="Int64" />
-          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="UpDate" Type="DateTime" Precision="3" />
           <Property Name="IPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Abstract" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
@@ -875,7 +865,7 @@
           </Key>
           <Property Name="PatentID" Type="Int64" Nullable="false" />
           <Property Name="UpID" Type="Int64" />
-          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="UpDate" Type="DateTime" Precision="3" />
           <Property Name="IPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Abstract" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -910,16 +900,15 @@
           <Property Name="integral" Type="Int32" />
           <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN1" FromRole="Users" ToRole="Review" />
           <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_Users_UserID_fk" FromRole="Users" ToRole="UserExpert" />
-          <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" FromRole="Users" ToRole="Attention" />
           <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_USERS" FromRole="Users" ToRole="Comment" />
           <NavigationProperty Name="Download" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_USERS" FromRole="Users" ToRole="Download" />
           <NavigationProperty Name="ManageUser" Relationship="WebAPIModel.FK_MANAGEUS_REFERENCE_USERS" FromRole="Users" ToRole="ManageUser" />
           <NavigationProperty Name="Paper" Relationship="WebAPIModel.FK_PAPER_REFERENCE_USERS" FromRole="Users" ToRole="Paper" />
           <NavigationProperty Name="Patent" Relationship="WebAPIModel.FK_PATENT_REFERENCE_USERS" FromRole="Users" ToRole="Patent" />
+          <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" FromRole="Users" ToRole="Attention" />
         </EntityType>
         <EntityContainer Name="WebAPIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Administrator" EntityType="Self.Administrator" />
-          <EntitySet Name="Attention" EntityType="Self.Attention" />
           <EntitySet Name="Comment" EntityType="Self.Comment" />
           <EntitySet Name="Download" EntityType="Self.Download" />
           <EntitySet Name="ExpertPaper" EntityType="Self.ExpertPaper" />
@@ -958,10 +947,6 @@
           <AssociationSet Name="FK_MANAGEUS_REFERENCE_ADMINIST" Association="WebAPIModel.FK_MANAGEUS_REFERENCE_ADMINIST">
             <End Role="Administrator" EntitySet="Administrator" />
             <End Role="ManageUser" EntitySet="ManageUser" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ATTENTIO_REFERENCE_USERS" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Attention" EntitySet="Attention" />
           </AssociationSet>
           <AssociationSet Name="FK_COMMENT_REFERENCE_PAPER" Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER">
             <End Role="Paper" EntitySet="Paper" />
@@ -1032,10 +1017,6 @@
             <End Role="Review" EntitySet="Review" />
           </AssociationSet>
           <EntitySet Name="ExpertInfo" EntityType="WebAPIModel.ExpertInfo" />
-          <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="Attention" EntitySet="Attention" />
-          </AssociationSet>
           <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="ExpertPaper" EntitySet="ExpertPaper" />
@@ -1055,6 +1036,15 @@
           <AssociationSet Name="UserExpert_ExpertInfo_ExpertID_fk" Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="UserExpert" EntitySet="UserExpert" />
+          </AssociationSet>
+          <EntitySet Name="Attention" EntityType="WebAPIModel.Attention" />
+          <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="Attention" EntitySet="Attention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ATTENTIO_REFERENCE_USERS" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Attention" EntitySet="Attention" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Review">
@@ -1159,18 +1149,6 @@
             </Principal>
             <Dependent Role="ManageUser">
               <PropertyRef Name="AdministratorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ATTENTIO_REFERENCE_USERS">
-          <End Type="WebAPIModel.Users" Role="Users" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Attention" Role="Attention" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Attention">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1402,25 +1380,13 @@
           <Property Name="Field" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Books" Type="Int32" />
           <Property Name="Others" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Attention" />
           <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPaper" />
           <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPatent" />
           <NavigationProperty Name="Like" Relationship="WebAPIModel.Like_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="Like" />
           <NavigationProperty Name="ManageExpert" Relationship="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ManageExpert" />
           <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="UserExpert" />
+          <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Attention" />
         </EntityType>
-        <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Attention" Role="Attention" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="Attention">
-              <PropertyRef Name="Exp_UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ExpertPaper_ExpertInfo_ExpertID_fk">
           <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
           <End Type="WebAPIModel.ExpertPaper" Role="ExpertPaper" Multiplicity="*" />
@@ -1481,6 +1447,40 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Attention">
+          <Key>
+            <PropertyRef Name="AttentionID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="Exp_UserID" Type="Int64" />
+          <Property Name="AttentionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="Attention" ToRole="ExpertInfo" />
+          <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" FromRole="Attention" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Attention" Role="Attention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="Attention">
+              <PropertyRef Name="Exp_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ATTENTIO_REFERENCE_USERS">
+          <End Type="WebAPIModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Attention" Role="Attention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Attention">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1493,15 +1493,6 @@
                 <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
                 <ScalarProperty Name="AdminName" ColumnName="AdminName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Attention">
-            <EntityTypeMapping TypeName="WebAPIModel.Attention">
-              <MappingFragment StoreEntitySet="Attention">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Exp_UserID" ColumnName="Exp_UserID" />
-                <ScalarProperty Name="AttentionID" ColumnName="AttentionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1708,6 +1699,15 @@
                 <ScalarProperty Name="Workstation" ColumnName="Workstation" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ExpertID" ColumnName="ExpertID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attention">
+            <EntityTypeMapping TypeName="WebAPIModel.Attention">
+              <MappingFragment StoreEntitySet="Attention">
+                <ScalarProperty Name="AttentionID" ColumnName="AttentionID" />
+                <ScalarProperty Name="Exp_UserID" ColumnName="Exp_UserID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -4,9 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="26">
+      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="39">
         <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="21.5" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="27.875" PointY="18.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="26" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="29" PointY="29.125" IsExpanded="true" />
@@ -18,7 +17,7 @@
         <EntityTypeShape EntityType="WebAPIModel.ManageUser" Width="1.5" PointX="23.75" PointY="19.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="23.75" PointY="32.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Patent" Width="1.5" PointX="23.75" PointY="38.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="21.5" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="21.625" PointY="19.625" IsExpanded="true" />
 <<<<<<< HEAD
         
         
@@ -44,7 +43,6 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_ADMINIST" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPATENT_REFERENCE_ADMINIST" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_ADMINIST" />
-        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_USERS" />
@@ -63,12 +61,14 @@
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.Review_Reviewer_ReviewerID_fk" />
         <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="11.5" PointY="15.625" />
-        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
         <AssociationConnector Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.Like_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" />
+        <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="1.9357755994125154" PointY="13.802934742440906" />
+        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
+        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" />
         
         
         

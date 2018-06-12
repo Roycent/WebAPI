@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
         public List<Paper> paperlist { get; set; }
         public List<Patent> paptentlist { get; set; }
     }
-    public class RecourceController : ApiController
+    public class ResourceController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
 
@@ -128,7 +128,7 @@ namespace WebAPI.Controllers
                 foreach (var result in results)
                 {
                     Dictionary<string, string> mid = new Dictionary<string, string>();
-                    mid.Add("id", result.UserID.ToString());
+                    mid.Add("id", result.ExpertID.ToString());
                     mid.Add("name", result.Name);
                     mid.Add("workstation", result.Workstation);
                     Expect.experts.Add(mid);
@@ -176,6 +176,47 @@ namespace WebAPI.Controllers
             //TODO：这要是找不到好的方法就直接用第一个函数的那种方法。
             return ConvertToJson(expert);
         }
+        private long GenExpertID()
+        {
+            Random rd = new Random();
+            int r = rd.Next(1000);
+            long ExpertID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
+            ExpertInfo tryFind = db.ExpertInfo.Find(ExpertID);
+            while (tryFind != null)
+            {
+                ExpertID = GenExpertID();
+                tryFind = db.ExpertInfo.Find(ExpertID);
+            }
+            return ExpertID;
+        }
+
+        private long GenPaperID()
+        {
+            Random rd = new Random();
+            int r = rd.Next(1000);
+            long PaperID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
+            Paper tryFind = db.Paper.Find(PaperID);
+            while (tryFind != null)
+            {
+                PaperID = GenPaperID();
+                tryFind = db.Paper.Find(PaperID);
+            }
+            return PaperID;
+        }
+
+        private long GenPatentID()
+        {
+            Random rd = new Random();
+            int r = rd.Next(1000);
+            long PatentID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
+            Patent tryFind = db.Patent.Find(PatentID);
+            while (tryFind != null)
+            {
+                PatentID = GenPatentID();
+                tryFind = db.Patent.Find(PatentID);
+            }
+            return PatentID;
+        }
 
         /// <summary>
         /// 爬虫接口PostExpert
@@ -186,6 +227,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                expert.ExpertID=GenExpertID();
                 db.ExpertInfo.Add(expert);
                 db.SaveChanges();
                 return "success";
@@ -205,6 +247,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                paper.PaperID = GenPaperID();
                 db.Paper.Add(paper);
                 db.SaveChanges();
                 return "success";
@@ -224,6 +267,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                patent.PatentID = GenPatentID();
                 db.Patent.Add(patent);
                 db.SaveChanges();
                 return "success";
