@@ -22,8 +22,8 @@ namespace WebAPI
             this.Download = new HashSet<Download>();
             this.ManageUser = new HashSet<ManageUser>();
             this.Paper = new HashSet<Paper>();
-            this.Patent = new HashSet<Patent>();
             this.Attention = new HashSet<Attention>();
+            this.Patent = new HashSet<Patent>();
         }
     
         public long UserID { get; set; }
@@ -47,8 +47,8 @@ namespace WebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Paper> Paper { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patent> Patent { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attention> Attention { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Patent> Patent { get; set; }
     }
 }

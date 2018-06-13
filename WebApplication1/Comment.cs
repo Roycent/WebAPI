@@ -22,7 +22,7 @@ namespace WebAPI
         public string Content { get; set; }
     
         public virtual Paper Paper { get; set; }
-        public virtual Patent Patent { get; set; }
         public virtual Users Users { get; set; }
+        public virtual Patent Patent { get; set; }
     }
 }
