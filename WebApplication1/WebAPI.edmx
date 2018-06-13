@@ -157,19 +157,19 @@
           </Key>
           <Property Name="PatentID" Type="bigint" Nullable="false" />
           <Property Name="UpID" Type="bigint" />
-          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="UpDate" Type="datetime" />
-          <Property Name="IPC" Type="varchar" MaxLength="20" />
-          <Property Name="Abstract" Type="varchar" MaxLength="1000" />
+          <Property Name="IPC" Type="varchar" MaxLength="50" />
+          <Property Name="Abstract" Type="varchar" MaxLength="2000" />
           <Property Name="ApplyNum" Type="smallint" />
           <Property Name="ApplyDate" Type="datetime" />
-          <Property Name="Applicant" Type="varchar" MaxLength="50" />
-          <Property Name="ApplicantAddress" Type="varchar" MaxLength="100" />
-          <Property Name="SIPC" Type="varchar" MaxLength="20" />
-          <Property Name="State" Type="varchar" MaxLength="20" />
-          <Property Name="Agencies" Type="varchar" MaxLength="50" />
-          <Property Name="Agent" Type="varchar" MaxLength="50" />
-          <Property Name="PublicNum" Type="varchar" MaxLength="50" />
+          <Property Name="Applicant" Type="varchar" MaxLength="200" />
+          <Property Name="ApplicantAddress" Type="varchar" MaxLength="200" />
+          <Property Name="SIPC" Type="varchar" MaxLength="1000" />
+          <Property Name="State" Type="varchar" MaxLength="100" />
+          <Property Name="Agencies" Type="varchar" MaxLength="200" />
+          <Property Name="Agent" Type="varchar" MaxLength="200" />
+          <Property Name="PublicNum" Type="varchar" MaxLength="200" />
           <Property Name="IsPass" Type="bit" />
         </EntityType>
         <EntityType Name="Review">
@@ -970,14 +970,9 @@
             <End Role="Attention" EntitySet="Attention" />
           </AssociationSet>
           <EntitySet Name="ExpertInfo" EntityType="WebAPIModel.ExpertInfo" />
-          <EntitySet Name="Patent" EntityType="WebAPIModel.Patent" />
           <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="Attention" EntitySet="Attention" />
-          </AssociationSet>
-          <AssociationSet Name="FK_COMMENT_REFERENCE_PATENT" Association="WebAPIModel.FK_COMMENT_REFERENCE_PATENT">
-            <End Role="Patent" EntitySet="Patent" />
-            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
@@ -998,6 +993,11 @@
           <AssociationSet Name="UserExpert_ExpertInfo_ExpertID_fk" Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="UserExpert" EntitySet="UserExpert" />
+          </AssociationSet>
+          <EntitySet Name="Patent" EntityType="WebAPIModel.Patent" />
+          <AssociationSet Name="FK_COMMENT_REFERENCE_PATENT" Association="WebAPIModel.FK_COMMENT_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="ExpertPatent_Patent_PatentID_fk" Association="WebAPIModel.ExpertPatent_Patent_PatentID_fk">
             <End Role="Patent" EntitySet="Patent" />
@@ -1310,33 +1310,6 @@
           <NavigationProperty Name="ManageExpert" Relationship="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ManageExpert" />
           <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="UserExpert" />
         </EntityType>
-        <EntityType Name="Patent">
-          <Key>
-            <PropertyRef Name="PatentID" />
-          </Key>
-          <Property Name="PatentID" Type="Int64" Nullable="false" />
-          <Property Name="UpID" Type="Int64" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="UpDate" Type="DateTime" Precision="3" />
-          <Property Name="IPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Abstract" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="ApplyNum" Type="Int16" />
-          <Property Name="ApplyDate" Type="DateTime" Precision="3" />
-          <Property Name="Applicant" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ApplicantAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="SIPC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Agencies" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Agent" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PublicNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsPass" Type="Boolean" />
-          <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PATENT" FromRole="Patent" ToRole="Comment" />
-          <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_Patent_PatentID_fk" FromRole="Patent" ToRole="ExpertPatent" />
-          <NavigationProperty Name="Like" Relationship="WebAPIModel.FK_LIKE_REFERENCE_PATENT" FromRole="Patent" ToRole="Like" />
-          <NavigationProperty Name="ManagePatent" Relationship="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" FromRole="Patent" ToRole="ManagePatent" />
-          <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_PATENT_REFERENCE_USERS" FromRole="Patent" ToRole="Users" />
-          <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" FromRole="Patent" ToRole="Review" />
-        </EntityType>
         <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
           <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
           <End Type="WebAPIModel.Attention" Role="Attention" Multiplicity="*" />
@@ -1346,18 +1319,6 @@
             </Principal>
             <Dependent Role="Attention">
               <PropertyRef Name="Exp_UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_COMMENT_REFERENCE_PATENT">
-          <End Type="WebAPIModel.Patent" Role="Patent" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patent">
-              <PropertyRef Name="PatentID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="PatentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1418,6 +1379,45 @@
             </Principal>
             <Dependent Role="UserExpert">
               <PropertyRef Name="ExpertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Patent">
+          <Key>
+            <PropertyRef Name="PatentID" />
+          </Key>
+          <Property Name="PatentID" Type="Int64" Nullable="false" />
+          <Property Name="UpID" Type="Int64" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="UpDate" Type="DateTime" Precision="3" />
+          <Property Name="IPC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Abstract" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="ApplyNum" Type="Int16" />
+          <Property Name="ApplyDate" Type="DateTime" Precision="3" />
+          <Property Name="Applicant" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicantAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SIPC" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Agencies" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Agent" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PublicNum" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IsPass" Type="Boolean" />
+          <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PATENT" FromRole="Patent" ToRole="Comment" />
+          <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_Patent_PatentID_fk" FromRole="Patent" ToRole="ExpertPatent" />
+          <NavigationProperty Name="Like" Relationship="WebAPIModel.FK_LIKE_REFERENCE_PATENT" FromRole="Patent" ToRole="Like" />
+          <NavigationProperty Name="ManagePatent" Relationship="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" FromRole="Patent" ToRole="ManagePatent" />
+          <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_PATENT_REFERENCE_USERS" FromRole="Patent" ToRole="Users" />
+          <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" FromRole="Patent" ToRole="Review" />
+        </EntityType>
+        <Association Name="FK_COMMENT_REFERENCE_PATENT">
+          <End Type="WebAPIModel.Patent" Role="Patent" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PatentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
