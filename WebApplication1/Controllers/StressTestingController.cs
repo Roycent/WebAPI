@@ -18,16 +18,8 @@ namespace WebAPI.Controllers
 
         private long GenUserID()
         {
-            Random rd = new Random();
-            int r = rd.Next(1000);
-            long userID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
-            Users tryFind = db.Users.Find(userID);
-            while (tryFind != null)
-            {
-                userID = GenUserID();
-                tryFind = db.Users.Find(userID);
-            }
-            return userID;
+            byte[] uuid = Guid.NewGuid().ToByteArray();
+            return BitConverter.ToInt64(uuid, 0);
         }
 
         private long GetPatentID()
@@ -75,6 +67,22 @@ namespace WebAPI.Controllers
         {
             long id = GetPatentID();
             db.Configuration.ProxyCreationEnabled = false;
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnPatent patent = new ReturnPatent();
+            patent.access = "success";
+            patent.data = db.Patent.Find(id);
+            return ConvertToJson(patent);
+        }
+        /// <summary>
+        /// 测试查询固定Patent接口
+        /// </summary>
+        /// <returns></returns>
+        [Route("Testing/StaticPatent")]
+        public HttpResponseMessage RequestStaticPatent()
+        {
+            long id = 7065147417;
+            db.Configuration.ProxyCreationEnabled = false;
+
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnPatent patent = new ReturnPatent();
             patent.access = "success";
