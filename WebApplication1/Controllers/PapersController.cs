@@ -25,16 +25,8 @@ namespace WebAPI.Controllers
 
         private long GenPaperID()
         {
-            Random rd = new Random();
-            int r = rd.Next(1000);
-            long paperID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(1997, 2, 10)).TotalMilliseconds + r;
-            Paper tryFind = db.Paper.Find(paperID);
-            while (tryFind != null)
-            {
-                paperID = GenPaperID();
-                tryFind = db.Paper.Find(paperID);
-            }
-            return paperID;
+            byte[] uuid = Guid.NewGuid().ToByteArray();
+            return BitConverter.ToInt64(uuid, 0);
         }
         /// <summary>
         /// 文件上传

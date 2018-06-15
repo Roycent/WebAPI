@@ -213,6 +213,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PapersController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
+    <Compile Include="Controllers\StressTestingController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\Utils.cs" />
     <Compile Include="Download.cs">
@@ -355,6 +356,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\StressTesting\" />
     <Folder Include="Views\Utils\" />
   </ItemGroup>
   <ItemGroup>
