@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="83">
+      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="70">
         <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="21.5" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="26" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
@@ -15,7 +15,6 @@
         <EntityTypeShape EntityType="WebAPIModel.ManagePaper" Width="1.5" PointX="26" PointY="36.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.ManagePatent" Width="1.5" PointX="26" PointY="40.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.ManageUser" Width="1.5" PointX="23.75" PointY="19.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="23.75" PointY="32.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="21.625" PointY="19.625" IsExpanded="true" />
 <<<<<<< HEAD
         
@@ -42,16 +41,9 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_ADMINIST" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPATENT_REFERENCE_ADMINIST" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_ADMINIST" />
-        <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_USERS" />
-        <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_USERS" />
-        <AssociationConnector Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk" />
-        <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER" />
-        <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_USERS" />
-        <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" />
-        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.Review_Reviewer_ReviewerID_fk" />
         <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="1.9357755994125154" PointY="13.802934742440906" />
         <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" />
@@ -69,6 +61,14 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.FK_PATENT_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" />
+        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="8.8376184221532288" PointY="27.511269001062619" />
+        <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" />
+        <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" />
+        <AssociationConnector Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk" />
+        <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER" />
+        <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" />
+        <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" />
+        <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
         
         
         

@@ -248,6 +248,15 @@ namespace WebAPI.Controllers
             try
             {
                 paper.PaperID = GenPaperID();
+                if (paper.Abstract == "[]"){paper.Abstract = null;}
+                if (paper.Title == "[]") { paper.Title = null; }
+                if (paper.IPC == "[]") { paper.IPC = null; }
+                if (paper.Type == "[]") { paper.Type = null; }
+                if (paper.DOI == "[]") { paper.DOI = null; }
+                if (paper.Publisher == "[]") { paper.Publisher = null; }
+                if (paper.KeyWord == "[]") { paper.KeyWord = null; }
+                if (paper.Address == "[]") { paper.Address = null; }
+                if (paper.Authors == "[]") { paper.Authors = null; }
                 db.Paper.Add(paper);
                 db.SaveChanges();
                 return "success";
