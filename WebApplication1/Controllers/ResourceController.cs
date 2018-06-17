@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
     /// </summary>
     public class ReturnPaper
     {
-        public string access { get; set; }
+        public string message { get; set; }
         public Paper data { get; set; }
     }
 
@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
     /// </summary>
     public class ReturnPatent
     {
-        public string access { get; set; }
+        public string message { get; set; }
         public Patent data { get; set; }
     }
 
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
     /// </summary>
     public class ReturnExpert
     {
-        public string access { get; set; }
+        public string message { get; set; }
         public ExpertInfo data { get; set; }
         public List<Paper> paperlist { get; set; }
         public List<Patent> paptentlist { get; set; }
@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
     {
         private WebAPIEntities db = new WebAPIEntities();
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource")]
         public HttpResponseMessage SearchSource(string type, string keywords)
         {
@@ -138,31 +138,31 @@ namespace WebAPI.Controllers
             return ConvertToJson(map);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource/paper")]
         public HttpResponseMessage RequestPaper(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnPaper paper = new ReturnPaper();
-            paper.access = "success";
+            paper.message = "success";
             paper.data = db.Paper.Find(id);
             return ConvertToJson(paper);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource/patent")]
         public HttpResponseMessage RequestPatent(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnPatent patent = new ReturnPatent();
-            patent.access = "success";
+            patent.message = "success";
             patent.data = db.Patent.Find(id);
             return ConvertToJson(patent);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource/expert")]
         public HttpResponseMessage GetExpertInformation(int id)
         {
@@ -171,7 +171,7 @@ namespace WebAPI.Controllers
             ReturnExpert expert = new ReturnExpert();
             expert.paperlist = new List<Paper>();
             expert.paptentlist = new List<Patent>();
-            expert.access = "succcess";
+            expert.message = "succcess";
             expert.data = db.ExpertInfo.Find(id);
             //TODO：这要是找不到好的方法就直接用第一个函数的那种方法。
             return ConvertToJson(expert);

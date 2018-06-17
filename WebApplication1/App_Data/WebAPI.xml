@@ -189,6 +189,29 @@
             爬虫接口PostPatent
             </summary>
         </member>
+        <member name="T:WebAPI.Controllers.StressTestingController">
+            <summary>
+            用于压力测试的接口类
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.StressTestingController.Register">
+            <summary>
+            测试注册接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.StressTestingController.RequestPatent">
+            <summary>
+            测试查询接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.StressTestingController.RequestStaticPatent">
+            <summary>
+            测试查询固定Patent接口
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.PasswordModify">
             <summary>
             更改密码
