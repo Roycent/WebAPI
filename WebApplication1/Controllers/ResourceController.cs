@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     public class Returnpapers
     {
         public string type { get; set; }
-        public List<Dictionary<string,string>> papers { get; set; }
+        public List<Dictionary<string, string>> papers { get; set; }
     }
 
     /// <summary>
@@ -61,9 +61,13 @@ namespace WebAPI.Controllers
     public class ReturnExpert
     {
         public string message { get; set; }
-        public ExpertInfo data { get; set; }
-        public List<Paper> paperlist { get; set; }
-        public List<Patent> paptentlist { get; set; }
+        public ExpertData data { get; set; }
+    }
+    public class ExpertData
+    {
+        public ExpertInfo expert;
+        public List<Paper> PaperList;
+        public List<Patent> PatentList;
     }
     public class ResourceController : ApiController
     {
@@ -90,7 +94,9 @@ namespace WebAPI.Controllers
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.PaperID.ToString());
                     mid.Add("title", result.Title);
-                    mid.Add("author", result.Users.UserName);
+                    mid.Add("author", result.Authors);
+                    mid.Add("publisher", result.Publisher);
+                    mid.Add("keywords", result.KeyWord);
                     mid.Add("summary", result.Abstract);
                     Papers.papers.Add(mid);
                 }
@@ -110,8 +116,10 @@ namespace WebAPI.Controllers
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.PatentID.ToString());
                     mid.Add("title", result.Title);
-                    mid.Add("author", result.Users.UserName);
-                    mid.Add("Abstract", result.Abstract);
+                    mid.Add("time", result.ApplyDate.ToString());
+                    mid.Add("publicnum", result.PublicNum);  
+                    mid.Add("patentee", result.Applicant);
+                    mid.Add("address", result.ApplicantAddress);
                     Patents.patents.Add(mid);
                 }
                 return ConvertToJson(Patents);
@@ -125,12 +133,16 @@ namespace WebAPI.Controllers
                 from ExpertInfo in db.ExpertInfo
                 where ExpertInfo.Name.IndexOf(keywords) != -1
                 select ExpertInfo;
+                
                 foreach (var result in results)
                 {
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.ExpertID.ToString());
                     mid.Add("name", result.Name);
                     mid.Add("workstation", result.Workstation);
+                    mid.Add("field", result.Field);
+                    mid.Add("timescited", result.TimesCited.ToString());
+                    mid.Add("results", result.Results.ToString());
                     Expect.experts.Add(mid);
                 }
                 return ConvertToJson(Expect);
@@ -169,11 +181,23 @@ namespace WebAPI.Controllers
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnExpert expert = new ReturnExpert();
-            expert.paperlist = new List<Paper>();
-            expert.paptentlist = new List<Patent>();
+            expert.data = new ExpertData();
+            expert.data.PaperList = new List<Paper>();
+            expert.data.PatentList = new List<Patent>();
             expert.message = "succcess";
-            expert.data = db.ExpertInfo.Find(id);
-            //TODO：这要是找不到好的方法就直接用第一个函数的那种方法。
+            expert.data.expert = db.ExpertInfo.Find(id);
+            var papers =
+            from ExpertPaper in db.ExpertPaper
+            where ExpertPaper.ExpertID==id
+            select ExpertPaper;
+            foreach (var mid in papers)
+            { expert.data.PaperList.Add(mid.Paper);}
+            var patents =
+            from ExpertPatent in db.ExpertPatent
+            where ExpertPatent.ExpertID == id
+            select ExpertPatent;
+            foreach (var mid in patents)
+            { expert.data.PatentList.Add(mid.Patent); }
             return ConvertToJson(expert);
         }
         private long GenExpertID()
