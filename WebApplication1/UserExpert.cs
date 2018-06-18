@@ -12,17 +12,13 @@ namespace WebAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class Comment
+    public partial class UserExpert
     {
-        public long CommentID { get; set; }
-        public Nullable<long> PatentID { get; set; }
-        public Nullable<long> PaperID { get; set; }
-        public string Type { get; set; }
-        public System.DateTime Time { get; set; }
-        public string Content { get; set; }
+        public Nullable<long> UserID { get; set; }
+        public Nullable<long> ExpertID { get; set; }
+        public int ID { get; set; }
     
         public virtual Users Users { get; set; }
-        public virtual Patent Patent { get; set; }
-        public virtual Paper Paper { get; set; }
+        public virtual ExpertInfo ExpertInfo { get; set; }
     }
 }

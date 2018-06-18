@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     public class Returnpapers
     {
         public string type { get; set; }
-        public List<Dictionary<string,string>> papers { get; set; }
+        public List<Dictionary<string, string>> papers { get; set; }
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
     /// </summary>
     public class ReturnPaper
     {
-        public string access { get; set; }
+        public string message { get; set; }
         public Paper data { get; set; }
     }
 
@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
     /// </summary>
     public class ReturnPatent
     {
-        public string access { get; set; }
+        public string message { get; set; }
         public Patent data { get; set; }
     }
 
@@ -60,16 +60,20 @@ namespace WebAPI.Controllers
     /// </summary>
     public class ReturnExpert
     {
-        public string access { get; set; }
-        public ExpertInfo data { get; set; }
-        public List<Paper> paperlist { get; set; }
-        public List<Patent> paptentlist { get; set; }
+        public string message { get; set; }
+        public ExpertData data { get; set; }
     }
-    public class RecourceController : ApiController
+    public class ExpertData
+    {
+        public ExpertInfo expert;
+        public List<Paper> PaperList;
+        public List<Patent> PatentList;
+    }
+    public class ResourceController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource")]
         public HttpResponseMessage SearchSource(string type, string keywords)
         {
@@ -90,7 +94,9 @@ namespace WebAPI.Controllers
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.PaperID.ToString());
                     mid.Add("title", result.Title);
-                    mid.Add("author", result.Users.UserName);
+                    mid.Add("author", result.Authors);
+                    mid.Add("publisher", result.Publisher);
+                    mid.Add("keywords", result.KeyWord);
                     mid.Add("summary", result.Abstract);
                     Papers.papers.Add(mid);
                 }
@@ -110,8 +116,10 @@ namespace WebAPI.Controllers
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.PatentID.ToString());
                     mid.Add("title", result.Title);
-                    mid.Add("author", result.Users.UserName);
-                    mid.Add("Abstract", result.Abstract);
+                    mid.Add("time", result.ApplyDate.ToString());
+                    mid.Add("publicnum", result.PublicNum);  
+                    mid.Add("patentee", result.Applicant);
+                    mid.Add("address", result.ApplicantAddress);
                     Patents.patents.Add(mid);
                 }
                 return ConvertToJson(Patents);
@@ -125,12 +133,16 @@ namespace WebAPI.Controllers
                 from ExpertInfo in db.ExpertInfo
                 where ExpertInfo.Name.IndexOf(keywords) != -1
                 select ExpertInfo;
+                
                 foreach (var result in results)
                 {
                     Dictionary<string, string> mid = new Dictionary<string, string>();
-                    mid.Add("id", result.UserID.ToString());
+                    mid.Add("id", result.ExpertID.ToString());
                     mid.Add("name", result.Name);
                     mid.Add("workstation", result.Workstation);
+                    mid.Add("field", result.Field);
+                    mid.Add("timescited", result.TimesCited.ToString());
+                    mid.Add("results", result.Results.ToString());
                     Expect.experts.Add(mid);
                 }
                 return ConvertToJson(Expect);
@@ -138,43 +150,96 @@ namespace WebAPI.Controllers
             return ConvertToJson(map);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource/paper")]
         public HttpResponseMessage RequestPaper(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnPaper paper = new ReturnPaper();
-            paper.access = "success";
+            paper.message = "success";
             paper.data = db.Paper.Find(id);
             return ConvertToJson(paper);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource/patent")]
         public HttpResponseMessage RequestPatent(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnPatent patent = new ReturnPatent();
-            patent.access = "success";
+            patent.message = "success";
             patent.data = db.Patent.Find(id);
             return ConvertToJson(patent);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("resource/expert")]
         public HttpResponseMessage GetExpertInformation(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnExpert expert = new ReturnExpert();
-            expert.paperlist = new List<Paper>();
-            expert.paptentlist = new List<Patent>();
-            expert.access = "succcess";
-            expert.data = db.ExpertInfo.Find(id);
-            //TODO：这要是找不到好的方法就直接用第一个函数的那种方法。
+            expert.data = new ExpertData();
+            expert.data.PaperList = new List<Paper>();
+            expert.data.PatentList = new List<Patent>();
+            expert.message = "succcess";
+            expert.data.expert = db.ExpertInfo.Find(id);
+            var papers =
+            from ExpertPaper in db.ExpertPaper
+            where ExpertPaper.ExpertID==id
+            select ExpertPaper;
+            foreach (var mid in papers)
+            { expert.data.PaperList.Add(mid.Paper);}
+            var patents =
+            from ExpertPatent in db.ExpertPatent
+            where ExpertPatent.ExpertID == id
+            select ExpertPatent;
+            foreach (var mid in patents)
+            { expert.data.PatentList.Add(mid.Patent); }
             return ConvertToJson(expert);
+        }
+        private long GenExpertID()
+        {
+            Random rd = new Random();
+            int r = rd.Next(1000);
+            long ExpertID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
+            ExpertInfo tryFind = db.ExpertInfo.Find(ExpertID);
+            while (tryFind != null)
+            {
+                ExpertID = GenExpertID();
+                tryFind = db.ExpertInfo.Find(ExpertID);
+            }
+            return ExpertID;
+        }
+
+        private long GenPaperID()
+        {
+            Random rd = new Random();
+            int r = rd.Next(1000);
+            long PaperID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
+            Paper tryFind = db.Paper.Find(PaperID);
+            while (tryFind != null)
+            {
+                PaperID = GenPaperID();
+                tryFind = db.Paper.Find(PaperID);
+            }
+            return PaperID;
+        }
+
+        private long GenPatentID()
+        {
+            Random rd = new Random();
+            int r = rd.Next(1000);
+            long PatentID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
+            Patent tryFind = db.Patent.Find(PatentID);
+            while (tryFind != null)
+            {
+                PatentID = GenPatentID();
+                tryFind = db.Patent.Find(PatentID);
+            }
+            return PatentID;
         }
 
         /// <summary>
@@ -186,6 +251,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                expert.ExpertID=GenExpertID();
                 db.ExpertInfo.Add(expert);
                 db.SaveChanges();
                 return "success";
@@ -205,6 +271,16 @@ namespace WebAPI.Controllers
         {
             try
             {
+                paper.PaperID = GenPaperID();
+                if (paper.Abstract == "[]"){paper.Abstract = null;}
+                if (paper.Title == "[]") { paper.Title = null; }
+                if (paper.IPC == "[]") { paper.IPC = null; }
+                if (paper.Type == "[]") { paper.Type = null; }
+                if (paper.DOI == "[]") { paper.DOI = null; }
+                if (paper.Publisher == "[]") { paper.Publisher = null; }
+                if (paper.KeyWord == "[]") { paper.KeyWord = null; }
+                if (paper.Address == "[]") { paper.Address = null; }
+                if (paper.Authors == "[]") { paper.Authors = null; }
                 db.Paper.Add(paper);
                 db.SaveChanges();
                 return "success";
@@ -224,6 +300,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                patent.PatentID = GenPatentID();
                 db.Patent.Add(patent);
                 db.SaveChanges();
                 return "success";

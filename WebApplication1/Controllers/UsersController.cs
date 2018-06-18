@@ -27,19 +27,10 @@ namespace WebAPI.Controllers
     {
         private WebAPIEntities db = new WebAPIEntities();
 
-
         private long GenUserID()
         {
-            Random rd = new Random();
-            int r = rd.Next(1000);
-            long userID = (long)(DateTime.Now.ToUniversalTime() - new DateTime(2018, 3, 24)).TotalMilliseconds + r;
-            Users tryFind = db.Users.Find(userID);
-            while (tryFind != null)
-            {
-                userID = GenUserID();
-                tryFind = db.Users.Find(userID);
-            }
-            return userID;
+            byte[] uuid = Guid.NewGuid().ToByteArray();
+            return BitConverter.ToInt64(uuid, 0);
         }
 
         //controller前加Route,可以直接设置该函数的URL,比如下面的这个URL就是http://localhost:xxxx/Users/Login

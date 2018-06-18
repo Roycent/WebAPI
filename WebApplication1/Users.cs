@@ -17,12 +17,13 @@ namespace WebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {
-            this.Attention = new HashSet<Attention>();
+            this.Review = new HashSet<Review>();
+            this.UserExpert = new HashSet<UserExpert>();
             this.Download = new HashSet<Download>();
-            this.Like = new HashSet<Like>();
             this.ManageUser = new HashSet<ManageUser>();
-            this.Paper = new HashSet<Paper>();
+            this.Attention = new HashSet<Attention>();
             this.Patent = new HashSet<Patent>();
+            this.Paper = new HashSet<Paper>();
         }
     
         public long UserID { get; set; }
@@ -35,18 +36,19 @@ namespace WebAPI
         public Nullable<int> integral { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attention> Attention { get; set; }
+        public virtual ICollection<Review> Review { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserExpert> UserExpert { get; set; }
         public virtual Comment Comment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Download> Download { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Like> Like { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ManageUser> ManageUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Paper> Paper { get; set; }
+        public virtual ICollection<Attention> Attention { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patent> Patent { get; set; }
-        public virtual ExpertInfo ExpertInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Paper> Paper { get; set; }
     }
 }

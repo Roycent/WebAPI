@@ -26,10 +26,8 @@ namespace WebAPI
         }
     
         public virtual DbSet<Administrator> Administrator { get; set; }
-        public virtual DbSet<Attention> Attention { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<Download> Download { get; set; }
-        public virtual DbSet<ExpertInfo> ExpertInfo { get; set; }
         public virtual DbSet<ExpertPaper> ExpertPaper { get; set; }
         public virtual DbSet<ExpertPatent> ExpertPatent { get; set; }
         public virtual DbSet<Like> Like { get; set; }
@@ -37,10 +35,13 @@ namespace WebAPI
         public virtual DbSet<ManagePaper> ManagePaper { get; set; }
         public virtual DbSet<ManagePatent> ManagePatent { get; set; }
         public virtual DbSet<ManageUser> ManageUser { get; set; }
-        public virtual DbSet<Paper> Paper { get; set; }
-        public virtual DbSet<Patent> Patent { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Review> Review { get; set; }
         public virtual DbSet<Reviewer> Reviewer { get; set; }
+        public virtual DbSet<UserExpert> UserExpert { get; set; }
+        public virtual DbSet<Attention> Attention { get; set; }
+        public virtual DbSet<ExpertInfo> ExpertInfo { get; set; }
+        public virtual DbSet<Patent> Patent { get; set; }
+        public virtual DbSet<Paper> Paper { get; set; }
     }
 }

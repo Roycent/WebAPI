@@ -20,14 +20,15 @@ namespace WebAPI
             this.Attention = new HashSet<Attention>();
             this.ExpertPaper = new HashSet<ExpertPaper>();
             this.ExpertPatent = new HashSet<ExpertPatent>();
+            this.Like = new HashSet<Like>();
             this.ManageExpert = new HashSet<ManageExpert>();
-            this.Review = new HashSet<Review>();
+            this.UserExpert = new HashSet<UserExpert>();
         }
     
-        public long UserID { get; set; }
+        public long ExpertID { get; set; }
+        public string Name { get; set; }
         public string Workstation { get; set; }
         public Nullable<bool> IsPass { get; set; }
-        public string Name { get; set; }
         public Nullable<int> HIndex { get; set; }
         public Nullable<int> GIndex { get; set; }
         public Nullable<int> TimesCited { get; set; }
@@ -43,18 +44,19 @@ namespace WebAPI
         public Nullable<int> ConferencePapers { get; set; }
         public string Field { get; set; }
         public Nullable<int> Books { get; set; }
-        public string Others { get; set; }
+        public Nullable<int> Others { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attention> Attention { get; set; }
-        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpertPaper> ExpertPaper { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpertPatent> ExpertPatent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Like> Like { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ManageExpert> ManageExpert { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Review> Review { get; set; }
+        public virtual ICollection<UserExpert> UserExpert { get; set; }
     }
 }
