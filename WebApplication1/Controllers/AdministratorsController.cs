@@ -330,7 +330,7 @@ namespace WebAPI.Controllers
         /// 管理员登录
         /// </summary>
         /// <param name="administrator">
-        /// eg:{"UserName":"user1","Password":"123456"}
+        /// eg:{"AdminName":"Admin1","Password":"123456"}
         /// </param>
         /// <returns>success:{"Message", "success"};failed:{"Message", "failed"}
         /// </returns>
@@ -449,6 +449,54 @@ namespace WebAPI.Controllers
                 return Json.Serialize(res);
             }
 
+        }
+
+        /// <summary>
+        /// 获取角色
+        /// </summary>
+        /// <param>读取cookie["role"]</param>
+        /// <returns>用户角色,
+        /// 返回"failed"为身份不明，未知错误; 
+        /// 返回"Cookie error!"时为游客; 
+        /// 其余返回对应角色: 
+        /// 普通用户{"Identity","commonuser"};
+        /// 专家用户{"Identity","expertuser"};
+        /// 管理员用户{"Identity","adminuser"};
+        /// </returns>
+        [Route("GetRole")]
+        public string Info()
+        {
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            var cookie = HttpContext.Current.Request.Cookies["account"];
+            try
+            {
+                Dictionary<string, string> roles = new Dictionary<string, string>();
+                string role = "failed";
+                if (cookie["role"].ToString() == "user")
+                {
+                    long userID = long.Parse(cookie["UserID"]);
+                    Users find = db.Users.Find(userID);
+                    if (find.IsExpert is true)
+                        role = "expertuser";
+                    else
+                        role = "commonuser";
+                }
+                else if (cookie["role"].ToString() == "admin")
+                {
+                        role = "adminuser";
+                }
+                roles.Add("Identity", role);//返回角色信息
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                res.Add("Message", "success");
+                res.Add("Data", serializer.Serialize(roles));
+                return Json.Serialize(res);
+            }
+            catch
+            {
+                res.Add("Message", "Cookie error!");
+                return Json.Serialize(res);
+            }
         }
     }
 }
