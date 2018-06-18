@@ -75,7 +75,7 @@
             管理员登录
             </summary>
             <param name="administrator">
-            eg:{"UserName":"user1","Password":"123456"}
+            eg:{"AdminName":"Admin1","Password":"123456"}
             </param>
             <returns>success:{"Message", "success"};failed:{"Message", "failed"}
             </returns>
@@ -103,6 +103,20 @@
             </param>
             <returns>成功:{"Message", "success"};cookie不存在:{"Message", "Cookie不存在"};
             原密码输入错误:{"Message", "密码错误"};未知错误:{"Message", "未知错误"}
+            </returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.Info">
+            <summary>
+            获取角色
+            </summary>
+            <param>读取cookie["role"]</param>
+            <returns>用户角色,
+            返回"failed"为身份不明
+            返回"Cookie error!"时为游客;
+            其余返回对应角色:
+            普通用户{"Identity","commonuser"};
+            专家用户{"Identity","expertuser"};
+            管理员用户{"Identity","adminuser"};
             </returns>
         </member>
         <member name="T:WebAPI.Controllers.PapersController">
