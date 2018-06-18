@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-using System.Collections.Generic;
 using static WebAPI.Controllers.Utils;
 
 namespace WebAPI.Controllers
 {
+    public class ReturnData<T>
+    {
+        public string message { get; set; }
+        public T data { get; set; }
+    }
     /// <summary>
     /// 返回Papers数据
     /// </summary>
@@ -38,37 +41,15 @@ namespace WebAPI.Controllers
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    public class ReturnPaper
-    {
-        public string message { get; set; }
-        public Paper data { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ReturnPatent
-    {
-        public string message { get; set; }
-        public Patent data { get; set; }
-    }
-
-    /// <summary>
     /// 这个当后面修改数据库的时候需要进行修改。
     /// </summary>
-    public class ReturnExpert
-    {
-        public string message { get; set; }
-        public ExpertData data { get; set; }
-    }
     public class ExpertData
     {
         public ExpertInfo expert;
         public List<Paper> PaperList;
         public List<Patent> PatentList;
     }
+
     public class ResourceController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
@@ -82,14 +63,16 @@ namespace WebAPI.Controllers
             map.Add("error", "TypeError");
             if (type == "paper")
             {
-                Returnpapers Papers = new Returnpapers();
-                Papers.type = "paper";
-                Papers.papers = new List<Dictionary<string, string>>();
+                ReturnData<Returnpapers> returndata = new ReturnData<Returnpapers>();
+                returndata.message = "success";
+                returndata.data = new Returnpapers();
+                returndata.data.type = "paper";
+                returndata.data.papers = new List<Dictionary<string, string>>();
                 var results =
                 from Paper in db.Paper
                 where Paper.Title.IndexOf(keywords) != -1
                 select Paper;
-                foreach (var result in results)
+                foreach (var result in results.Take(0))
                 {
                     Dictionary<string, string> mid = new Dictionary<string, string>();
                     mid.Add("id", result.PaperID.ToString());
@@ -98,15 +81,17 @@ namespace WebAPI.Controllers
                     mid.Add("publisher", result.Publisher);
                     mid.Add("keywords", result.KeyWord);
                     mid.Add("summary", result.Abstract);
-                    Papers.papers.Add(mid);
+                    returndata.data.papers.Add(mid);
                 }
-                return ConvertToJson(Papers);
+                return ConvertToJson(returndata);
             }
             if (type == "patent")
             {
-                Returnpatents Patents = new Returnpatents();
-                Patents.type = "patent";
-                Patents.patents = new List<Dictionary<string, string>>();
+                ReturnData<Returnpatents> returndata = new ReturnData<Returnpatents>();
+                returndata.message = "success";
+                returndata.data = new Returnpatents();
+                returndata.data.type = "patent";
+                returndata.data.patents = new List<Dictionary<string, string>>();
                 var results =
                 from Patent in db.Patent
                 where Patent.Title.IndexOf(keywords) != -1
@@ -120,15 +105,17 @@ namespace WebAPI.Controllers
                     mid.Add("publicnum", result.PublicNum);  
                     mid.Add("patentee", result.Applicant);
                     mid.Add("address", result.ApplicantAddress);
-                    Patents.patents.Add(mid);
+                    returndata.data.patents.Add(mid);
                 }
-                return ConvertToJson(Patents);
+                return ConvertToJson(returndata);
             }
             if (type == "expert")
             {
-                Returnexperts Expect = new Returnexperts();
-                Expect.type = "expert";
-                Expect.experts = new List<Dictionary<string, string>>();
+                ReturnData<Returnexperts> returndata = new ReturnData<Returnexperts>();
+                returndata.message = "success";
+                returndata.data = new Returnexperts();
+                returndata.data.type = "expert";
+                returndata.data.experts = new List<Dictionary<string, string>>();
                 var results =
                 from ExpertInfo in db.ExpertInfo
                 where ExpertInfo.Name.IndexOf(keywords) != -1
@@ -143,9 +130,9 @@ namespace WebAPI.Controllers
                     mid.Add("field", result.Field);
                     mid.Add("timescited", result.TimesCited.ToString());
                     mid.Add("results", result.Results.ToString());
-                    Expect.experts.Add(mid);
+                    returndata.data.experts.Add(mid);
                 }
-                return ConvertToJson(Expect);
+                return ConvertToJson(returndata);
             }
             return ConvertToJson(map);
         }
@@ -156,10 +143,10 @@ namespace WebAPI.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPaper paper = new ReturnPaper();
-            paper.message = "success";
-            paper.data = db.Paper.Find(id);
-            return ConvertToJson(paper);
+            ReturnData<Paper> returndata = new ReturnData<Paper>();
+            returndata.message = "success";
+            returndata.data = db.Paper.Find(id);
+            return ConvertToJson(returndata);
         }
 
         [HttpGet]
@@ -168,10 +155,10 @@ namespace WebAPI.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPatent patent = new ReturnPatent();
-            patent.message = "success";
-            patent.data = db.Patent.Find(id);
-            return ConvertToJson(patent);
+            ReturnData<Patent> returndata = new ReturnData<Patent>();
+            returndata.message = "success";
+            returndata.data = db.Patent.Find(id);
+            return ConvertToJson(returndata);
         }
 
         [HttpGet]
@@ -180,25 +167,25 @@ namespace WebAPI.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnExpert expert = new ReturnExpert();
-            expert.data = new ExpertData();
-            expert.data.PaperList = new List<Paper>();
-            expert.data.PatentList = new List<Patent>();
-            expert.message = "succcess";
-            expert.data.expert = db.ExpertInfo.Find(id);
+            ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
+            returndata.data = new ExpertData();
+            returndata.data.PaperList = new List<Paper>();
+            returndata.data.PatentList = new List<Patent>();
+            returndata.message = "succcess";
+            returndata.data.expert = db.ExpertInfo.Find(id);
             var papers =
             from ExpertPaper in db.ExpertPaper
             where ExpertPaper.ExpertID==id
             select ExpertPaper;
             foreach (var mid in papers)
-            { expert.data.PaperList.Add(mid.Paper);}
+            { returndata.data.PaperList.Add(mid.Paper);}
             var patents =
             from ExpertPatent in db.ExpertPatent
             where ExpertPatent.ExpertID == id
             select ExpertPatent;
             foreach (var mid in patents)
-            { expert.data.PatentList.Add(mid.Patent); }
-            return ConvertToJson(expert);
+            { returndata.data.PatentList.Add(mid.Patent); }
+            return ConvertToJson(returndata);
         }
         private long GenExpertID()
         {
@@ -240,6 +227,11 @@ namespace WebAPI.Controllers
                 tryFind = db.Patent.Find(PatentID);
             }
             return PatentID;
+        }
+        public class Raletion
+        {
+            public string ShcolarID;
+            public List<string> list;
         }
 
         /// <summary>
@@ -303,6 +295,32 @@ namespace WebAPI.Controllers
                 patent.PatentID = GenPatentID();
                 db.Patent.Add(patent);
                 db.SaveChanges();
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error    " + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 爬虫接口PostRaletion
+        /// 
+        /// </summary>
+        [HttpPost]
+        [Route("resource/PostRaletion")]
+        public string PostRalation(Raletion raletion)
+        {
+            try
+            {
+                foreach (var data in raletion.list)
+                {
+                    ExpertPaper EP = new ExpertPaper();
+                    EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == raletion.ShcolarID).ExpertID;
+                    EP.PaperID = db.Paper.FirstOrDefault(Paper => Paper.BaiduID == data).PaperID;
+                    db.ExpertPaper.Add(EP);
+                    db.SaveChanges();
+                }
                 return "success";
             }
             catch (Exception ex)

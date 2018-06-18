@@ -68,7 +68,7 @@ namespace WebAPI.Controllers
             long id = GetPatentID();
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPatent patent = new ReturnPatent();
+            ReturnData<Patent> patent = new ReturnData<Patent>();
             patent.message = "success";
             patent.data = db.Patent.Find(id);
             return ConvertToJson(patent);
@@ -84,7 +84,7 @@ namespace WebAPI.Controllers
             db.Configuration.ProxyCreationEnabled = false;
 
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPatent patent = new ReturnPatent();
+            ReturnData<Patent> patent = new ReturnData<Patent>();
             patent.message = "success";
             patent.data = db.Patent.Find(id);
             return ConvertToJson(patent);

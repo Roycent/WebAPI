@@ -40,8 +40,8 @@ namespace WebAPI
         public virtual DbSet<Reviewer> Reviewer { get; set; }
         public virtual DbSet<UserExpert> UserExpert { get; set; }
         public virtual DbSet<Attention> Attention { get; set; }
-        public virtual DbSet<ExpertInfo> ExpertInfo { get; set; }
         public virtual DbSet<Patent> Patent { get; set; }
+        public virtual DbSet<ExpertInfo> ExpertInfo { get; set; }
         public virtual DbSet<Paper> Paper { get; set; }
     }
 }
