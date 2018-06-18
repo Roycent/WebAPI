@@ -69,8 +69,8 @@ namespace WebAPI.Controllers
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<Patent> patent = new ReturnData<Patent>();
-            patent.message = "success";
-            patent.data = db.Patent.Find(id);
+            patent.Message = "success";
+            patent.Data = db.Patent.Find(id);
             return ConvertToJson(patent);
         }
         /// <summary>
@@ -85,8 +85,8 @@ namespace WebAPI.Controllers
 
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<Patent> patent = new ReturnData<Patent>();
-            patent.message = "success";
-            patent.data = db.Patent.Find(id);
+            patent.Message = "success";
+            patent.Data = db.Patent.Find(id);
             return ConvertToJson(patent);
         }
 

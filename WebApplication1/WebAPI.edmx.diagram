@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="80">
+      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="69">
         <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="21.5" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="26" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
@@ -54,8 +54,8 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.FK_PATENT_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="4.0319413971304616" PointY="11.891384756141987" />
-        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="11.028556264484561" PointY="19.363578388171074" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="6.2900149087840767" PointY="20.623194078273695" />
+        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="10.7515431934742" PointY="21.847239102165791" />
         <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" />
@@ -69,6 +69,27 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

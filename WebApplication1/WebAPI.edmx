@@ -150,7 +150,7 @@
           <Property Name="Price" Type="int" />
           <Property Name="IsPass" Type="bit" />
           <Property Name="Authors" Type="varchar" MaxLength="1000" />
-          <Property Name="BaiduID" Type="varchar" MaxLength="100" />
+          <Property Name="BaiduID" Type="varchar" MaxLength="100" StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="Patent">
           <Key>
@@ -1289,13 +1289,13 @@
           <Property Name="Field" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Books" Type="Int32" />
           <Property Name="Others" Type="Int32" />
+          <Property Name="BaiduID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Attention" />
           <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPaper" />
           <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPatent" />
           <NavigationProperty Name="Like" Relationship="WebAPIModel.Like_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="Like" />
           <NavigationProperty Name="ManageExpert" Relationship="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ManageExpert" />
           <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="UserExpert" />
-          <Property Name="BaiduID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Paper">
           <Key>
@@ -1318,6 +1318,7 @@
           <Property Name="Price" Type="Int32" />
           <Property Name="IsPass" Type="Boolean" />
           <Property Name="Authors" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="BaiduID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="None" ConcurrencyMode="None" />
           <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" FromRole="Paper" ToRole="Comment" />
           <NavigationProperty Name="Download" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" FromRole="Paper" ToRole="Download" />
           <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_Paper_PaperID_fk" FromRole="Paper" ToRole="ExpertPaper" />
@@ -1325,7 +1326,6 @@
           <NavigationProperty Name="ManagePaper" Relationship="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" FromRole="Paper" ToRole="ManagePaper" />
           <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_PAPER_REFERENCE_USERS" FromRole="Paper" ToRole="Users" />
           <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" FromRole="Paper" ToRole="Review" />
-          <Property Name="BaiduID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
           <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
