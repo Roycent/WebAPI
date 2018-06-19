@@ -23,9 +23,8 @@
             <summary>
             查询reviewer对象
             </summary>
-            <returns>成功:{"Message":"success","Data":{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}};
-            失败:{"Message": "failed"};
-            权限不足:{"Message":"forbidden"}</returns>
+            <param>无 </param>
+            <returns>success:{"ReviewerID":"12333","Name":"zhaojiemin"};error:{"Message","forbidden"}</returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.CreateReviewer(WebAPI.Reviewer)">
             <summary>
@@ -34,16 +33,17 @@
             <param name="reviewer"> 
             eg:{"Name":"user1","Password":"123456"}
             </param>
-            <returns>成功:{"Message": "success"};失败:{"Message": "failed"};权限不足:{"Message":"forbidden"}</returns>
+            <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.DeleteReviewer(WebAPI.Reviewer)">
             <summary>
             删除Reviewer对象
             </summary>
             <param name="reviewer">
+            name 把api文档中传的id改成了审核者名字
             eg:{"Name":"zhao"}
             </param>
-            <returns>成功:{"Message": "success"};失败:{"Message": "failed"};权限不足:{"Message":"forbidden"}</returns>
+            <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.UpdateReviewer(WebAPI.Controllers.ReviewerdModify)">
             <summary>
@@ -52,16 +52,14 @@
             <param name="rm"> 
             eg:{"oldName":"102303","newName":"afadf","newPasswd":"123345"}
             </param>
-            <returns>成功:{"Message":"success"};失败:{"Message":"failed"};权限不足:{"Message":"forbidden"}</returns>
+            <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.GetComment">
             <summary>
             查询comment
             </summary>
-            <returns>
-            成功:{"Message":"success","Data":{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}};
-            失败:{"Message":"failed"};
-            权限不足:{"Message":"forbidden"}</returns>
+            <param>无 </param>
+            <returns>success:{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.DeleteComment(WebAPI.Comment)">
             <summary>
@@ -70,7 +68,7 @@
             <param name="comment">
             eg:{"CommentID":"12333"}
             </param>
-            <returns>成功:{"Message":"success"};失败:{"Message":"failed"};权限不足:{"Message":"forbidden"}</returns>
+            <returns>success:{"Message", "success"};failed:{"Message", "failed"};error:{"Message","forbidden"}</returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.AdministratorLogin(WebAPI.Administrator)">
             <summary>
@@ -79,40 +77,46 @@
             <param name="administrator">
             eg:{"AdminName":"Admin1","Password":"123456"}
             </param>
-            <returns>成功:{"Message":"success"};失败:{"Message":"failed"}
+            <returns>success:{"Message", "success"};failed:{"Message", "failed"}
             </returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.Logout">
             <summary>
             管理员登出
             </summary>
-            <returns>成功:{"Message":"success"};失败:{"Message":"failed"}
+            <param>无，直接读取cookie</param>
+            <returns>success:{"Message", "success"};failed:{"Message", "failed"}
             </returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.TestCookie">
+            <summary>
+            用以测试cookie是否被正确操作
+            </summary>
+            <returns>有cookie:"cookie";没有cookie:"no cookie"</returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.ModifyPassword(WebAPI.Controllers.PasswordModify)">
             <summary>
             管理员更改密码
             </summary>
-            <param name="pw">
+            <param name="pw">oldPasswd,newPasswd
             eg:{"oldPasswd":"12345","newPasswd":"123456"}
             </param>
-            <returns>
-            成功:{"Message":"success"};
-            cookie不存在:{"Message":"Cookie不存在"};
-            原密码输入错误:{"Message":"密码错误"};
-            未知错误:{"Message":"未知错误"}
+            <returns>成功:{"Message", "success"};cookie不存在:{"Message", "Cookie不存在"};
+            原密码输入错误:{"Message", "密码错误"};未知错误:{"Message", "未知错误"}
             </returns>
         </member>
         <member name="M:WebAPI.Controllers.AdministratorsController.Info">
             <summary>
             获取角色
             </summary>
-            <returns>
-            身份不明，未知错误: {"Message":"failed"};
-            游客: {"Message","Cookie error"};
-            普通用户:{"Message":"success","Data":{"Identity","commonuser"}};
-            专家用户:{"Message":"success","Data":{"Identity","expertuser"}};
-            管理员用户:{"Message":"success","Data":{"Identity","adminuser"}};
+            <param>读取cookie["role"]</param>
+            <returns>用户角色,
+            返回"failed"为身份不明，未知错误; 
+            返回"Cookie error!"时为游客; 
+            其余返回对应角色: 
+            普通用户{"Identity","commonuser"};
+            专家用户{"Identity","expertuser"};
+            管理员用户{"Identity","adminuser"};
             </returns>
         </member>
         <member name="T:WebAPI.Controllers.PapersController">
@@ -154,6 +158,11 @@
             <param name="p">PaperID</param>
             <returns>"forbidden"无权限 "failed" 失败 "success" 成功</returns>
         </member>
+        <member name="T:WebAPI.Controllers.Returnpaper">
+            <summary>
+            返回Paper数据
+            </summary>
+        </member>
         <member name="T:WebAPI.Controllers.Returnpapers">
             <summary>
             返回Papers数据
@@ -169,35 +178,76 @@
             返回experts数据
             </summary>
         </member>
-        <member name="T:WebAPI.Controllers.ReturnPaper">
+        <member name="T:WebAPI.Controllers.ExpertData">
+            <summary>
+            返回专家数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.Raletion">
             <summary>
             
             </summary>
         </member>
-        <member name="T:WebAPI.Controllers.ReturnPatent">
+        <member name="M:WebAPI.Controllers.ResourceController.SearchSource(System.String,System.String,System.Int32,System.String)">
             <summary>
-            
+            用于搜索资源，资源搜索API
             </summary>
+            <param name="type"></param>
+            <param name="keywords"></param>
+            <param name="page"></param>
+            <param name="sortBy"></param>
+            <returns></returns>
         </member>
-        <member name="T:WebAPI.Controllers.ReturnExpert">
+        <member name="M:WebAPI.Controllers.ResourceController.RequestPaper(System.Int64)">
             <summary>
-            这个当后面修改数据库的时候需要进行修改。
+            获取对应id的paper的详细信息
             </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResourceController.RequestPatent(System.Int64)">
+            <summary>
+            获取对应id的patent的详细信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResourceController.GetExpertInformation(System.Int64)">
+            <summary>
+            获取对应id的expert的详细信息,包含论文等
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.ResourceController.PostExpert(WebAPI.ExpertInfo)">
             <summary>
             爬虫接口PostExpert
             </summary>
+            <param name="expert"></param>
+            <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.ResourceController.PostPaper(WebAPI.Paper)">
             <summary>
             爬虫接口PostPaper
             </summary>
+            <param name="paper">
+            
+            </param>
+            <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.ResourceController.PostPatent(WebAPI.Patent)">
             <summary>
             爬虫接口PostPatent
             </summary>
+            <param name="patent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResourceController.PostRalation(WebAPI.Controllers.Raletion)">
+            <summary>
+            爬虫接口PostRaletion
+            </summary>
+            <param name="raletion"></param>
+            <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.StressTestingController">
             <summary>

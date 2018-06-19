@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
     /// </summary>
     public class Raletion
     {
-        public string ShcolarID;
+        public string ScholarID;
         public List<string> IDList;
     }
 
@@ -198,7 +198,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("resource/paper")]
-        public HttpResponseMessage RequestPaper(int id)
+        public HttpResponseMessage RequestPaper(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -217,6 +217,7 @@ namespace WebAPI.Controllers
                 if (result != null) { returndata.Data.access = true; }
             }
             returndata.Data.paper = db.Paper.Find(id);
+            returndata.Data.paper.KeyWord=returndata.Data.paper.KeyWord.Replace("[", "").Replace("]","").Replace("'","");
             return ConvertToJson(returndata);
         }
 
@@ -227,7 +228,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("resource/patent")]
-        public HttpResponseMessage RequestPatent(int id)
+        public HttpResponseMessage RequestPatent(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -244,7 +245,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("resource/expert")]
-        public HttpResponseMessage GetExpertInformation(int id)
+        public HttpResponseMessage GetExpertInformation(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -341,7 +342,9 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 爬虫接口PostPaper
         /// </summary>
-        /// <param name="paper"></param>
+        /// <param name="paper">
+        /// 
+        /// </param>
         /// <returns></returns>
         [HttpPost]
         [Route("resource/PostPaper")]
@@ -350,15 +353,6 @@ namespace WebAPI.Controllers
             try
             {
                 paper.PaperID = GenPaperID();
-                //if (paper.Abstract == "[]"){paper.Abstract = null;}
-                //if (paper.Title == "[]") { paper.Title = null; }
-                //if (paper.IPC == "[]") { paper.IPC = null; }
-                //if (paper.Type == "[]") { paper.Type = null; }
-                //if (paper.DOI == "[]") { paper.DOI = null; }
-                //if (paper.Publisher == "[]") { paper.Publisher = null; }
-                //if (paper.KeyWord == "[]") { paper.KeyWord = null; }
-                //if (paper.Address == "[]") { paper.Address = null; }
-                //if (paper.Authors == "[]") { paper.Authors = null; }
                 db.Paper.Add(paper);
                 db.SaveChanges();
                 return "success";
@@ -407,7 +401,7 @@ namespace WebAPI.Controllers
                 foreach (var data in raletion.IDList)
                 {
                     ExpertPaper EP = new ExpertPaper();
-                    EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == raletion.ShcolarID).ExpertID;
+                    EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == raletion.ScholarID).ExpertID;
                     EP.PaperID = db.Paper.FirstOrDefault(Paper => Paper.BaiduID == data).PaperID;
                     db.ExpertPaper.Add(EP);
                     db.SaveChanges();
