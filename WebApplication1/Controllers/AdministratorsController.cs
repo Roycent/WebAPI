@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
 using WebAPI;
+using static WebAPI.Controllers.Utils;
 
 namespace WebAPI.Controllers
 {
@@ -29,6 +30,13 @@ namespace WebAPI.Controllers
         public List<Dictionary<string, string>> comments { get; set; }
     }
     /// <summary>
+    /// 返回角色
+    /// </summary>
+    public class ReturnRoles
+    {
+        public List<Dictionary<string, string>> Roles { get; set; }
+    }
+    /// <summary>
     /// 更改reviewer信息
     /// </summary>
     public class ReviewerdModify
@@ -45,11 +53,11 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 查询reviewer对象
         /// </summary>
-        /// <returns>成功:{"Message":"success","Data":{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}};
+        /// <returns>成功:{"Message":"success","Data":{"reviewers": [{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}]};
         /// 失败:{"Message": "failed"};
         /// 权限不足:{"Message":"forbidden"}</returns>
         [Route("Administrator/GetReviewer")]
-        public string GetReviewer()
+        public HttpResponseMessage GetReviewer()
         {
             
             //当前用户身份检验
@@ -59,7 +67,7 @@ namespace WebAPI.Controllers
                 Dictionary<string, string> res = new Dictionary<string, string>();
                 JavaScriptSerializer Json = new JavaScriptSerializer();
                 res.Add("Message", "forbidden");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else
             {
@@ -67,7 +75,7 @@ namespace WebAPI.Controllers
                 // 查找数据库reviewer对象，返回json格式
                 //返回json格式,find
                 JavaScriptSerializer Json = new JavaScriptSerializer();
-                Dictionary<string, string> res = new Dictionary<string, string>();
+                ReturnData<ReturnReviewers> res = new ReturnData<ReturnReviewers>();
                 ReturnReviewers returnreviewers = new ReturnReviewers();
                 returnreviewers.reviewers = new List<Dictionary<string, string>>();
                 var results =
@@ -81,14 +89,16 @@ namespace WebAPI.Controllers
                         mid.Add("ReviewerID", result.ReviewerID.ToString());
                         mid.Add("Name", result.Name);
                         returnreviewers.reviewers.Add(mid);
+                        res.Message = "success";
+                        res.Data = returnreviewers;
                     }
                 }
                 catch
                 {
-                    res.Add("Message", "failed");
-                    return Json.Serialize(res);
+                    res.Message="failed";
+                    return ConvertToJson(res);
                 }
-                return Json.Serialize(returnreviewers);
+                return ConvertToJson(res);
             }
         }
 
@@ -100,7 +110,7 @@ namespace WebAPI.Controllers
         /// </param>
         /// <returns>成功:{"Message": "success"};失败:{"Message": "failed"};权限不足:{"Message":"forbidden"}</returns>
         [HttpPost,Route("Administrator/CreateReviewer")]
-        public string CreateReviewer(Reviewer reviewer)
+        public HttpResponseMessage CreateReviewer(Reviewer reviewer)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -109,7 +119,7 @@ namespace WebAPI.Controllers
             if (role != "admin")
             {
                 res.Add("Message", "forbidden");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else
             {
@@ -130,15 +140,15 @@ namespace WebAPI.Controllers
                     catch
                     {
                         res.Add("Message", "failed");
-                        return Json.Serialize(res);
+                        return ConvertToJson(res);
                     }
                     res.Add("Message", "success");
-                    return Json.Serialize(res);
+                    return ConvertToJson(res);
                 }
                 else
                 {
                     res.Add("Message", "failed");
-                    return Json.Serialize(res);
+                    return ConvertToJson(res);
                 }
             }
         }
@@ -151,7 +161,7 @@ namespace WebAPI.Controllers
         /// </param>
         /// <returns>成功:{"Message": "success"};失败:{"Message": "failed"};权限不足:{"Message":"forbidden"}</returns>
         [HttpPost, Route("Administrator/DeleteReviewer")]
-        public string DeleteReviewer(Reviewer reviewer)
+        public HttpResponseMessage DeleteReviewer(Reviewer reviewer)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -160,7 +170,7 @@ namespace WebAPI.Controllers
             if (role != "admin")
             {
                 res.Add("Message", "forbidden");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else
             {
@@ -176,15 +186,15 @@ namespace WebAPI.Controllers
                     catch
                     {
                         res.Add("Message", "failed");
-                        return Json.Serialize(res);
+                        return ConvertToJson(res);
                     }
                     res.Add("Message", "success");
-                    return Json.Serialize(res);
+                    return ConvertToJson(res);
                 }    
                 else
                 {
                     res.Add("Message", "failed");
-                    return Json.Serialize(res);//没有该审核者
+                    return ConvertToJson(res);//没有该审核者
                 }
             }
         }
@@ -197,7 +207,7 @@ namespace WebAPI.Controllers
         /// </param>
         /// <returns>成功:{"Message":"success"};失败:{"Message":"failed"};权限不足:{"Message":"forbidden"}</returns>
         [HttpPost, Route("Administrator/UpdateReviewer")]
-        public string UpdateReviewer( ReviewerdModify rm )
+        public HttpResponseMessage UpdateReviewer( ReviewerdModify rm )
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -205,7 +215,8 @@ namespace WebAPI.Controllers
             string role = HttpContext.Current.Request.Cookies["account"]["role"];
             if (role != "admin")
             {
-                return "forbidden";
+                res.Add("Message", "forbidden");
+                return ConvertToJson(res);
             }
             else
             {
@@ -222,15 +233,15 @@ namespace WebAPI.Controllers
                     catch
                     {
                         res.Add("Message", "failed");
-                        return Json.Serialize(res);
+                        return ConvertToJson(res);
                     }
                     res.Add("Message", "success");
-                    return Json.Serialize(res);
+                    return ConvertToJson(res);
                 }
                 else
                 {
                     res.Add("Message", "failed");
-                    return Json.Serialize(res);//无此人
+                    return ConvertToJson(res);//无此人
                 }
                 
             }
@@ -241,23 +252,22 @@ namespace WebAPI.Controllers
         /// 查询comment
         /// </summary>
         /// <returns>
-        /// 成功:{"Message":"success","Data":{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}};
+        /// 成功:{"Message":"success","Data":{"comments":[{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}]};
         /// 失败:{"Message":"failed"};
         /// 权限不足:{"Message":"forbidden"}</returns>
         [Route("Administrator/GetComment")]
-        public string GetComment()
+        public HttpResponseMessage GetComment()
         {
-            Dictionary<string, string> res = new Dictionary<string, string>();
-            JavaScriptSerializer Json = new JavaScriptSerializer();
-            //当前用户身份检验
             string role = HttpContext.Current.Request.Cookies["account"]["role"];
             if (role != "admin")
             {
+                Dictionary<string, string> res = new Dictionary<string, string>();
                 res.Add("Message", "forbidden");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else
             {
+                ReturnData<ReturnComments> res = new ReturnData<ReturnComments>();
                 ReturnComments returncomments = new ReturnComments();
                 returncomments.comments = new List<Dictionary<string, string>>();
                 var results =
@@ -273,16 +283,16 @@ namespace WebAPI.Controllers
                         mid.Add("Type", result.Content.ToString());
                         returncomments.comments.Add(mid);
                         JavaScriptSerializer serializer = new JavaScriptSerializer();
-                        res.Add("Message", "success");
-                        res.Add("Data", serializer.Serialize(returncomments));
+                        res.Message="success";
+                        res.Data=returncomments;
                     }
                 }
                 catch
                 {
-                    res.Add("Message", "failed");
-                    return Json.Serialize(res);
+                    res.Message="failed";
+                    return ConvertToJson(res);
                 }
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
         }
         /// <summary>
@@ -293,7 +303,7 @@ namespace WebAPI.Controllers
         /// </param>
         /// <returns>成功:{"Message":"success"};失败:{"Message":"failed"};权限不足:{"Message":"forbidden"}</returns>
         [HttpPost, Route("Administrator/DeleteComment")]
-        public string DeleteComment(Comment comment)
+        public HttpResponseMessage DeleteComment(Comment comment)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -302,7 +312,7 @@ namespace WebAPI.Controllers
             if (role != "admin")
             {
                 res.Add("Message", "forbidden");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else
             {
@@ -318,15 +328,15 @@ namespace WebAPI.Controllers
                     catch
                     {
                         res.Add("Message", "failed");
-                        return Json.Serialize(res);
+                        return ConvertToJson(res);
                     }
                     res.Add("Message", "success");
-                    return Json.Serialize(res);
+                    return ConvertToJson(res);
                 }
                 else
                 {
                     res.Add("Message", "failed");
-                    return Json.Serialize(res);//没有该审核者
+                    return ConvertToJson(res);//没有该审核者
                 }
             }
         }
@@ -340,7 +350,7 @@ namespace WebAPI.Controllers
         /// <returns>成功:{"Message":"success"};失败:{"Message":"failed"}
         /// </returns>
         [HttpPost, Route("Administrator/Login")]
-        public string AdministratorLogin(Administrator administrator)
+        public HttpResponseMessage AdministratorLogin(Administrator administrator)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
             Administrator find = db.Administrator.FirstOrDefault(Administrator => Administrator.AdminName == administrator.AdminName);
@@ -348,14 +358,14 @@ namespace WebAPI.Controllers
             if (find == null)
             {
                 res.Add("Message", "failed");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else
             {
                 if (administrator.Password != find.Password)
                 {
                     res.Add("Message", "Password error!");
-                    return Json.Serialize(res);
+                    return ConvertToJson(res);
                 }
                 else
                 {
@@ -366,7 +376,7 @@ namespace WebAPI.Controllers
                     cookie.Expires = DateTime.Now.AddMinutes(120);
                     HttpContext.Current.Response.Cookies.Add(cookie);
                     res.Add("Message", "success");
-                    return Json.Serialize(res);
+                    return ConvertToJson(res);
                 }
             }
         }
@@ -376,7 +386,7 @@ namespace WebAPI.Controllers
         /// <returns>成功:{"Message":"success"};失败:{"Message":"failed"}
         /// </returns>
         [Route("Administrator/Logout")]
-        public string Logout()
+        public HttpResponseMessage Logout()
         {
             JavaScriptSerializer Json = new JavaScriptSerializer();
             Dictionary<string, string> res = new Dictionary<string, string>();
@@ -389,10 +399,10 @@ namespace WebAPI.Controllers
             catch
             {
                 res.Add("Message", "Cookie error!");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             res.Add("Message", "success");
-            return Json.Serialize(res);
+            return ConvertToJson(res);
         }
 
         /// <summary>
@@ -408,7 +418,7 @@ namespace WebAPI.Controllers
         /// 未知错误:{"Message":"未知错误"}
         /// </returns>
         [Route("Administrator/ModifyPassword")]
-        public string ModifyPassword(PasswordModify pw)
+        public HttpResponseMessage ModifyPassword(PasswordModify pw)
         {
             JavaScriptSerializer Json = new JavaScriptSerializer();
             Dictionary<string, string> res = new Dictionary<string, string>();
@@ -416,7 +426,7 @@ namespace WebAPI.Controllers
             if (cookie == null)
             {
                 res.Add("Message", "Cookie不存在");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             int AdministratorID = int.Parse(cookie["AdminID"]);
             Administrator find = db.Administrator.Find(AdministratorID);
@@ -425,17 +435,17 @@ namespace WebAPI.Controllers
                 find.Password = pw.newPasswd;
                 db.SaveChanges();
                 res.Add("Message", "success");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else if (find.Password != pw.oldPasswd)
             {
                 res.Add("Message", "密码错误");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
             else
             {
                 res.Add("Message", "未知错误");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
         }
 
@@ -443,21 +453,23 @@ namespace WebAPI.Controllers
         /// 获取角色
         /// </summary>
         /// <returns>
+        /// "Message": "success",
         /// 身份不明，未知错误: {"Message":"failed"};
         /// 游客: {"Message":"Cookie error"};
-        /// 普通用户:{"Message":"success","Data":{"Identity","commonuser"}};
-        /// 专家用户:{"Message":"success","Data":{"Identity","expertuser"}};
-        /// 管理员用户:{"Message":"success","Data":{"Identity","adminuser"}};
+        /// 普通用户:{"Message":"success","Data":{"Roles": [{"Identity","commonuser"}]};
+        /// 专家用户:{"Message":"success","Data":{"Roles": [{"Identity","expertuser"}]};
+        /// 管理员用户:{"Message":"success","Data":{"Roles": [{"Identity","adminuser"}]};
         /// </returns>
         [Route("GetRole")]
-        public string Info()
+        public HttpResponseMessage Info()
         {
-            JavaScriptSerializer Json = new JavaScriptSerializer();
-            Dictionary<string, string> res = new Dictionary<string, string>();
             var cookie = HttpContext.Current.Request.Cookies["account"];
             try
             {
-                Dictionary<string, string> roles = new Dictionary<string, string>();
+                ReturnData<ReturnRoles> res = new ReturnData<ReturnRoles>();
+                ReturnRoles returnroles = new ReturnRoles();
+                returnroles.Roles = new List<Dictionary<string, string>>();
+                Dictionary<string, string> mid = new Dictionary<string, string>();
                 string role = "failed";
                 if (cookie["role"].ToString() == "user")
                 {
@@ -472,16 +484,17 @@ namespace WebAPI.Controllers
                 {
                         role = "adminuser";
                 }
-                roles.Add("Identity", role);//返回角色信息
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                res.Add("Message", "success");
-                res.Add("Data", serializer.Serialize(roles));
-                return Json.Serialize(res);
+                mid.Add("Identity", role);//返回角色信息
+                returnroles.Roles.Add(mid);
+                res.Message="success";
+                res.Data=returnroles;
+                return ConvertToJson(res);
             }
             catch
             {
+                Dictionary<string, string> res = new Dictionary<string, string>();
                 res.Add("Message", "Cookie error");
-                return Json.Serialize(res);
+                return ConvertToJson(res);
             }
         }
     }

@@ -14,6 +14,11 @@
             返回comment数据
             </summary>
         </member>
+        <member name="T:WebAPI.Controllers.ReturnRoles">
+            <summary>
+            返回角色
+            </summary>
+        </member>
         <member name="T:WebAPI.Controllers.ReviewerdModify">
             <summary>
             更改reviewer信息
