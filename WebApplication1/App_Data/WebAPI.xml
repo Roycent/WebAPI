@@ -198,21 +198,21 @@
             <param name="sortBy"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ResourceController.RequestPaper(System.Int32)">
+        <member name="M:WebAPI.Controllers.ResourceController.RequestPaper(System.Int64)">
             <summary>
             获取对应id的paper的详细信息
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ResourceController.RequestPatent(System.Int32)">
+        <member name="M:WebAPI.Controllers.ResourceController.RequestPatent(System.Int64)">
             <summary>
             获取对应id的patent的详细信息
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ResourceController.GetExpertInformation(System.Int32)">
+        <member name="M:WebAPI.Controllers.ResourceController.GetExpertInformation(System.Int64)">
             <summary>
             获取对应id的expert的详细信息,包含论文等
             </summary>
@@ -230,7 +230,9 @@
             <summary>
             爬虫接口PostPaper
             </summary>
-            <param name="paper"></param>
+            <param name="paper">
+            
+            </param>
             <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.ResourceController.PostPatent(WebAPI.Patent)">

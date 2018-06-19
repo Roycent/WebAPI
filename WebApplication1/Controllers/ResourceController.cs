@@ -198,7 +198,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("resource/paper")]
-        public HttpResponseMessage RequestPaper(int id)
+        public HttpResponseMessage RequestPaper(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -227,7 +227,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("resource/patent")]
-        public HttpResponseMessage RequestPatent(int id)
+        public HttpResponseMessage RequestPatent(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -244,7 +244,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("resource/expert")]
-        public HttpResponseMessage GetExpertInformation(int id)
+        public HttpResponseMessage GetExpertInformation(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
@@ -341,7 +341,9 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 爬虫接口PostPaper
         /// </summary>
-        /// <param name="paper"></param>
+        /// <param name="paper">
+        /// 
+        /// </param>
         /// <returns></returns>
         [HttpPost]
         [Route("resource/PostPaper")]
