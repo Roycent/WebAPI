@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="70">
+      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="69">
         <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="21.5" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="26" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
@@ -47,13 +47,6 @@
         <AssociationConnector Association="WebAPIModel.Review_Reviewer_ReviewerID_fk" />
         <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="1.9357755994125154" PointY="13.802934742440906" />
         <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="0.31221643291051338" PointY="30.519171177651348" />
-        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
-        <AssociationConnector Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" />
-        <AssociationConnector Association="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" />
-        <AssociationConnector Association="WebAPIModel.Like_ExpertInfo_ExpertID_fk" />
-        <AssociationConnector Association="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" />
-        <AssociationConnector Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" />
         <EntityTypeShape EntityType="WebAPIModel.Patent" Width="1.5" PointX="7.8178254830733991" PointY="4.8934861295360541" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.ExpertPatent_Patent_PatentID_fk" />
@@ -61,14 +54,50 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.FK_PATENT_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" />
-        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="8.8376184221532288" PointY="27.511269001062619" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="6.2900149087840767" PointY="20.623194078273695" />
+        <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="10.7515431934742" PointY="21.847239102165791" />
+        <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" />
+        <AssociationConnector Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" />
+        <AssociationConnector Association="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" />
+        <AssociationConnector Association="WebAPIModel.Like_ExpertInfo_ExpertID_fk" />
+        <AssociationConnector Association="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" />
+        <AssociationConnector Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk" />
         <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

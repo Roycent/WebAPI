@@ -48,8 +48,6 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Workstation" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IsPass" Type="bit" />
-          <Property Name="HIndex" Type="int" />
-          <Property Name="GIndex" Type="int" />
           <Property Name="TimesCited" Type="int" />
           <Property Name="Results" Type="int" />
           <Property Name="PUJournals" Type="int" />
@@ -64,6 +62,7 @@
           <Property Name="Field" Type="varchar" MaxLength="50" />
           <Property Name="Books" Type="int" />
           <Property Name="Others" Type="int" />
+          <Property Name="BaiduID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ExpertPaper">
           <Key>
@@ -151,6 +150,7 @@
           <Property Name="Price" Type="int" />
           <Property Name="IsPass" Type="bit" />
           <Property Name="Authors" Type="varchar" MaxLength="1000" />
+          <Property Name="BaiduID" Type="varchar" MaxLength="100" StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="Patent">
           <Key>
@@ -769,8 +769,8 @@
           <Property Name="PatentID" Type="Int64" />
           <Property Name="ExpertPatentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ExpertID" Type="Int64" />
-          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" FromRole="ExpertPatent" ToRole="ExpertInfo" />
           <NavigationProperty Name="Patent" Relationship="WebAPIModel.ExpertPatent_Patent_PatentID_fk" FromRole="ExpertPatent" ToRole="Patent" />
+          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" FromRole="ExpertPatent" ToRole="ExpertInfo" />
         </EntityType>
         <EntityType Name="Like">
           <Key>
@@ -780,8 +780,8 @@
           <Property Name="PatentID" Type="Int64" />
           <Property Name="LikeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ExpertID" Type="Int64" />
-          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.Like_ExpertInfo_ExpertID_fk" FromRole="Like" ToRole="ExpertInfo" />
           <NavigationProperty Name="Patent" Relationship="WebAPIModel.FK_LIKE_REFERENCE_PATENT" FromRole="Like" ToRole="Patent" />
+          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.Like_ExpertInfo_ExpertID_fk" FromRole="Like" ToRole="ExpertInfo" />
           <NavigationProperty Name="Paper" Relationship="WebAPIModel.FK_LIKE_REFERENCE_PAPER" FromRole="Like" ToRole="Paper" />
         </EntityType>
         <EntityType Name="ManageExpert">
@@ -913,31 +913,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Attention" EntitySet="Attention" />
           </AssociationSet>
-          <EntitySet Name="ExpertInfo" EntityType="WebAPIModel.ExpertInfo" />
-          <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="Attention" EntitySet="Attention" />
-          </AssociationSet>
-          <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
-          </AssociationSet>
-          <AssociationSet Name="ExpertPatent_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="ExpertPatent" EntitySet="ExpertPatent" />
-          </AssociationSet>
-          <AssociationSet Name="Like_ExpertInfo_ExpertID_fk" Association="WebAPIModel.Like_ExpertInfo_ExpertID_fk">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="Like" EntitySet="Like" />
-          </AssociationSet>
-          <AssociationSet Name="ManageExpert_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="ManageExpert" EntitySet="ManageExpert" />
-          </AssociationSet>
-          <AssociationSet Name="UserExpert_ExpertInfo_ExpertID_fk" Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="UserExpert" EntitySet="UserExpert" />
-          </AssociationSet>
           <EntitySet Name="Patent" EntityType="WebAPIModel.Patent" />
           <AssociationSet Name="FK_COMMENT_REFERENCE_PATENT" Association="WebAPIModel.FK_COMMENT_REFERENCE_PATENT">
             <End Role="Patent" EntitySet="Patent" />
@@ -963,7 +938,12 @@
             <End Role="Patent" EntitySet="Patent" />
             <End Role="Review" EntitySet="Review" />
           </AssociationSet>
+          <EntitySet Name="ExpertInfo" EntityType="WebAPIModel.ExpertInfo" />
           <EntitySet Name="Paper" EntityType="WebAPIModel.Paper" />
+          <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="Attention" EntitySet="Attention" />
+          </AssociationSet>
           <AssociationSet Name="FK_COMMENT_REFERENCE_PAPER" Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER">
             <End Role="Paper" EntitySet="Paper" />
             <End Role="Comment" EntitySet="Comment" />
@@ -971,6 +951,26 @@
           <AssociationSet Name="FK_DOWNLOAD_REFERENCE_PAPER" Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER">
             <End Role="Paper" EntitySet="Paper" />
             <End Role="Download" EntitySet="Download" />
+          </AssociationSet>
+          <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
+          </AssociationSet>
+          <AssociationSet Name="ExpertPatent_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ExpertPatent" EntitySet="ExpertPatent" />
+          </AssociationSet>
+          <AssociationSet Name="Like_ExpertInfo_ExpertID_fk" Association="WebAPIModel.Like_ExpertInfo_ExpertID_fk">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="Like" EntitySet="Like" />
+          </AssociationSet>
+          <AssociationSet Name="ManageExpert_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ManageExpert" EntitySet="ManageExpert" />
+          </AssociationSet>
+          <AssociationSet Name="UserExpert_ExpertInfo_ExpertID_fk" Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="UserExpert" EntitySet="UserExpert" />
           </AssociationSet>
           <AssociationSet Name="ExpertPaper_Paper_PaperID_fk" Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk">
             <End Role="Paper" EntitySet="Paper" />
@@ -1168,109 +1168,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ExpertInfo">
-          <Key>
-            <PropertyRef Name="ExpertID" />
-          </Key>
-          <Property Name="ExpertID" Type="Int64" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Workstation" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="IsPass" Type="Boolean" />
-          <Property Name="HIndex" Type="Int32" />
-          <Property Name="GIndex" Type="Int32" />
-          <Property Name="TimesCited" Type="Int32" />
-          <Property Name="Results" Type="Int32" />
-          <Property Name="PUJournals" Type="Int32" />
-          <Property Name="CSCDJournals" Type="Int32" />
-          <Property Name="CTJournals" Type="Int32" />
-          <Property Name="SCIJournals" Type="Int32" />
-          <Property Name="EIJournals" Type="Int32" />
-          <Property Name="SCIEJournals" Type="Int32" />
-          <Property Name="SSCIJournals" Type="Int32" />
-          <Property Name="OtherJournals" Type="Int32" />
-          <Property Name="ConferencePapers" Type="Int32" />
-          <Property Name="Field" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Books" Type="Int32" />
-          <Property Name="Others" Type="Int32" />
-          <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Attention" />
-          <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPaper" />
-          <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPatent" />
-          <NavigationProperty Name="Like" Relationship="WebAPIModel.Like_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="Like" />
-          <NavigationProperty Name="ManageExpert" Relationship="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ManageExpert" />
-          <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="UserExpert" />
-        </EntityType>
-        <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Attention" Role="Attention" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="Attention">
-              <PropertyRef Name="Exp_UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ExpertPaper_ExpertInfo_ExpertID_fk">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.ExpertPaper" Role="ExpertPaper" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="ExpertPaper">
-              <PropertyRef Name="ExpertID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ExpertPatent_ExpertInfo_ExpertID_fk">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.ExpertPatent" Role="ExpertPatent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="ExpertPatent">
-              <PropertyRef Name="ExpertID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Like_ExpertInfo_ExpertID_fk">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Like" Role="Like" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="Like">
-              <PropertyRef Name="ExpertID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ManageExpert_ExpertInfo_ExpertID_fk">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.ManageExpert" Role="ManageExpert" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="ManageExpert">
-              <PropertyRef Name="ExpertID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserExpert_ExpertInfo_ExpertID_fk">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.UserExpert" Role="UserExpert" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="UserExpert">
-              <PropertyRef Name="ExpertID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Patent">
           <Key>
             <PropertyRef Name="PatentID" />
@@ -1370,6 +1267,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ExpertInfo">
+          <Key>
+            <PropertyRef Name="ExpertID" />
+          </Key>
+          <Property Name="ExpertID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Workstation" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsPass" Type="Boolean" />
+          <Property Name="TimesCited" Type="Int32" />
+          <Property Name="Results" Type="Int32" />
+          <Property Name="PUJournals" Type="Int32" />
+          <Property Name="CSCDJournals" Type="Int32" />
+          <Property Name="CTJournals" Type="Int32" />
+          <Property Name="SCIJournals" Type="Int32" />
+          <Property Name="EIJournals" Type="Int32" />
+          <Property Name="SCIEJournals" Type="Int32" />
+          <Property Name="SSCIJournals" Type="Int32" />
+          <Property Name="OtherJournals" Type="Int32" />
+          <Property Name="ConferencePapers" Type="Int32" />
+          <Property Name="Field" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Books" Type="Int32" />
+          <Property Name="Others" Type="Int32" />
+          <Property Name="BaiduID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Attention" />
+          <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPaper" />
+          <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPatent" />
+          <NavigationProperty Name="Like" Relationship="WebAPIModel.Like_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="Like" />
+          <NavigationProperty Name="ManageExpert" Relationship="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ManageExpert" />
+          <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="UserExpert" />
+        </EntityType>
         <EntityType Name="Paper">
           <Key>
             <PropertyRef Name="PaperID" />
@@ -1391,6 +1318,7 @@
           <Property Name="Price" Type="Int32" />
           <Property Name="IsPass" Type="Boolean" />
           <Property Name="Authors" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="BaiduID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="None" ConcurrencyMode="None" />
           <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" FromRole="Paper" ToRole="Comment" />
           <NavigationProperty Name="Download" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" FromRole="Paper" ToRole="Download" />
           <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_Paper_PaperID_fk" FromRole="Paper" ToRole="ExpertPaper" />
@@ -1399,6 +1327,18 @@
           <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_PAPER_REFERENCE_USERS" FromRole="Paper" ToRole="Users" />
           <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" FromRole="Paper" ToRole="Review" />
         </EntityType>
+        <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Attention" Role="Attention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="Attention">
+              <PropertyRef Name="Exp_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_COMMENT_REFERENCE_PAPER">
           <End Type="WebAPIModel.Paper" Role="Paper" Multiplicity="0..1" />
           <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="*" />
@@ -1420,6 +1360,66 @@
             </Principal>
             <Dependent Role="Download">
               <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ExpertPaper_ExpertInfo_ExpertID_fk">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
+          <End Type="WebAPIModel.ExpertPaper" Role="ExpertPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="ExpertPaper">
+              <PropertyRef Name="ExpertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ExpertPatent_ExpertInfo_ExpertID_fk">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
+          <End Type="WebAPIModel.ExpertPatent" Role="ExpertPatent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="ExpertPatent">
+              <PropertyRef Name="ExpertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Like_ExpertInfo_ExpertID_fk">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Like" Role="Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="ExpertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ManageExpert_ExpertInfo_ExpertID_fk">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
+          <End Type="WebAPIModel.ManageExpert" Role="ManageExpert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="ManageExpert">
+              <PropertyRef Name="ExpertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserExpert_ExpertInfo_ExpertID_fk">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
+          <End Type="WebAPIModel.UserExpert" Role="UserExpert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="UserExpert">
+              <PropertyRef Name="ExpertID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1643,32 +1643,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ExpertInfo">
-            <EntityTypeMapping TypeName="WebAPIModel.ExpertInfo">
-              <MappingFragment StoreEntitySet="ExpertInfo">
-                <ScalarProperty Name="Others" ColumnName="Others" />
-                <ScalarProperty Name="Books" ColumnName="Books" />
-                <ScalarProperty Name="Field" ColumnName="Field" />
-                <ScalarProperty Name="ConferencePapers" ColumnName="ConferencePapers" />
-                <ScalarProperty Name="OtherJournals" ColumnName="OtherJournals" />
-                <ScalarProperty Name="SSCIJournals" ColumnName="SSCIJournals" />
-                <ScalarProperty Name="SCIEJournals" ColumnName="SCIEJournals" />
-                <ScalarProperty Name="EIJournals" ColumnName="EIJournals" />
-                <ScalarProperty Name="SCIJournals" ColumnName="SCIJournals" />
-                <ScalarProperty Name="CTJournals" ColumnName="CTJournals" />
-                <ScalarProperty Name="CSCDJournals" ColumnName="CSCDJournals" />
-                <ScalarProperty Name="PUJournals" ColumnName="PUJournals" />
-                <ScalarProperty Name="Results" ColumnName="Results" />
-                <ScalarProperty Name="TimesCited" ColumnName="TimesCited" />
-                <ScalarProperty Name="GIndex" ColumnName="GIndex" />
-                <ScalarProperty Name="HIndex" ColumnName="HIndex" />
-                <ScalarProperty Name="IsPass" ColumnName="IsPass" />
-                <ScalarProperty Name="Workstation" ColumnName="Workstation" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ExpertID" ColumnName="ExpertID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Patent">
             <EntityTypeMapping TypeName="WebAPIModel.Patent">
               <MappingFragment StoreEntitySet="Patent">
@@ -1691,9 +1665,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ExpertInfo">
+            <EntityTypeMapping TypeName="WebAPIModel.ExpertInfo">
+              <MappingFragment StoreEntitySet="ExpertInfo">
+                <ScalarProperty Name="BaiduID" ColumnName="BaiduID" />
+                <ScalarProperty Name="Others" ColumnName="Others" />
+                <ScalarProperty Name="Books" ColumnName="Books" />
+                <ScalarProperty Name="Field" ColumnName="Field" />
+                <ScalarProperty Name="ConferencePapers" ColumnName="ConferencePapers" />
+                <ScalarProperty Name="OtherJournals" ColumnName="OtherJournals" />
+                <ScalarProperty Name="SSCIJournals" ColumnName="SSCIJournals" />
+                <ScalarProperty Name="SCIEJournals" ColumnName="SCIEJournals" />
+                <ScalarProperty Name="EIJournals" ColumnName="EIJournals" />
+                <ScalarProperty Name="SCIJournals" ColumnName="SCIJournals" />
+                <ScalarProperty Name="CTJournals" ColumnName="CTJournals" />
+                <ScalarProperty Name="CSCDJournals" ColumnName="CSCDJournals" />
+                <ScalarProperty Name="PUJournals" ColumnName="PUJournals" />
+                <ScalarProperty Name="Results" ColumnName="Results" />
+                <ScalarProperty Name="TimesCited" ColumnName="TimesCited" />
+                <ScalarProperty Name="IsPass" ColumnName="IsPass" />
+                <ScalarProperty Name="Workstation" ColumnName="Workstation" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ExpertID" ColumnName="ExpertID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Paper">
             <EntityTypeMapping TypeName="WebAPIModel.Paper">
               <MappingFragment StoreEntitySet="Paper">
+                <ScalarProperty Name="BaiduID" ColumnName="BaiduID" />
                 <ScalarProperty Name="Authors" ColumnName="Authors" />
                 <ScalarProperty Name="IsPass" ColumnName="IsPass" />
                 <ScalarProperty Name="Price" ColumnName="Price" />

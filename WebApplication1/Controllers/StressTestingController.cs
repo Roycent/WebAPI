@@ -68,9 +68,9 @@ namespace WebAPI.Controllers
             long id = GetPatentID();
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPatent patent = new ReturnPatent();
-            patent.message = "success";
-            patent.data = db.Patent.Find(id);
+            ReturnData<Patent> patent = new ReturnData<Patent>();
+            patent.Message = "success";
+            patent.Data = db.Patent.Find(id);
             return ConvertToJson(patent);
         }
         /// <summary>
@@ -84,9 +84,9 @@ namespace WebAPI.Controllers
             db.Configuration.ProxyCreationEnabled = false;
 
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPatent patent = new ReturnPatent();
-            patent.message = "success";
-            patent.data = db.Patent.Find(id);
+            ReturnData<Patent> patent = new ReturnData<Patent>();
+            patent.Message = "success";
+            patent.Data = db.Patent.Find(id);
             return ConvertToJson(patent);
         }
 

@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-using System.Collections.Generic;
 using static WebAPI.Controllers.Utils;
 
 namespace WebAPI.Controllers
 {
+    public class ReturnData<T>
+    {
+        public string Message { get; set; }
+        public T Data { get; set; }
+    }
+
+    /// <summary>
+    /// 返回Paper数据
+    /// </summary>
+    public class Returnpaper
+    {
+        public bool access { get; set; }
+        public Paper paper { get; set; }
+    }
     /// <summary>
     /// 返回Papers数据
     /// </summary>
@@ -38,168 +51,229 @@ namespace WebAPI.Controllers
     }
 
     /// <summary>
-    /// 
+    /// 返回专家数据
     /// </summary>
-    public class ReturnPaper
-    {
-        public string message { get; set; }
-        public Paper data { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ReturnPatent
-    {
-        public string message { get; set; }
-        public Patent data { get; set; }
-    }
-
-    /// <summary>
-    /// 这个当后面修改数据库的时候需要进行修改。
-    /// </summary>
-    public class ReturnExpert
-    {
-        public string message { get; set; }
-        public ExpertData data { get; set; }
-    }
     public class ExpertData
     {
         public ExpertInfo expert;
         public List<Paper> PaperList;
         public List<Patent> PatentList;
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Raletion
+    {
+        public string ShcolarID;
+        public List<string> IDList;
+    }
+
     public class ResourceController : ApiController
     {
         private WebAPIEntities db = new WebAPIEntities();
 
+
+        /// <summary>
+        /// 用于搜索资源，资源搜索API
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="keywords"></param>
+        /// <param name="page"></param>
+        /// <param name="sortBy"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("resource")]
-        public HttpResponseMessage SearchSource(string type, string keywords)
+        public HttpResponseMessage SearchSource(string type, string keywords,int page,string sortBy)
         {
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            Dictionary<string, string> map = new Dictionary<string, string>();
-            map.Add("error", "TypeError");
+            ReturnData<Returnpapers> Rerurn = new ReturnData<Returnpapers>();
+            Rerurn.Message = "type empty";
+
             if (type == "paper")
-            {
-                Returnpapers Papers = new Returnpapers();
-                Papers.type = "paper";
-                Papers.papers = new List<Dictionary<string, string>>();
-                var results =
-                from Paper in db.Paper
-                where Paper.Title.IndexOf(keywords) != -1
-                select Paper;
-                foreach (var result in results)
-                {
-                    Dictionary<string, string> mid = new Dictionary<string, string>();
-                    mid.Add("id", result.PaperID.ToString());
-                    mid.Add("title", result.Title);
-                    mid.Add("author", result.Authors);
-                    mid.Add("publisher", result.Publisher);
-                    mid.Add("keywords", result.KeyWord);
-                    mid.Add("summary", result.Abstract);
-                    Papers.papers.Add(mid);
-                }
-                return ConvertToJson(Papers);
-            }
+            {return PaperType(keywords, ref page, ref sortBy);}
             if (type == "patent")
-            {
-                Returnpatents Patents = new Returnpatents();
-                Patents.type = "patent";
-                Patents.patents = new List<Dictionary<string, string>>();
-                var results =
-                from Patent in db.Patent
-                where Patent.Title.IndexOf(keywords) != -1
-                select Patent;
-                foreach (var result in results)
-                {
-                    Dictionary<string, string> mid = new Dictionary<string, string>();
-                    mid.Add("id", result.PatentID.ToString());
-                    mid.Add("title", result.Title);
-                    mid.Add("time", result.ApplyDate.ToString());
-                    mid.Add("publicnum", result.PublicNum);  
-                    mid.Add("patentee", result.Applicant);
-                    mid.Add("address", result.ApplicantAddress);
-                    Patents.patents.Add(mid);
-                }
-                return ConvertToJson(Patents);
-            }
+            {return PatentType(keywords, ref page,ref sortBy);}
             if (type == "expert")
-            {
-                Returnexperts Expect = new Returnexperts();
-                Expect.type = "expert";
-                Expect.experts = new List<Dictionary<string, string>>();
-                var results =
-                from ExpertInfo in db.ExpertInfo
-                where ExpertInfo.Name.IndexOf(keywords) != -1
-                select ExpertInfo;
-                
-                foreach (var result in results)
-                {
-                    Dictionary<string, string> mid = new Dictionary<string, string>();
-                    mid.Add("id", result.ExpertID.ToString());
-                    mid.Add("name", result.Name);
-                    mid.Add("workstation", result.Workstation);
-                    mid.Add("field", result.Field);
-                    mid.Add("timescited", result.TimesCited.ToString());
-                    mid.Add("results", result.Results.ToString());
-                    Expect.experts.Add(mid);
-                }
-                return ConvertToJson(Expect);
-            }
-            return ConvertToJson(map);
+            {return ExpertType(keywords, ref page, ref sortBy);}
+
+            return ConvertToJson(Rerurn);
         }
 
+
+        private HttpResponseMessage ExpertType(string keywords, ref int page,ref string sortBy)
+        {
+            ReturnData<Returnexperts> returndata = new ReturnData<Returnexperts>();
+            returndata.Message = "success";
+            returndata.Data = new Returnexperts();
+            returndata.Data.type = "expert";
+            returndata.Data.experts = new List<Dictionary<string, string>>();
+            if (keywords == "") { return ConvertToJson(returndata); }
+            if (page == null) { page = 1; }
+
+            var results =
+            from ExpertInfo in db.ExpertInfo
+            where ExpertInfo.Name.IndexOf(keywords) != -1
+            orderby ExpertInfo.Results descending
+            select ExpertInfo;
+
+            foreach (var result in results.Skip((page - 1) * 20).Take(20))
+            {
+                Dictionary<string, string> mid = new Dictionary<string, string>();
+                mid.Add("id", result.ExpertID.ToString());
+                mid.Add("name", result.Name);
+                mid.Add("workstation", result.Workstation);
+                mid.Add("field", result.Field);
+                mid.Add("timescited", result.TimesCited.ToString());
+                mid.Add("results", result.Results.ToString());
+                returndata.Data.experts.Add(mid);
+            }
+            return ConvertToJson(returndata);
+        }
+        //TODO：下面两个的函数没有写按照什么排序，全部按照默认来排序的。以后要写一下
+        private HttpResponseMessage PatentType(string keywords, ref int page, ref string sortBy)
+        {
+            ReturnData<Returnpatents> returndata = new ReturnData<Returnpatents>();
+            returndata.Message = "success";
+            returndata.Data = new Returnpatents();
+            returndata.Data.type = "patent";
+            returndata.Data.patents = new List<Dictionary<string, string>>();
+            if (keywords == "") { return ConvertToJson(returndata); }
+            if (page == null) { page = 1; }
+
+            var results =
+            from Patent in db.Patent
+            where Patent.Title.IndexOf(keywords) != -1
+            orderby Patent.ApplyDate descending
+            select Patent;
+            foreach (var result in results.Skip((page - 1) * 20).Take(20))
+            {
+                Dictionary<string, string> mid = new Dictionary<string, string>();
+                mid.Add("id", result.PatentID.ToString());
+                mid.Add("title", result.Title);
+                mid.Add("time", result.ApplyDate.ToString());
+                mid.Add("publicnum", result.PublicNum);
+                mid.Add("patentee", result.Applicant);
+                mid.Add("address", result.ApplicantAddress);
+                returndata.Data.patents.Add(mid);
+            }
+            return ConvertToJson(returndata);
+        }
+        private HttpResponseMessage PaperType(string keywords, ref int page, ref string sortBy)
+        {
+            ReturnData<Returnpapers> returndata = new ReturnData<Returnpapers>();
+            returndata.Message = "success";
+            returndata.Data = new Returnpapers();
+            returndata.Data.type = "paper";
+            returndata.Data.papers = new List<Dictionary<string, string>>();
+            if (keywords == "") { return ConvertToJson(returndata); }
+            if (page == null) { page = 1; }
+            if (sortBy == "") { sortBy = "Reference"; }
+
+            var results =
+            from Paper in db.Paper
+            where Paper.Title.IndexOf(keywords) != -1
+            orderby Paper.ReferencedNum descending
+            select Paper;
+            foreach (var result in results.Skip((page - 1) * 20).Take(20))
+            {
+                Dictionary<string, string> mid = new Dictionary<string, string>();
+                mid.Add("id", result.PaperID.ToString());
+                mid.Add("title", result.Title);
+                mid.Add("author", result.Authors);
+                mid.Add("publisher", result.Publisher);
+                mid.Add("keywords", result.KeyWord);
+                mid.Add("summary", result.Abstract);
+                returndata.Data.papers.Add(mid);
+            }
+            return ConvertToJson(returndata);
+        }
+
+
+        /// <summary>
+        /// 获取对应id的paper的详细信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("resource/paper")]
         public HttpResponseMessage RequestPaper(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPaper paper = new ReturnPaper();
-            paper.message = "success";
-            paper.data = db.Paper.Find(id);
-            return ConvertToJson(paper);
+            ReturnData<Returnpaper> returndata = new ReturnData<Returnpaper>();
+            returndata.Data = new Returnpaper();
+            returndata.Message = "success";
+            returndata.Data.access = false;
+            var cookie = HttpContext.Current.Request.Cookies["account"];
+            if (cookie != null && cookie["role"].ToString() == "user")
+            {
+                long userID=long.Parse(cookie["UserID"].ToString());
+                var result =
+                    from Download in db.Download
+                    where Download.UserID == userID && Download.PaperID == id
+                    select Download;
+                if (result != null) { returndata.Data.access = true; }
+            }
+            returndata.Data.paper = db.Paper.Find(id);
+            return ConvertToJson(returndata);
         }
 
+        /// <summary>
+        /// 获取对应id的patent的详细信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("resource/patent")]
         public HttpResponseMessage RequestPatent(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnPatent patent = new ReturnPatent();
-            patent.message = "success";
-            patent.data = db.Patent.Find(id);
-            return ConvertToJson(patent);
+            ReturnData<Patent> returndata = new ReturnData<Patent>();
+            returndata.Message = "success";
+            returndata.Data = db.Patent.Find(id);
+            return ConvertToJson(returndata);
         }
 
+        /// <summary>
+        /// 获取对应id的expert的详细信息,包含论文等
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("resource/expert")]
         public HttpResponseMessage GetExpertInformation(int id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnExpert expert = new ReturnExpert();
-            expert.data = new ExpertData();
-            expert.data.PaperList = new List<Paper>();
-            expert.data.PatentList = new List<Patent>();
-            expert.message = "succcess";
-            expert.data.expert = db.ExpertInfo.Find(id);
+            ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
+            returndata.Data = new ExpertData();
+            returndata.Data.PaperList = new List<Paper>();
+            returndata.Data.PatentList = new List<Patent>();
+            returndata.Message = "succcess";
+            returndata.Data.expert = db.ExpertInfo.Find(id);
             var papers =
             from ExpertPaper in db.ExpertPaper
             where ExpertPaper.ExpertID==id
             select ExpertPaper;
             foreach (var mid in papers)
-            { expert.data.PaperList.Add(mid.Paper);}
+            { returndata.Data.PaperList.Add(mid.Paper);}
             var patents =
             from ExpertPatent in db.ExpertPatent
             where ExpertPatent.ExpertID == id
             select ExpertPatent;
             foreach (var mid in patents)
-            { expert.data.PatentList.Add(mid.Patent); }
-            return ConvertToJson(expert);
+            { returndata.Data.PatentList.Add(mid.Patent); }
+            return ConvertToJson(returndata);
         }
+
+
+        //TODO:还有三个接口不着急弄。将上个接口拆分的接口。
+
+
+
         private long GenExpertID()
         {
             Random rd = new Random();
@@ -213,7 +287,6 @@ namespace WebAPI.Controllers
             }
             return ExpertID;
         }
-
         private long GenPaperID()
         {
             Random rd = new Random();
@@ -227,7 +300,6 @@ namespace WebAPI.Controllers
             }
             return PaperID;
         }
-
         private long GenPatentID()
         {
             Random rd = new Random();
@@ -242,9 +314,12 @@ namespace WebAPI.Controllers
             return PatentID;
         }
 
+
         /// <summary>
         /// 爬虫接口PostExpert
         /// </summary>
+        /// <param name="expert"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("resource/PostExpert")]
         public string PostExpert(ExpertInfo expert)
@@ -262,9 +337,12 @@ namespace WebAPI.Controllers
             }
         }
 
+
         /// <summary>
         /// 爬虫接口PostPaper
         /// </summary>
+        /// <param name="paper"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("resource/PostPaper")]
         public string PostPaper(Paper paper)
@@ -272,15 +350,15 @@ namespace WebAPI.Controllers
             try
             {
                 paper.PaperID = GenPaperID();
-                if (paper.Abstract == "[]"){paper.Abstract = null;}
-                if (paper.Title == "[]") { paper.Title = null; }
-                if (paper.IPC == "[]") { paper.IPC = null; }
-                if (paper.Type == "[]") { paper.Type = null; }
-                if (paper.DOI == "[]") { paper.DOI = null; }
-                if (paper.Publisher == "[]") { paper.Publisher = null; }
-                if (paper.KeyWord == "[]") { paper.KeyWord = null; }
-                if (paper.Address == "[]") { paper.Address = null; }
-                if (paper.Authors == "[]") { paper.Authors = null; }
+                //if (paper.Abstract == "[]"){paper.Abstract = null;}
+                //if (paper.Title == "[]") { paper.Title = null; }
+                //if (paper.IPC == "[]") { paper.IPC = null; }
+                //if (paper.Type == "[]") { paper.Type = null; }
+                //if (paper.DOI == "[]") { paper.DOI = null; }
+                //if (paper.Publisher == "[]") { paper.Publisher = null; }
+                //if (paper.KeyWord == "[]") { paper.KeyWord = null; }
+                //if (paper.Address == "[]") { paper.Address = null; }
+                //if (paper.Authors == "[]") { paper.Authors = null; }
                 db.Paper.Add(paper);
                 db.SaveChanges();
                 return "success";
@@ -291,9 +369,12 @@ namespace WebAPI.Controllers
             }
         }
 
+
         /// <summary>
         /// 爬虫接口PostPatent
         /// </summary>
+        /// <param name="patent"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("resource/PostPatent")]
         public string PostPatent(Patent patent)
@@ -303,6 +384,34 @@ namespace WebAPI.Controllers
                 patent.PatentID = GenPatentID();
                 db.Patent.Add(patent);
                 db.SaveChanges();
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error    " + ex.Message;
+            }
+        }
+
+
+        /// <summary>
+        /// 爬虫接口PostRaletion
+        /// </summary>
+        /// <param name="raletion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("resource/PostRaletion")]
+        public string PostRalation(Raletion raletion)
+        {
+            try
+            {
+                foreach (var data in raletion.IDList)
+                {
+                    ExpertPaper EP = new ExpertPaper();
+                    EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == raletion.ShcolarID).ExpertID;
+                    EP.PaperID = db.Paper.FirstOrDefault(Paper => Paper.BaiduID == data).PaperID;
+                    db.ExpertPaper.Add(EP);
+                    db.SaveChanges();
+                }
                 return "success";
             }
             catch (Exception ex)

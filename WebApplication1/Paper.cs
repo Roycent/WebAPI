@@ -42,6 +42,7 @@ namespace WebAPI
         public Nullable<int> Price { get; set; }
         public Nullable<bool> IsPass { get; set; }
         public string Authors { get; set; }
+        public string BaiduID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comment { get; set; }
