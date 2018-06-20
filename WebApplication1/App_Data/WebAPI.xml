@@ -183,7 +183,7 @@
             返回专家数据
             </summary>
         </member>
-        <member name="T:WebAPI.Controllers.Raletion">
+        <member name="T:WebAPI.Controllers.Relation">
             <summary>
             
             </summary>
@@ -212,7 +212,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ResourceController.GetExpertInformation(System.Int64)">
+        <member name="M:WebAPI.Controllers.ResourceController.GetExpert(System.Int64)">
             <summary>
             获取对应id的expert的详细信息,包含论文等
             </summary>
@@ -242,11 +242,11 @@
             <param name="patent"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ResourceController.PostRalation(WebAPI.Controllers.Raletion)">
+        <member name="M:WebAPI.Controllers.ResourceController.PostRalation(System.String,System.String)">
             <summary>
             爬虫接口PostRaletion
             </summary>
-            <param name="raletion"></param>
+            <param name="relation"></param>
             <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.StressTestingController">

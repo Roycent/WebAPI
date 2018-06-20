@@ -426,13 +426,13 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("resource/PostRelation")]
-        public string PostRalation(Relation relation)
+        public string PostRalation(string ScholarID,string PaperID)
         {
             try
             {
                 ExpertPaper EP = new ExpertPaper();
-                EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == relation.ScholarID).ExpertID;
-                EP.PaperID = db.Paper.FirstOrDefault(Paper => Paper.BaiduID == relation.PaperID).PaperID;
+                EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == ScholarID).ExpertID;
+                EP.PaperID = db.Paper.FirstOrDefault(Paper => Paper.BaiduID == PaperID).PaperID;
                 db.ExpertPaper.Add(EP);
                 db.SaveChanges();
                 return "success";
