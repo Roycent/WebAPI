@@ -73,6 +73,7 @@ namespace WebAPI.Controllers
                     cookie["Phone"] = find.Phone;
                     cookie["point"] = find.integral.ToString();
                     cookie["UserID"] = find.UserID.ToString();
+                    cookie["Nickname"] = find.Nickname.ToString();
                     cookie.Expires = DateTime.Now.AddMinutes(120);
                     HttpContext.Current.Response.Cookies.Add(cookie);
                     res.Add("Message", "success");
@@ -140,11 +141,12 @@ namespace WebAPI.Controllers
             }
             long userID = long.Parse(cookie["UserID"]);
             Users find = db.Users.Find(userID);
-            info.Add("UserName", find.UserName);
             info.Add("UserID", find.UserID.ToString());
-            info.Add("IsExpert", find.IsExpert.ToString());
+            info.Add("UserName", find.UserName);
+            info.Add("NickName", find.Nickname);
             info.Add("Email", find.Email);
             info.Add("integral", find.integral.ToString());
+            info.Add("IsExpert", find.IsExpert.ToString());
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             Dictionary<string, string> res = new Dictionary<string, string>();
             res.Add("Message", "success");

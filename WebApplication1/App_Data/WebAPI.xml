@@ -28,7 +28,7 @@
             <summary>
             查询reviewer对象
             </summary>
-            <returns>成功:{"Message":"success","Data":{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}};
+            <returns>成功:{"Message":"success","Data":{"reviewers": [{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}]};
             失败:{"Message": "failed"};
             权限不足:{"Message":"forbidden"}</returns>
         </member>
@@ -64,7 +64,7 @@
             查询comment
             </summary>
             <returns>
-            成功:{"Message":"success","Data":{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}};
+            成功:{"Message":"success","Data":{"comments":[{"CommentID":"12333","Time":"2018-06-11 11:19:55.367","Content":"very good"}]};
             失败:{"Message":"failed"};
             权限不足:{"Message":"forbidden"}</returns>
         </member>
@@ -112,13 +112,12 @@
             <summary>
             获取角色
             </summary>
-            <returns>
-            身份不明，未知错误: {"Message":"failed"};
-            游客: {"Message":"Cookie error"};
-            普通用户:{"Message":"success","Data":{"Identity","commonuser"}};
-            专家用户:{"Message":"success","Data":{"Identity","expertuser"}};
-            管理员用户:{"Message":"success","Data":{"Identity","adminuser"}};
-            </returns>
+            <returns>身份不明，未知错误: {"Message":"failed"}; 
+            游客: {"Message":"Cookie error"}; 
+            普通用户:{"Message":"success","Data":{"Roles": [{"Identity":"user","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]};
+            专家用户:{"Message":"success","Data":{"Roles": [{"Identity":"expertuser","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]}; 
+            管理员用户:{"Message":"success","Data":{"Roles": [{"Identity":"adminuser","AdminID":"123","AdminName":"abc"}]};
+            integral：积分</returns>
         </member>
         <member name="T:WebAPI.Controllers.PapersController">
             <summary>
