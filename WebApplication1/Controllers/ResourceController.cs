@@ -288,12 +288,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("resource/expert/patent")]
+        [Route("resource/expert/patents")]
         public HttpResponseMessage GetPatent(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<ExpertPatents> returndata = new ReturnData<ExpertPatents>();
+            returndata.Data = new ExpertPatents();
             try
             {
                 returndata.Message = "succcess";
@@ -313,12 +314,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("resource/expert/paper")]
+        [Route("resource/expert/papers")]
         public HttpResponseMessage GetPaper(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<ExpertPapers> returndata = new ReturnData<ExpertPapers>();
+            returndata.Data = new ExpertPapers();
             try
             {
                 returndata.Message = "succcess";

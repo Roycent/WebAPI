@@ -178,14 +178,9 @@
             返回experts数据
             </summary>
         </member>
-        <member name="T:WebAPI.Controllers.ExpertData">
+        <member name="T:WebAPI.Controllers.ExpertPapers">
             <summary>
             返回专家数据
-            </summary>
-        </member>
-        <member name="T:WebAPI.Controllers.Relation">
-            <summary>
-            
             </summary>
         </member>
         <member name="M:WebAPI.Controllers.ResourceController.SearchSource(System.String,System.String,System.Int32,System.String)">
