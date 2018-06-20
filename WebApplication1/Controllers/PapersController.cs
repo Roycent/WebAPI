@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <returns>上传paper后生成的paperID或失败</returns>
         [HttpPost]
-        [Route("expert/UploadPaper")]
+        [Route("Expert/UploadPaper")]
         public async Task<HttpResponseMessage> UploadPaper(string title)
         {
             long paperID = GenPaperID();
@@ -92,7 +92,7 @@ namespace WebAPI.Controllers
         /// 如： post [www.xxx.com]/expert/UpdatePaper?paperID=61234539523
         /// </param>
         /// <returns>Message: "success"或"failed" Details: 错误具体信息</returns>
-        [HttpPost, Route("expert/UpdatePaper")]
+        [HttpPost, Route("Expert/UpdatePaper")]
         public async Task<HttpResponseMessage> UpdatePaper(long paperID)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
@@ -147,13 +147,25 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="newPaper">Paper的各项需要手动提供的数据</param>
         /// <returns>"success"或"failed"</returns>
-        [Route("expert/ModifyPaperInfo")]
+        [Route("Expert/ModifyPaperInfo")]
         public HttpResponseMessage ModifyPaperInfo(Paper newPaper)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
             try
             {
+                var cookie = HttpContext.Current.Request.Cookies["account"];
+                if(cookie == null)
+                {
+                    res.Add("Message", "failed");
+                    res.Add("Details", "cookie error");
+                    return ConvertToJson(res);
+                }
                 Paper find = db.Paper.Find(newPaper.PaperID);
+                if (long.Parse(cookie["UserID"]) != find.UpID)
+                {
+                    res.Add("Message", "forbidden");
+                    return ConvertToJson(res);
+                }
                 find.Abstract = newPaper.Abstract;
                 find.IPC = newPaper.IPC;
                 find.Type = newPaper.Type;
@@ -181,7 +193,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="p">PaperID</param>
         /// <returns>"forbidden"无权限 "failed" 失败 "success" 成功</returns>
-        [HttpPost, Route("expert/DeletePaper")]
+        [HttpPost, Route("Expert/DeletePaper")]
         public HttpResponseMessage DeletePaper(Paper p)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
