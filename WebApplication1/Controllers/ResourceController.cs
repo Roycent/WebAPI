@@ -64,10 +64,10 @@ namespace WebAPI.Controllers
     /// <summary>
     /// 
     /// </summary>
-    public class Raletion
+    public class Relation
     {
         public string ScholarID;
-        public List<string> IDList;
+        public string PaperID;
     }
 
     public class ResourceController : ApiController
@@ -85,24 +85,24 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("resource")]
-        public HttpResponseMessage SearchSource(string type, string keywords,int page,string sortBy)
+        public HttpResponseMessage SearchSource(string type, string keywords, int page, string sortBy)
         {
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<Returnpapers> Rerurn = new ReturnData<Returnpapers>();
             Rerurn.Message = "type empty";
 
             if (type == "paper")
-            {return PaperType(keywords, ref page, ref sortBy);}
+            { return PaperType(keywords, ref page, ref sortBy); }
             if (type == "patent")
-            {return PatentType(keywords, ref page,ref sortBy);}
+            { return PatentType(keywords, ref page, ref sortBy); }
             if (type == "expert")
-            {return ExpertType(keywords, ref page, ref sortBy);}
+            { return ExpertType(keywords, ref page, ref sortBy); }
 
             return ConvertToJson(Rerurn);
         }
 
 
-        private HttpResponseMessage ExpertType(string keywords, ref int page,ref string sortBy)
+        private HttpResponseMessage ExpertType(string keywords, ref int page, ref string sortBy)
         {
             ReturnData<Returnexperts> returndata = new ReturnData<Returnexperts>();
             returndata.Message = "success";
@@ -209,7 +209,7 @@ namespace WebAPI.Controllers
             var cookie = HttpContext.Current.Request.Cookies["account"];
             if (cookie != null && cookie["role"].ToString() == "user")
             {
-                long userID=long.Parse(cookie["UserID"].ToString());
+                long userID = long.Parse(cookie["UserID"].ToString());
                 var result =
                     from Download in db.Download
                     where Download.UserID == userID && Download.PaperID == id
@@ -217,7 +217,7 @@ namespace WebAPI.Controllers
                 if (result != null) { returndata.Data.access = true; }
             }
             returndata.Data.paper = db.Paper.Find(id);
-            returndata.Data.paper.KeyWord=returndata.Data.paper.KeyWord.Replace("[", "").Replace("]","").Replace("'","");
+            returndata.Data.paper.KeyWord = returndata.Data.paper.KeyWord.Replace("[", "").Replace("]", "").Replace("'", "");
             return ConvertToJson(returndata);
         }
 
@@ -243,37 +243,69 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        //[HttpGet]
+        //[Route("resource/expert")]
+        //public HttpResponseMessage GetExpertInformation(long id)
+        //{
+        //    db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
+        //    JavaScriptSerializer Json = new JavaScriptSerializer();
+        //    ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
+        //    returndata.Data = new ExpertData();
+        //    returndata.Data.PaperList = new List<Paper>();
+        //    returndata.Data.PatentList = new List<Patent>();
+        //    returndata.Message = "succcess";
+        //    returndata.Data.expert = db.ExpertInfo.Find(id);
+        //    var papers =
+        //    from ExpertPaper in db.ExpertPaper
+        //    where ExpertPaper.ExpertID == id
+        //    select ExpertPaper;
+        //    foreach (var mid in papers)
+        //    { returndata.Data.PaperList.Add(mid.Paper); }
+        //    var patents =
+        //    from ExpertPatent in db.ExpertPatent
+        //    where ExpertPatent.ExpertID == id
+        //    select ExpertPatent;
+        //    foreach (var mid in patents)
+        //    { returndata.Data.PatentList.Add(mid.Patent); }
+        //    return ConvertToJson(returndata);
+        //}
+
+
+        //TODO:还有三个接口不着急弄。将上个接口拆分的接口。
         [HttpGet]
         [Route("resource/expert")]
-        public HttpResponseMessage GetExpertInformation(long id)
+        public HttpResponseMessage GetExpert(long id)
+        {
+            db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnData<ExpertInfo> returndata = new ReturnData<ExpertInfo>();
+            returndata.Data = new ExpertInfo();
+            returndata.Message = "succcess";
+            returndata.Data = db.ExpertInfo.Find(id);
+            return ConvertToJson(returndata);
+        }
+
+        [HttpGet]
+        [Route("resource/expert/patent")]
+        public HttpResponseMessage GetPatent(long id)
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
-            returndata.Data = new ExpertData();
-            returndata.Data.PaperList = new List<Paper>();
-            returndata.Data.PatentList = new List<Patent>();
-            returndata.Message = "succcess";
-            returndata.Data.expert = db.ExpertInfo.Find(id);
-            var papers =
-            from ExpertPaper in db.ExpertPaper
-            where ExpertPaper.ExpertID==id
-            select ExpertPaper;
-            foreach (var mid in papers)
-            { returndata.Data.PaperList.Add(mid.Paper);}
-            var patents =
-            from ExpertPatent in db.ExpertPatent
-            where ExpertPatent.ExpertID == id
-            select ExpertPatent;
-            foreach (var mid in patents)
-            { returndata.Data.PatentList.Add(mid.Patent); }
+
             return ConvertToJson(returndata);
         }
 
+        [HttpGet]
+        [Route("resource/expert/paper")]
+        public HttpResponseMessage GetPaper(long id)
+        {
+            db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
 
-        //TODO:还有三个接口不着急弄。将上个接口拆分的接口。
-
-
+            return ConvertToJson(returndata);
+        }
 
         private long GenExpertID()
         {
@@ -390,22 +422,19 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 爬虫接口PostRaletion
         /// </summary>
-        /// <param name="raletion"></param>
+        /// <param name="relation"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("resource/PostRaletion")]
-        public string PostRalation(Raletion raletion)
+        [Route("resource/PostRelation")]
+        public string PostRalation(Relation relation)
         {
             try
             {
-                foreach (var data in raletion.IDList)
-                {
-                    ExpertPaper EP = new ExpertPaper();
-                    EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == raletion.ScholarID).ExpertID;
-                    EP.PaperID = db.Paper.FirstOrDefault(Paper => Paper.BaiduID == data).PaperID;
-                    db.ExpertPaper.Add(EP);
-                    db.SaveChanges();
-                }
+                ExpertPaper EP = new ExpertPaper();
+                EP.ExpertID = db.ExpertInfo.FirstOrDefault(ExpertInfo => ExpertInfo.BaiduID == relation.ScholarID).ExpertID;
+                EP.PaperID = db.Paper.FirstOrDefault(Paper => Paper.BaiduID == relation.PaperID).PaperID;
+                db.ExpertPaper.Add(EP);
+                db.SaveChanges();
                 return "success";
             }
             catch (Exception ex)
