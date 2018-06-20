@@ -371,7 +371,7 @@ namespace WebAPI.Controllers
                 {
                     HttpCookie cookie = new HttpCookie("account");
                     cookie["role"] = "admin";
-                    cookie["name"] = find.AdminName;
+                    cookie["AdminName"] = find.AdminName;
                     cookie["AdminID"] = find.AdministratorID.ToString();
                     cookie.Expires = DateTime.Now.AddMinutes(120);
                     HttpContext.Current.Response.Cookies.Add(cookie);
@@ -452,14 +452,13 @@ namespace WebAPI.Controllers
         /// <summary>
         /// 获取角色
         /// </summary>
-        /// <returns>
-        /// "Message": "success",
-        /// 身份不明，未知错误: {"Message":"failed"};
-        /// 游客: {"Message":"Cookie error"};
-        /// 普通用户:{"Message":"success","Data":{"Roles": [{"Identity","commonuser"}]};
-        /// 专家用户:{"Message":"success","Data":{"Roles": [{"Identity","expertuser"}]};
-        /// 管理员用户:{"Message":"success","Data":{"Roles": [{"Identity","adminuser"}]};
-        /// </returns>
+        /// <returns>身份不明，未知错误: {"Message":"failed"}; 
+        /// 游客: {"Message":"Cookie error"}; 
+        /// 普通用户:{"Message":"success","Data":{"Roles": [{"Identity":"user","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]};
+        /// 专家用户:{"Message":"success","Data":{"Roles": [{"Identity":"expertuser","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]}; 
+        /// 管理员用户:{"Message":"success","Data":{"Roles": [{"Identity":"adminuser","AdminID":"123","AdminName":"abc"}]};
+        /// integral：积分</returns>
+
         [Route("GetRole")]
         public HttpResponseMessage Info()
         {
@@ -476,15 +475,35 @@ namespace WebAPI.Controllers
                     long userID = long.Parse(cookie["UserID"]);
                     Users find = db.Users.Find(userID);
                     if (find.IsExpert is true)
+                    {
                         role = "expertuser";
-                    else
-                        role = "commonuser";
+                        mid.Add("Identity", role);//返回角色信息
+                        mid.Add("UserID", cookie["UserID"]);
+                        mid.Add("UserName", cookie["name"]);
+                        mid.Add("NickName", cookie["NickName"]);
+                        mid.Add("Email", cookie["Email"]);
+                        mid.Add("integral", cookie["point"]);//integral 积分
+                    }
+                    else  
+                    {
+                        role = "user";
+                        mid.Add("Identity", role);//返回角色信息
+                        mid.Add("UserID", cookie["UserID"]);
+                        mid.Add("UserName", cookie["name"]);
+                        mid.Add("NickName", cookie["NickName"]);
+                        mid.Add("Email", cookie["Email"]);
+                        mid.Add("integral", cookie["point"]);//integral 积分
+                    }
                 }
                 else if (cookie["role"].ToString() == "admin")
                 {
-                        role = "adminuser";
+                    long adminID = long.Parse(cookie["AdminID"]);
+                    Administrator find = db.Administrator.Find(adminID);
+                    role = "adminuser";
+                    mid.Add("Identity", role);//返回角色信息
+                    mid.Add("AdminID", cookie["AdminID"]);
+                    mid.Add("AdminName", cookie["AdminName"]);
                 }
-                mid.Add("Identity", role);//返回角色信息
                 returnroles.Roles.Add(mid);
                 res.Message="success";
                 res.Data=returnroles;

@@ -112,14 +112,12 @@
             <summary>
             获取角色
             </summary>
-            <returns>
-            "Message": "success",
-            身份不明，未知错误: {"Message":"failed"};
-            游客: {"Message":"Cookie error"};
-            普通用户:{"Message":"success","Data":{"Roles": [{"Identity","commonuser"}]};
-            专家用户:{"Message":"success","Data":{"Roles": [{"Identity","expertuser"}]};
-            管理员用户:{"Message":"success","Data":{"Roles": [{"Identity","adminuser"}]};
-            </returns>
+            <returns>身份不明，未知错误: {"Message":"failed"}; 
+            游客: {"Message":"Cookie error"}; 
+            普通用户:{"Message":"success","Data":{"Roles": [{"Identity":"user","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]};
+            专家用户:{"Message":"success","Data":{"Roles": [{"Identity":"expertuser","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]}; 
+            管理员用户:{"Message":"success","Data":{"Roles": [{"Identity":"adminuser","AdminID":"123","AdminName":"abc"}]};
+            integral：积分</returns>
         </member>
         <member name="T:WebAPI.Controllers.PapersController">
             <summary>
@@ -214,7 +212,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ResourceController.GetExpert(System.Int64)">
+        <member name="M:WebAPI.Controllers.ResourceController.GetExpertInformation(System.Int64)">
             <summary>
             获取对应id的expert的详细信息,包含论文等
             </summary>
