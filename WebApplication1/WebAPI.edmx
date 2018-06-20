@@ -66,11 +66,12 @@
         </EntityType>
         <EntityType Name="ExpertPaper">
           <Key>
-            <PropertyRef Name="ExpertPaperID" />
+            <PropertyRef Name="ExpertID" />
+            <PropertyRef Name="PaperID" />
           </Key>
-          <Property Name="ExpertID" Type="bigint" />
-          <Property Name="PaperID" Type="bigint" />
-          <Property Name="ExpertPaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpertID" Type="bigint" Nullable="false" />
+          <Property Name="PaperID" Type="bigint" Nullable="false" />
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="ExpertPatent">
           <Key>
@@ -150,7 +151,8 @@
           <Property Name="Price" Type="int" />
           <Property Name="IsPass" Type="bit" />
           <Property Name="Authors" Type="varchar" MaxLength="1000" />
-          <Property Name="BaiduID" Type="varchar" MaxLength="100" StoreGeneratedPattern="None" />
+          <Property Name="BaiduID" Type="varchar" MaxLength="100" />
+          <Property Name="PublishYear" Type="int" />
         </EntityType>
         <EntityType Name="Patent">
           <Key>
@@ -213,7 +215,7 @@
           <Property Name="integral" Type="int" />
         </EntityType>
         <Association Name="ExpertPaper_ExpertInfo_ExpertID_fk">
-          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="0..1" />
+          <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="1" />
           <End Role="ExpertPaper" Type="Self.ExpertPaper" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ExpertInfo">
@@ -225,7 +227,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="ExpertPaper_Paper_PaperID_fk">
-          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
+          <End Role="Paper" Type="Self.Paper" Multiplicity="1" />
           <End Role="ExpertPaper" Type="Self.ExpertPaper" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Paper">
@@ -752,16 +754,6 @@
           <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_USERS" FromRole="Download" ToRole="Users" />
           <NavigationProperty Name="Paper" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" FromRole="Download" ToRole="Paper" />
         </EntityType>
-        <EntityType Name="ExpertPaper">
-          <Key>
-            <PropertyRef Name="ExpertPaperID" />
-          </Key>
-          <Property Name="PaperID" Type="Int64" />
-          <Property Name="ExpertPaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ExpertID" Type="Int64" />
-          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertPaper" ToRole="ExpertInfo" />
-          <NavigationProperty Name="Paper" Relationship="WebAPIModel.ExpertPaper_Paper_PaperID_fk" FromRole="ExpertPaper" ToRole="Paper" />
-        </EntityType>
         <EntityType Name="ExpertPatent">
           <Key>
             <PropertyRef Name="ExpertPatentID" />
@@ -857,7 +849,6 @@
           <EntitySet Name="Administrator" EntityType="Self.Administrator" />
           <EntitySet Name="Comment" EntityType="Self.Comment" />
           <EntitySet Name="Download" EntityType="Self.Download" />
-          <EntitySet Name="ExpertPaper" EntityType="Self.ExpertPaper" />
           <EntitySet Name="ExpertPatent" EntityType="Self.ExpertPatent" />
           <EntitySet Name="Like" EntityType="Self.Like" />
           <EntitySet Name="ManageExpert" EntityType="Self.ManageExpert" />
@@ -952,10 +943,6 @@
             <End Role="Paper" EntitySet="Paper" />
             <End Role="Download" EntitySet="Download" />
           </AssociationSet>
-          <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk">
-            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
-            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
-          </AssociationSet>
           <AssociationSet Name="ExpertPatent_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="ExpertPatent" EntitySet="ExpertPatent" />
@@ -972,10 +959,6 @@
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="UserExpert" EntitySet="UserExpert" />
           </AssociationSet>
-          <AssociationSet Name="ExpertPaper_Paper_PaperID_fk" Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk">
-            <End Role="Paper" EntitySet="Paper" />
-            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
-          </AssociationSet>
           <AssociationSet Name="FK_LIKE_REFERENCE_PAPER" Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER">
             <End Role="Paper" EntitySet="Paper" />
             <End Role="Like" EntitySet="Like" />
@@ -991,6 +974,15 @@
           <AssociationSet Name="FK_REVIEWER_REFERENCE_PAPER" Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER">
             <End Role="Paper" EntitySet="Paper" />
             <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <EntitySet Name="ExpertPaper" EntityType="WebAPIModel.ExpertPaper" />
+          <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk">
+            <End Role="ExpertInfo" EntitySet="ExpertInfo" />
+            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
+          </AssociationSet>
+          <AssociationSet Name="ExpertPaper_Paper_PaperID_fk" Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="ExpertPaper" EntitySet="ExpertPaper" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Review">
@@ -1291,11 +1283,11 @@
           <Property Name="Others" Type="Int32" />
           <Property Name="BaiduID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" FromRole="ExpertInfo" ToRole="Attention" />
-          <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPaper" />
           <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPatent" />
           <NavigationProperty Name="Like" Relationship="WebAPIModel.Like_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="Like" />
           <NavigationProperty Name="ManageExpert" Relationship="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ManageExpert" />
           <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="UserExpert" />
+          <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertInfo" ToRole="ExpertPaper" />
         </EntityType>
         <EntityType Name="Paper">
           <Key>
@@ -1321,11 +1313,12 @@
           <Property Name="BaiduID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="None" ConcurrencyMode="None" />
           <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" FromRole="Paper" ToRole="Comment" />
           <NavigationProperty Name="Download" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" FromRole="Paper" ToRole="Download" />
-          <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_Paper_PaperID_fk" FromRole="Paper" ToRole="ExpertPaper" />
           <NavigationProperty Name="Like" Relationship="WebAPIModel.FK_LIKE_REFERENCE_PAPER" FromRole="Paper" ToRole="Like" />
           <NavigationProperty Name="ManagePaper" Relationship="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" FromRole="Paper" ToRole="ManagePaper" />
           <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_PAPER_REFERENCE_USERS" FromRole="Paper" ToRole="Users" />
           <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" FromRole="Paper" ToRole="Review" />
+          <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_Paper_PaperID_fk" FromRole="Paper" ToRole="ExpertPaper" />
+          <Property Name="PublishYear" Type="Int32" />
         </EntityType>
         <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
           <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
@@ -1360,18 +1353,6 @@
             </Principal>
             <Dependent Role="Download">
               <PropertyRef Name="PaperID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ExpertPaper_ExpertInfo_ExpertID_fk">
-          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
-          <End Type="WebAPIModel.ExpertPaper" Role="ExpertPaper" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExpertInfo">
-              <PropertyRef Name="ExpertID" />
-            </Principal>
-            <Dependent Role="ExpertPaper">
-              <PropertyRef Name="ExpertID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1423,18 +1404,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ExpertPaper_Paper_PaperID_fk">
-          <End Type="WebAPIModel.Paper" Role="Paper" Multiplicity="0..1" />
-          <End Type="WebAPIModel.ExpertPaper" Role="ExpertPaper" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paper">
-              <PropertyRef Name="PaperID" />
-            </Principal>
-            <Dependent Role="ExpertPaper">
-              <PropertyRef Name="PaperID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_LIKE_REFERENCE_PAPER">
           <End Type="WebAPIModel.Paper" Role="Paper" Multiplicity="0..1" />
           <End Type="WebAPIModel.Like" Role="Like" Multiplicity="*" />
@@ -1483,6 +1452,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ExpertPaper">
+          <Key>
+            <PropertyRef Name="ExpertID" />
+            <PropertyRef Name="PaperID" />
+          </Key>
+          <Property Name="ExpertID" Type="Int64" Nullable="false" />
+          <Property Name="PaperID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" FromRole="ExpertPaper" ToRole="ExpertInfo" />
+          <NavigationProperty Name="Paper" Relationship="WebAPIModel.ExpertPaper_Paper_PaperID_fk" FromRole="ExpertPaper" ToRole="Paper" />
+        </EntityType>
+        <Association Name="ExpertPaper_ExpertInfo_ExpertID_fk">
+          <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="1" />
+          <End Type="WebAPIModel.ExpertPaper" Role="ExpertPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpertInfo">
+              <PropertyRef Name="ExpertID" />
+            </Principal>
+            <Dependent Role="ExpertPaper">
+              <PropertyRef Name="ExpertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ExpertPaper_Paper_PaperID_fk">
+          <End Type="WebAPIModel.Paper" Role="Paper" Multiplicity="1" />
+          <End Type="WebAPIModel.ExpertPaper" Role="ExpertPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="ExpertPaper">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1516,15 +1520,6 @@
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="PaperID" ColumnName="PaperID" />
                 <ScalarProperty Name="DownloadID" ColumnName="DownloadID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ExpertPaper">
-            <EntityTypeMapping TypeName="WebAPIModel.ExpertPaper">
-              <MappingFragment StoreEntitySet="ExpertPaper">
-                <ScalarProperty Name="ExpertID" ColumnName="ExpertID" />
-                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
-                <ScalarProperty Name="ExpertPaperID" ColumnName="ExpertPaperID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1693,6 +1688,7 @@
           <EntitySetMapping Name="Paper">
             <EntityTypeMapping TypeName="WebAPIModel.Paper">
               <MappingFragment StoreEntitySet="Paper">
+                <ScalarProperty Name="PublishYear" ColumnName="PublishYear" />
                 <ScalarProperty Name="BaiduID" ColumnName="BaiduID" />
                 <ScalarProperty Name="Authors" ColumnName="Authors" />
                 <ScalarProperty Name="IsPass" ColumnName="IsPass" />
@@ -1711,6 +1707,15 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="UpID" ColumnName="UpID" />
                 <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpertPaper">
+            <EntityTypeMapping TypeName="WebAPIModel.ExpertPaper">
+              <MappingFragment StoreEntitySet="ExpertPaper">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="ExpertID" ColumnName="ExpertID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

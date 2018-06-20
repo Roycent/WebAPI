@@ -19,10 +19,10 @@ namespace WebAPI
         {
             this.Comment = new HashSet<Comment>();
             this.Download = new HashSet<Download>();
-            this.ExpertPaper = new HashSet<ExpertPaper>();
             this.Like = new HashSet<Like>();
             this.ManagePaper = new HashSet<ManagePaper>();
             this.Review = new HashSet<Review>();
+            this.ExpertPaper = new HashSet<ExpertPaper>();
         }
     
         public long PaperID { get; set; }
@@ -43,13 +43,12 @@ namespace WebAPI
         public Nullable<bool> IsPass { get; set; }
         public string Authors { get; set; }
         public string BaiduID { get; set; }
+        public Nullable<int> PublishYear { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Download> Download { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExpertPaper> ExpertPaper { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Like> Like { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -57,5 +56,7 @@ namespace WebAPI
         public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Review { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ExpertPaper> ExpertPaper { get; set; }
     }
 }

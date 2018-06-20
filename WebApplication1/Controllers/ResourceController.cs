@@ -53,22 +53,17 @@ namespace WebAPI.Controllers
     /// <summary>
     /// 返回专家数据
     /// </summary>
-    public class ExpertData
+    public class ExpertPapers
     {
-        public ExpertInfo expert;
-        public List<Paper> PaperList;
-        public List<Patent> PatentList;
+        public string number { get; set; }
+        public List<Paper> PaperList { get; set; }
+    }
+    public class ExpertPatents
+    {
+        public string number { get; set; }
+        public List<Patent> PatentList { get; set; }
     }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Relation
-    {
-        public string ScholarID;
-        public string PaperID;
-    }
 
     public class ResourceController : ApiController
     {
@@ -280,8 +275,15 @@ namespace WebAPI.Controllers
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<ExpertInfo> returndata = new ReturnData<ExpertInfo>();
             returndata.Data = new ExpertInfo();
+            try
+            {
             returndata.Message = "succcess";
             returndata.Data = db.ExpertInfo.Find(id);
+            }
+            catch (Exception ex)
+            {
+                returndata.Message = "error   " + ex.Message;
+            }
             return ConvertToJson(returndata);
         }
 
@@ -291,8 +293,22 @@ namespace WebAPI.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
-
+            ReturnData<ExpertPatents> returndata = new ReturnData<ExpertPatents>();
+            try
+            {
+                returndata.Message = "succcess";
+                returndata.Data.number = 4.ToString();
+                var patents =
+                from ExpertPatent in db.ExpertPatent
+                where ExpertPatent.ExpertID == id
+                select ExpertPatent;
+                foreach (var mid in patents.Take(4))
+                { returndata.Data.PatentList.Add(mid.Patent); }
+            }
+            catch (Exception ex)
+            {
+                returndata.Message = "error   " + ex.Message;
+            }
             return ConvertToJson(returndata);
         }
 
@@ -302,8 +318,22 @@ namespace WebAPI.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
-
+            ReturnData<ExpertPapers> returndata = new ReturnData<ExpertPapers>();
+            try
+            {
+                returndata.Message = "succcess";
+                returndata.Data.number = 4.ToString();
+                var papers =
+                from ExpertPaper in db.ExpertPaper
+                where ExpertPaper.ExpertID == id
+                select ExpertPaper;
+                foreach (var mid in papers.Take(4))
+                { returndata.Data.PaperList.Add(mid.Paper); }
+            }
+            catch (Exception ex)
+            {
+                returndata.Message = "error   " + ex.Message;
+            }
             return ConvertToJson(returndata);
         }
 

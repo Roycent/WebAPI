@@ -14,9 +14,9 @@ namespace WebAPI
     
     public partial class ExpertPaper
     {
-        public Nullable<long> PaperID { get; set; }
-        public int ExpertPaperID { get; set; }
-        public Nullable<long> ExpertID { get; set; }
+        public long ExpertID { get; set; }
+        public long PaperID { get; set; }
+        public long ID { get; set; }
     
         public virtual ExpertInfo ExpertInfo { get; set; }
         public virtual Paper Paper { get; set; }

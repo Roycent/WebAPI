@@ -18,11 +18,11 @@ namespace WebAPI
         public ExpertInfo()
         {
             this.Attention = new HashSet<Attention>();
-            this.ExpertPaper = new HashSet<ExpertPaper>();
             this.ExpertPatent = new HashSet<ExpertPatent>();
             this.Like = new HashSet<Like>();
             this.ManageExpert = new HashSet<ManageExpert>();
             this.UserExpert = new HashSet<UserExpert>();
+            this.ExpertPaper = new HashSet<ExpertPaper>();
         }
     
         public long ExpertID { get; set; }
@@ -48,8 +48,6 @@ namespace WebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attention> Attention { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExpertPaper> ExpertPaper { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpertPatent> ExpertPatent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Like> Like { get; set; }
@@ -57,5 +55,7 @@ namespace WebAPI
         public virtual ICollection<ManageExpert> ManageExpert { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserExpert> UserExpert { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ExpertPaper> ExpertPaper { get; set; }
     }
 }

@@ -4,11 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="69">
+      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="90">
         <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="21.5" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="26" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="29" PointY="29.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.ExpertPatent" Width="1.5" PointX="26" PointY="34.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.Like" Width="1.5" PointX="29" PointY="36.375" IsExpanded="true" />
         <EntityTypeShape EntityType="WebAPIModel.ManageExpert" Width="1.5" PointX="29" PointY="23" IsExpanded="true" />
@@ -59,16 +58,17 @@
         <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
         <AssociationConnector Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" />
-        <AssociationConnector Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.ExpertPatent_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.Like_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.ManageExpert_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" />
-        <AssociationConnector Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk" />
         <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="5.3833321097229287" PointY="3.4356395320201476" />
+        <AssociationConnector Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" />
+        <AssociationConnector Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk" />
         
         
         
