@@ -200,19 +200,28 @@ namespace WebAPI.Controllers
             ReturnData<Returnpaper> returndata = new ReturnData<Returnpaper>();
             returndata.Data = new Returnpaper();
             returndata.Message = "success";
-            returndata.Data.access = false;
-            var cookie = HttpContext.Current.Request.Cookies["account"];
-            if (cookie != null && cookie["role"].ToString() == "user")
+            try
             {
-                long userID = long.Parse(cookie["UserID"].ToString());
-                var result =
-                    from Download in db.Download
-                    where Download.UserID == userID && Download.PaperID == id
-                    select Download;
-                if (result != null) { returndata.Data.access = true; }
+                returndata.Data.access = false;
+                var cookie = HttpContext.Current.Request.Cookies["account"];
+                if (cookie != null && cookie["role"].ToString() == "user")
+                {
+                    long userID = long.Parse(cookie["UserID"].ToString());
+                    var result =
+                        from Download in db.Download
+                        where Download.UserID == userID && Download.PaperID == id
+                        select Download;
+                    if (result != null) { returndata.Data.access = true; }
+                }
+                returndata.Data.paper = new Paper();
+                returndata.Data.paper = db.Paper.Find(id);
+                if (returndata.Data.paper != null)
+                { returndata.Data.paper.KeyWord = returndata.Data.paper.KeyWord.Replace("[", "").Replace("]", "").Replace("'", ""); }
             }
-            returndata.Data.paper = db.Paper.Find(id);
-            returndata.Data.paper.KeyWord = returndata.Data.paper.KeyWord.Replace("[", "").Replace("]", "").Replace("'", "");
+            catch (Exception ex)
+            {
+                returndata.Message = "error   " + ex.Message;
+            }
             return ConvertToJson(returndata);
         }
 
@@ -298,13 +307,13 @@ namespace WebAPI.Controllers
             try
             {
                 returndata.Message = "succcess";
-                returndata.Data.number = 4.ToString();
                 var patents =
                 from ExpertPatent in db.ExpertPatent
                 where ExpertPatent.ExpertID == id
                 select ExpertPatent;
                 foreach (var mid in patents.Take(4))
                 { returndata.Data.PatentList.Add(mid.Patent); }
+                returndata.Data.number = returndata.Data.PatentList.Count.ToString();
             }
             catch (Exception ex)
             {
@@ -331,6 +340,7 @@ namespace WebAPI.Controllers
                 select ExpertPaper;
                 foreach (var mid in papers.Take(4))
                 { returndata.Data.PaperList.Add(mid.Paper); }
+                returndata.Data.number = returndata.Data.PaperList.Count.ToString();
             }
             catch (Exception ex)
             {
