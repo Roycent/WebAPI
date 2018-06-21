@@ -195,6 +195,8 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ReviewerID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“WebAPI.dbo.UserExpert”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -970,6 +972,8 @@
           <Property Name="ReviewerID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Review" Relationship="WebAPIModel.Review_Reviewer_ReviewerID_fk" FromRole="Reviewer" ToRole="Review" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserExpert">
           <Key>
@@ -1571,6 +1575,8 @@
           <EntitySetMapping Name="Reviewer">
             <EntityTypeMapping TypeName="WebAPIModel.Reviewer">
               <MappingFragment StoreEntitySet="Reviewer">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="ReviewerID" ColumnName="ReviewerID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

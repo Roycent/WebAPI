@@ -88,6 +88,8 @@ namespace WebAPI.Controllers
                         Dictionary<string, string> mid = new Dictionary<string, string>();
                         mid.Add("ReviewerID", result.ReviewerID.ToString());
                         mid.Add("Name", result.Name);
+                        mid.Add("IsDeleted", result.IsDelete.ToString());
+                        mid.Add("Email", result.Email);
                         returnreviewers.reviewers.Add(mid);
                         res.Message = "success";
                         res.Data = returnreviewers;
@@ -132,7 +134,8 @@ namespace WebAPI.Controllers
                         Reviewer reviewer1 = new Reviewer
                         {
                             Name = reviewer.Name,
-                            Password = reviewer.Password
+                            Password = reviewer.Password,
+                            Email = reviewer.Email
                         };
                         db.Reviewer.Add(reviewer1);
                         db.SaveChanges();
@@ -180,10 +183,11 @@ namespace WebAPI.Controllers
                 {
                     try
                     {
-                        db.Reviewer.Remove(find);
+                        find.IsDelete = true;
                         db.SaveChanges();
+
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         res.Add("Message", "failed");
                         return ConvertToJson(res);
