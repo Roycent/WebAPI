@@ -313,7 +313,7 @@
             失败:{"Message":"failed"};
             权限不足:{"Message":"forbidden"}</returns>
         </member>
-        <member name="M:WebAPI.Controllers.ReviewersController.GetCesoredPaper(System.String)">
+        <member name="M:WebAPI.Controllers.ReviewersController.GetCesoredPaper(System.Int64)">
             <summary>
             获取审核论文内容
             </summary>

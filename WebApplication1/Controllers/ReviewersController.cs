@@ -160,7 +160,7 @@ namespace WebAPI.Controllers
         /// 成功:{"Message":"success","Data":{"Content":[{……}]};
         /// 失败:{"Message":"failed"};
         /// 权限不足:{"Message":"forbidden"}</returns>
-        [Route("Censor/Paper")]
+        [HttpGet,Route("Censor/Paper")]
         public HttpResponseMessage GetCesoredPaper([FromUri]string id)
         {
             string role = HttpContext.Current.Request.Cookies["account"]["role"];
