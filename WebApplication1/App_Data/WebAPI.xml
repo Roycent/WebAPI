@@ -117,6 +117,7 @@
             普通用户:{"Message":"success","Data":{"Roles": [{"Identity":"user","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]};
             专家用户:{"Message":"success","Data":{"Roles": [{"Identity":"expertuser","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]}; 
             管理员用户:{"Message":"success","Data":{"Roles": [{"Identity":"adminuser","AdminID":"123","AdminName":"abc"}]};
+            审核者用户:{"Message":"success","Data":{"Roles": [{"Identity":"censoruser","CensorID":"123","CensorName":"abc"}]};
             integral：积分</returns>
         </member>
         <member name="M:WebAPI.Controllers.ExpertInfoesController.GetExpertInfo">

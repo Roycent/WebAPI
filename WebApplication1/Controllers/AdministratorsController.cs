@@ -457,6 +457,7 @@ namespace WebAPI.Controllers
         /// 普通用户:{"Message":"success","Data":{"Roles": [{"Identity":"user","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]};
         /// 专家用户:{"Message":"success","Data":{"Roles": [{"Identity":"expertuser","UserID":"123","UserName":"abc","NickName":"aaa","Email":"a@.com","integral":"100"}]}; 
         /// 管理员用户:{"Message":"success","Data":{"Roles": [{"Identity":"adminuser","AdminID":"123","AdminName":"abc"}]};
+        /// 审核者用户:{"Message":"success","Data":{"Roles": [{"Identity":"censoruser","CensorID":"123","CensorName":"abc"}]};
         /// integral：积分</returns>
 
         [Route("GetRole")]
@@ -503,6 +504,15 @@ namespace WebAPI.Controllers
                     mid.Add("Identity", role);//返回角色信息
                     mid.Add("AdminID", cookie["AdminID"]);
                     mid.Add("AdminName", cookie["AdminName"]);
+                }
+                else if (cookie["role"].ToString() == "censor")
+                {
+                    long adminID = long.Parse(cookie["ReviewerID"]);
+                    Administrator find = db.Administrator.Find(adminID);
+                    role = "censoruser";
+                    mid.Add("Identity", role);//返回角色信息
+                    mid.Add("CensorID", cookie["ReviewerID"]);
+                    mid.Add("CensorName", cookie["Name"]);
                 }
                 returnroles.Roles.Add(mid);
                 res.Message="success";
