@@ -119,6 +119,33 @@
             管理员用户:{"Message":"success","Data":{"Roles": [{"Identity":"adminuser","AdminID":"123","AdminName":"abc"}]};
             integral：积分</returns>
         </member>
+        <member name="M:WebAPI.Controllers.ExpertInfoesController.GetExpertInfo">
+            <summary>
+            返回专家数据（从cookie中读取userID）
+            </summary>
+            <returns>
+            Message:success/Message:error,Details:error infomation  Data:专家数据信息
+            </returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExpertInfoesController.ModifyExpertInfo(WebAPI.ExpertInfo)">
+            <summary>
+            修改专家信息（改什么传什么）
+            </summary>
+            <param name="info">Name, Workstation, Field</param>
+            <returns>Message:success / Message:error,Details:xxx</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExpertInfoesController.GetPapersInfo">
+            <summary>
+            返回专家Paper
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExpertInfoesController.GetPatentInfo">
+            <summary>
+            返回专家Patent
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.PapersController">
             <summary>
             Paper相关控制器 by 邢智涣
@@ -157,6 +184,18 @@
             </summary>
             <param name="p">PaperID</param>
             <returns>"forbidden"无权限 "failed" 失败 "success" 成功</returns>
+        </member>
+        <member name="T:WebAPI.Controllers.PatentsController">
+            <summary>
+            patent相关控制器 by 邢智涣
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.PatentsController.UploadPatent(System.String)">
+            <summary>
+            上传Patent  参数及返回同上传Paper
+            </summary>
+            <param name="title"></param>
+            <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.Returnpaper">
             <summary>
