@@ -248,7 +248,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [Route("resource/getexpertlinegraph")]
         public HttpResponseMessage GetExpertYears(long id)
         {

@@ -24,6 +24,7 @@ namespace WebAPI.Controllers
             else if (id == null) { returndata.Message = "ID Empty"; }
             else
             {
+                returndata.Message = "success";
                 var results =
                     from Comment in db.Comment
                     where Comment.TypeID == id && Comment.Type == type
