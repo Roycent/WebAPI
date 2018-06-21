@@ -183,7 +183,8 @@ namespace WebAPI.Controllers
                 {
                     try
                     {
-                        find.IsDelete = true;
+                        if (find.IsDelete == false) { find.IsDelete = true; }
+                        else { find.IsDelete = false; }
                         db.SaveChanges();
 
                     }
