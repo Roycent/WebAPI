@@ -267,6 +267,7 @@ namespace WebAPI.Controllers
                     year = g.Key.ToString(),
                     count = g.Count()
                 };
+            returndata.Message = "success";
             foreach(var result in results)
             {
                 returndata.Data.labels.Add(result.year);
