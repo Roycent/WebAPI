@@ -40,6 +40,7 @@ namespace WebAPI.Controllers
             {
                 comment.UserID= long.Parse(cookie["userID"]);
                 comment.IsPass = true;
+                return ConvertToJson(returndata);
             }
             returndata.Message = "No Loging";
 
