@@ -175,7 +175,7 @@ namespace WebAPI.Controllers
             else
             {
                 //在reviewer表中匹配对应id，删除表记录
-                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.Name == reviewer.Name);
+                Reviewer find = db.Reviewer.FirstOrDefault(Reviewer => Reviewer.ReviewerID == reviewer.ReviewerID);
                 if (find != null)//name在表中
                 {
                     try
