@@ -14,15 +14,22 @@ namespace WebAPI
     
     public partial class Comment
     {
-        public long CommentID { get; set; }
-        public Nullable<long> PatentID { get; set; }
-        public Nullable<long> PaperID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Comment()
+        {
+            this.Review = new HashSet<Review>();
+        }
+    
         public string Type { get; set; }
         public System.DateTime Time { get; set; }
         public string Content { get; set; }
+        public long UserID { get; set; }
+        public Nullable<long> TypeID { get; set; }
+        public Nullable<bool> IsPass { get; set; }
+        public long CommentID { get; set; }
     
         public virtual Users Users { get; set; }
-        public virtual Patent Patent { get; set; }
-        public virtual Paper Paper { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Review> Review { get; set; }
     }
 }

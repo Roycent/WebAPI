@@ -25,12 +25,13 @@
           <Key>
             <PropertyRef Name="CommentID" />
           </Key>
-          <Property Name="CommentID" Type="bigint" Nullable="false" />
-          <Property Name="PatentID" Type="bigint" />
-          <Property Name="PaperID" Type="bigint" />
           <Property Name="Type" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="Content" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="TypeID" Type="bigint" />
+          <Property Name="IsPass" Type="bit" />
+          <Property Name="CommentID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Download">
           <Key>
@@ -88,7 +89,7 @@
           <Property Name="ExpertID" Type="bigint" />
           <Property Name="PaperID" Type="bigint" />
           <Property Name="PatentID" Type="bigint" />
-          <Property Name="LikeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LikeID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="ManageExpert">
           <Key>
@@ -184,6 +185,8 @@
           <Property Name="PatentID" Type="bigint" />
           <Property Name="PaperID" Type="bigint" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CommentID" Type="bigint" />
+          <Property Name="DateTime" Type="date" />
         </EntityType>
         <EntityType Name="Reviewer">
           <Key>
@@ -193,6 +196,8 @@
           <Property Name="ReviewerID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“WebAPI.dbo.UserExpert”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="UserExpert">
           <Key>
             <PropertyRef Name="ID" />
@@ -214,6 +219,18 @@
           <Property Name="Phone" Type="varchar" MaxLength="20" />
           <Property Name="integral" Type="int" />
         </EntityType>
+        <Association Name="Comment_Users_UserID_fk">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ExpertPaper_ExpertInfo_ExpertID_fk">
           <End Role="ExpertInfo" Type="Self.ExpertInfo" Multiplicity="1" />
           <End Role="ExpertPaper" Type="Self.ExpertPaper" Multiplicity="*" />
@@ -283,42 +300,6 @@
             </Principal>
             <Dependent Role="Attention">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_COMMENT_REFERENCE_PAPER">
-          <End Role="Paper" Type="Self.Paper" Multiplicity="0..1" />
-          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paper">
-              <PropertyRef Name="PaperID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="PaperID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_COMMENT_REFERENCE_PATENT">
-          <End Role="Patent" Type="Self.Patent" Multiplicity="0..1" />
-          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patent">
-              <PropertyRef Name="PatentID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="PatentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_COMMENT_REFERENCE_USERS">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Comment" Type="Self.Comment" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="CommentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -538,6 +519,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Review_Comment_CommentID_fk">
+          <End Role="Comment" Type="Self.Comment" Multiplicity="0..1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Review_Reviewer_ReviewerID_fk">
           <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
@@ -591,8 +584,18 @@
           <EntitySet Name="Patent" EntityType="Self.Patent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reviewer" EntityType="Self.Reviewer" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserExpert" EntityType="Self.UserExpert" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserExpert" EntityType="Self.UserExpert" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserExpert].[UserID] AS [UserID], 
+    [UserExpert].[ExpertID] AS [ExpertID], 
+    [UserExpert].[ID] AS [ID]
+    FROM [dbo].[UserExpert] AS [UserExpert]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="Comment_Users_UserID_fk" Association="Self.Comment_Users_UserID_fk">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
           <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="Self.ExpertPaper_ExpertInfo_ExpertID_fk">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="ExpertPaper" EntitySet="ExpertPaper" />
@@ -616,18 +619,6 @@
           <AssociationSet Name="FK_ATTENTIO_REFERENCE_USERS" Association="Self.FK_ATTENTIO_REFERENCE_USERS">
             <End Role="Users" EntitySet="Users" />
             <End Role="Attention" EntitySet="Attention" />
-          </AssociationSet>
-          <AssociationSet Name="FK_COMMENT_REFERENCE_PAPER" Association="Self.FK_COMMENT_REFERENCE_PAPER">
-            <End Role="Paper" EntitySet="Paper" />
-            <End Role="Comment" EntitySet="Comment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_COMMENT_REFERENCE_PATENT" Association="Self.FK_COMMENT_REFERENCE_PATENT">
-            <End Role="Patent" EntitySet="Patent" />
-            <End Role="Comment" EntitySet="Comment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_COMMENT_REFERENCE_USERS" Association="Self.FK_COMMENT_REFERENCE_USERS">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="FK_DOWNLOAD_REFERENCE_PAPER" Association="Self.FK_DOWNLOAD_REFERENCE_PAPER">
             <End Role="Paper" EntitySet="Paper" />
@@ -701,6 +692,10 @@
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="ManageExpert" EntitySet="ManageExpert" />
           </AssociationSet>
+          <AssociationSet Name="Review_Comment_CommentID_fk" Association="Self.Review_Comment_CommentID_fk">
+            <End Role="Comment" EntitySet="Comment" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
           <AssociationSet Name="Review_Reviewer_ReviewerID_fk" Association="Self.Review_Reviewer_ReviewerID_fk">
             <End Role="Reviewer" EntitySet="Reviewer" />
             <End Role="Review" EntitySet="Review" />
@@ -729,20 +724,6 @@
           <NavigationProperty Name="ManagePaper" Relationship="WebAPIModel.FK_MANAGEPA_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManagePaper" />
           <NavigationProperty Name="ManagePatent" Relationship="WebAPIModel.FK_MANAGEPATENT_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManagePatent" />
           <NavigationProperty Name="ManageUser" Relationship="WebAPIModel.FK_MANAGEUS_REFERENCE_ADMINIST" FromRole="Administrator" ToRole="ManageUser" />
-        </EntityType>
-        <EntityType Name="Comment">
-          <Key>
-            <PropertyRef Name="CommentID" />
-          </Key>
-          <Property Name="CommentID" Type="Int64" Nullable="false" />
-          <Property Name="PatentID" Type="Int64" />
-          <Property Name="PaperID" Type="Int64" />
-          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_USERS" FromRole="Comment" ToRole="Users" />
-          <NavigationProperty Name="Patent" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PATENT" FromRole="Comment" ToRole="Patent" />
-          <NavigationProperty Name="Paper" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" FromRole="Comment" ToRole="Paper" />
         </EntityType>
         <EntityType Name="Download">
           <Key>
@@ -836,18 +817,17 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="integral" Type="Int32" />
-          <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN1" FromRole="Users" ToRole="Review" />
           <NavigationProperty Name="UserExpert" Relationship="WebAPIModel.UserExpert_Users_UserID_fk" FromRole="Users" ToRole="UserExpert" />
-          <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_USERS" FromRole="Users" ToRole="Comment" />
           <NavigationProperty Name="Download" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_USERS" FromRole="Users" ToRole="Download" />
           <NavigationProperty Name="ManageUser" Relationship="WebAPIModel.FK_MANAGEUS_REFERENCE_USERS" FromRole="Users" ToRole="ManageUser" />
           <NavigationProperty Name="Attention" Relationship="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" FromRole="Users" ToRole="Attention" />
           <NavigationProperty Name="Patent" Relationship="WebAPIModel.FK_PATENT_REFERENCE_USERS" FromRole="Users" ToRole="Patent" />
           <NavigationProperty Name="Paper" Relationship="WebAPIModel.FK_PAPER_REFERENCE_USERS" FromRole="Users" ToRole="Paper" />
+          <NavigationProperty Name="Comment" Relationship="WebAPIModel.Comment_Users_UserID_fk" FromRole="Users" ToRole="Comment" />
+          <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN" FromRole="Users" ToRole="Review" />
         </EntityType>
         <EntityContainer Name="WebAPIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Administrator" EntityType="Self.Administrator" />
-          <EntitySet Name="Comment" EntityType="Self.Comment" />
           <EntitySet Name="Download" EntityType="Self.Download" />
           <EntitySet Name="ExpertPatent" EntityType="Self.ExpertPatent" />
           <EntitySet Name="Like" EntityType="Self.Like" />
@@ -856,13 +836,8 @@
           <EntitySet Name="ManagePatent" EntityType="Self.ManagePatent" />
           <EntitySet Name="ManageUser" EntityType="Self.ManageUser" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <EntitySet Name="Review" EntityType="WebAPIModel.Review" />
           <EntitySet Name="Reviewer" EntityType="WebAPIModel.Reviewer" />
           <EntitySet Name="UserExpert" EntityType="WebAPIModel.UserExpert" />
-          <AssociationSet Name="FK_REVIEWER_REFERENCE_EXPERTIN1" Association="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN1">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Review" EntitySet="Review" />
-          </AssociationSet>
           <AssociationSet Name="UserExpert_Users_UserID_fk" Association="WebAPIModel.UserExpert_Users_UserID_fk">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserExpert" EntitySet="UserExpert" />
@@ -883,10 +858,6 @@
             <End Role="Administrator" EntitySet="Administrator" />
             <End Role="ManageUser" EntitySet="ManageUser" />
           </AssociationSet>
-          <AssociationSet Name="FK_COMMENT_REFERENCE_USERS" Association="WebAPIModel.FK_COMMENT_REFERENCE_USERS">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Comment" EntitySet="Comment" />
-          </AssociationSet>
           <AssociationSet Name="FK_DOWNLOAD_REFERENCE_USERS" Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_USERS">
             <End Role="Users" EntitySet="Users" />
             <End Role="Download" EntitySet="Download" />
@@ -895,20 +866,12 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="ManageUser" EntitySet="ManageUser" />
           </AssociationSet>
-          <AssociationSet Name="Review_Reviewer_ReviewerID_fk" Association="WebAPIModel.Review_Reviewer_ReviewerID_fk">
-            <End Role="Reviewer" EntitySet="Reviewer" />
-            <End Role="Review" EntitySet="Review" />
-          </AssociationSet>
           <EntitySet Name="Attention" EntityType="WebAPIModel.Attention" />
           <AssociationSet Name="FK_ATTENTIO_REFERENCE_USERS" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS">
             <End Role="Users" EntitySet="Users" />
             <End Role="Attention" EntitySet="Attention" />
           </AssociationSet>
           <EntitySet Name="Patent" EntityType="WebAPIModel.Patent" />
-          <AssociationSet Name="FK_COMMENT_REFERENCE_PATENT" Association="WebAPIModel.FK_COMMENT_REFERENCE_PATENT">
-            <End Role="Patent" EntitySet="Patent" />
-            <End Role="Comment" EntitySet="Comment" />
-          </AssociationSet>
           <AssociationSet Name="ExpertPatent_Patent_PatentID_fk" Association="WebAPIModel.ExpertPatent_Patent_PatentID_fk">
             <End Role="Patent" EntitySet="Patent" />
             <End Role="ExpertPatent" EntitySet="ExpertPatent" />
@@ -925,19 +888,11 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Patent" EntitySet="Patent" />
           </AssociationSet>
-          <AssociationSet Name="FK_REVIEWER_REFERENCE_PATENT" Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT">
-            <End Role="Patent" EntitySet="Patent" />
-            <End Role="Review" EntitySet="Review" />
-          </AssociationSet>
           <EntitySet Name="ExpertInfo" EntityType="WebAPIModel.ExpertInfo" />
           <EntitySet Name="Paper" EntityType="WebAPIModel.Paper" />
           <AssociationSet Name="FK_ATTENTIO_REFERENCE_EXPERTIN" Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
             <End Role="Attention" EntitySet="Attention" />
-          </AssociationSet>
-          <AssociationSet Name="FK_COMMENT_REFERENCE_PAPER" Association="WebAPIModel.FK_COMMENT_REFERENCE_PAPER">
-            <End Role="Paper" EntitySet="Paper" />
-            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="FK_DOWNLOAD_REFERENCE_PAPER" Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER">
             <End Role="Paper" EntitySet="Paper" />
@@ -971,10 +926,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Paper" EntitySet="Paper" />
           </AssociationSet>
-          <AssociationSet Name="FK_REVIEWER_REFERENCE_PAPER" Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER">
-            <End Role="Paper" EntitySet="Paper" />
-            <End Role="Review" EntitySet="Review" />
-          </AssociationSet>
           <EntitySet Name="ExpertPaper" EntityType="WebAPIModel.ExpertPaper" />
           <AssociationSet Name="ExpertPaper_ExpertInfo_ExpertID_fk" Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk">
             <End Role="ExpertInfo" EntitySet="ExpertInfo" />
@@ -984,21 +935,33 @@
             <End Role="Paper" EntitySet="Paper" />
             <End Role="ExpertPaper" EntitySet="ExpertPaper" />
           </AssociationSet>
+          <EntitySet Name="Comment" EntityType="WebAPIModel.Comment" />
+          <EntitySet Name="Review" EntityType="WebAPIModel.Review" />
+          <AssociationSet Name="Comment_Users_UserID_fk" Association="WebAPIModel.Comment_Users_UserID_fk">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="Review_Comment_CommentID_fk" Association="WebAPIModel.Review_Comment_CommentID_fk">
+            <End Role="Comment" EntitySet="Comment" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_PAPER" Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_PATENT" Association="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT">
+            <End Role="Patent" EntitySet="Patent" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REVIEWER_REFERENCE_EXPERTIN" Association="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="Review_Reviewer_ReviewerID_fk" Association="WebAPIModel.Review_Reviewer_ReviewerID_fk">
+            <End Role="Reviewer" EntitySet="Reviewer" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="Review">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ReviewerID" Type="Int64" Nullable="false" />
-          <Property Name="UserID" Type="Int64" />
-          <Property Name="PatentID" Type="Int64" />
-          <Property Name="PaperID" Type="Int64" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN1" FromRole="Review" ToRole="Users" />
-          <NavigationProperty Name="Reviewer" Relationship="WebAPIModel.Review_Reviewer_ReviewerID_fk" FromRole="Review" ToRole="Reviewer" />
-          <NavigationProperty Name="Patent" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" FromRole="Review" ToRole="Patent" />
-          <NavigationProperty Name="Paper" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" FromRole="Review" ToRole="Paper" />
-        </EntityType>
         <EntityType Name="Reviewer">
           <Key>
             <PropertyRef Name="ReviewerID" />
@@ -1018,18 +981,6 @@
           <NavigationProperty Name="Users" Relationship="WebAPIModel.UserExpert_Users_UserID_fk" FromRole="UserExpert" ToRole="Users" />
           <NavigationProperty Name="ExpertInfo" Relationship="WebAPIModel.UserExpert_ExpertInfo_ExpertID_fk" FromRole="UserExpert" ToRole="ExpertInfo" />
         </EntityType>
-        <Association Name="FK_REVIEWER_REFERENCE_EXPERTIN1">
-          <End Type="WebAPIModel.Users" Role="Users" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Review">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UserExpert_Users_UserID_fk">
           <End Type="WebAPIModel.Users" Role="Users" Multiplicity="0..1" />
           <End Type="WebAPIModel.UserExpert" Role="UserExpert" Multiplicity="*" />
@@ -1090,18 +1041,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_COMMENT_REFERENCE_USERS">
-          <End Type="WebAPIModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="CommentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DOWNLOAD_REFERENCE_USERS">
           <End Type="WebAPIModel.Users" Role="Users" Multiplicity="0..1" />
           <End Type="WebAPIModel.Download" Role="Download" Multiplicity="*" />
@@ -1123,18 +1062,6 @@
             </Principal>
             <Dependent Role="ManageUser">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Review_Reviewer_ReviewerID_fk">
-          <End Type="WebAPIModel.Reviewer" Role="Reviewer" Multiplicity="1" />
-          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Reviewer">
-              <PropertyRef Name="ReviewerID" />
-            </Principal>
-            <Dependent Role="Review">
-              <PropertyRef Name="ReviewerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1180,25 +1107,12 @@
           <Property Name="Agent" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="PublicNum" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="IsPass" Type="Boolean" />
-          <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PATENT" FromRole="Patent" ToRole="Comment" />
           <NavigationProperty Name="ExpertPatent" Relationship="WebAPIModel.ExpertPatent_Patent_PatentID_fk" FromRole="Patent" ToRole="ExpertPatent" />
           <NavigationProperty Name="Like" Relationship="WebAPIModel.FK_LIKE_REFERENCE_PATENT" FromRole="Patent" ToRole="Like" />
           <NavigationProperty Name="ManagePatent" Relationship="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" FromRole="Patent" ToRole="ManagePatent" />
           <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_PATENT_REFERENCE_USERS" FromRole="Patent" ToRole="Users" />
           <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" FromRole="Patent" ToRole="Review" />
         </EntityType>
-        <Association Name="FK_COMMENT_REFERENCE_PATENT">
-          <End Type="WebAPIModel.Patent" Role="Patent" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patent">
-              <PropertyRef Name="PatentID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="PatentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ExpertPatent_Patent_PatentID_fk">
           <End Type="WebAPIModel.Patent" Role="Patent" Multiplicity="0..1" />
           <End Type="WebAPIModel.ExpertPatent" Role="ExpertPatent" Multiplicity="*" />
@@ -1244,18 +1158,6 @@
             </Principal>
             <Dependent Role="Patent">
               <PropertyRef Name="UpID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_REVIEWER_REFERENCE_PATENT">
-          <End Type="WebAPIModel.Patent" Role="Patent" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patent">
-              <PropertyRef Name="PatentID" />
-            </Principal>
-            <Dependent Role="Review">
-              <PropertyRef Name="PatentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1311,14 +1213,13 @@
           <Property Name="IsPass" Type="Boolean" />
           <Property Name="Authors" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="BaiduID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="None" ConcurrencyMode="None" />
-          <NavigationProperty Name="Comment" Relationship="WebAPIModel.FK_COMMENT_REFERENCE_PAPER" FromRole="Paper" ToRole="Comment" />
           <NavigationProperty Name="Download" Relationship="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" FromRole="Paper" ToRole="Download" />
           <NavigationProperty Name="Like" Relationship="WebAPIModel.FK_LIKE_REFERENCE_PAPER" FromRole="Paper" ToRole="Like" />
           <NavigationProperty Name="ManagePaper" Relationship="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" FromRole="Paper" ToRole="ManagePaper" />
           <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_PAPER_REFERENCE_USERS" FromRole="Paper" ToRole="Users" />
-          <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" FromRole="Paper" ToRole="Review" />
           <NavigationProperty Name="ExpertPaper" Relationship="WebAPIModel.ExpertPaper_Paper_PaperID_fk" FromRole="Paper" ToRole="ExpertPaper" />
           <Property Name="PublishYear" Type="Int32" />
+          <NavigationProperty Name="Review" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" FromRole="Paper" ToRole="Review" />
         </EntityType>
         <Association Name="FK_ATTENTIO_REFERENCE_EXPERTIN">
           <End Type="WebAPIModel.ExpertInfo" Role="ExpertInfo" Multiplicity="0..1" />
@@ -1329,18 +1230,6 @@
             </Principal>
             <Dependent Role="Attention">
               <PropertyRef Name="Exp_UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_COMMENT_REFERENCE_PAPER">
-          <End Type="WebAPIModel.Paper" Role="Paper" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paper">
-              <PropertyRef Name="PaperID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="PaperID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1440,18 +1329,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_REVIEWER_REFERENCE_PAPER">
-          <End Type="WebAPIModel.Paper" Role="Paper" Multiplicity="0..1" />
-          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paper">
-              <PropertyRef Name="PaperID" />
-            </Principal>
-            <Dependent Role="Review">
-              <PropertyRef Name="PaperID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ExpertPaper">
           <Key>
             <PropertyRef Name="ExpertID" />
@@ -1487,6 +1364,109 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="TypeID" Type="Int64" />
+          <Property Name="IsPass" Type="Boolean" />
+          <Property Name="CommentID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Users" Relationship="WebAPIModel.Comment_Users_UserID_fk" FromRole="Comment" ToRole="Users" />
+          <NavigationProperty Name="Review" Relationship="WebAPIModel.Review_Comment_CommentID_fk" FromRole="Comment" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ReviewerID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" />
+          <Property Name="PatentID" Type="Int64" />
+          <Property Name="PaperID" Type="Int64" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CommentID" Type="Int64" />
+          <Property Name="DateTime" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Comment" Relationship="WebAPIModel.Review_Comment_CommentID_fk" FromRole="Review" ToRole="Comment" />
+          <NavigationProperty Name="Paper" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" FromRole="Review" ToRole="Paper" />
+          <NavigationProperty Name="Patent" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_PATENT" FromRole="Review" ToRole="Patent" />
+          <NavigationProperty Name="Users" Relationship="WebAPIModel.FK_REVIEWER_REFERENCE_EXPERTIN" FromRole="Review" ToRole="Users" />
+          <NavigationProperty Name="Reviewer" Relationship="WebAPIModel.Review_Reviewer_ReviewerID_fk" FromRole="Review" ToRole="Reviewer" />
+        </EntityType>
+        <Association Name="Comment_Users_UserID_fk">
+          <End Type="WebAPIModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Review_Comment_CommentID_fk">
+          <End Type="WebAPIModel.Comment" Role="Comment" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_PAPER">
+          <End Type="WebAPIModel.Paper" Role="Paper" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_PATENT">
+          <End Type="WebAPIModel.Patent" Role="Patent" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patent">
+              <PropertyRef Name="PatentID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="PatentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REVIEWER_REFERENCE_EXPERTIN">
+          <End Type="WebAPIModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Review_Reviewer_ReviewerID_fk">
+          <End Type="WebAPIModel.Reviewer" Role="Reviewer" Multiplicity="1" />
+          <End Type="WebAPIModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviewer">
+              <PropertyRef Name="ReviewerID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ReviewerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1499,18 +1479,6 @@
                 <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
                 <ScalarProperty Name="AdminName" ColumnName="AdminName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Comment">
-            <EntityTypeMapping TypeName="WebAPIModel.Comment">
-              <MappingFragment StoreEntitySet="Comment">
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
-                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
-                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1597,17 +1565,6 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="integral" ColumnName="integral" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Review">
-            <EntityTypeMapping TypeName="WebAPIModel.Review">
-              <MappingFragment StoreEntitySet="Review">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
-                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ReviewerID" ColumnName="ReviewerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1716,6 +1673,32 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="PaperID" ColumnName="PaperID" />
                 <ScalarProperty Name="ExpertID" ColumnName="ExpertID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comment">
+            <EntityTypeMapping TypeName="WebAPIModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="IsPass" ColumnName="IsPass" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Review">
+            <EntityTypeMapping TypeName="WebAPIModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="PatentID" ColumnName="PatentID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ReviewerID" ColumnName="ReviewerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

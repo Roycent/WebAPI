@@ -17,7 +17,6 @@ namespace WebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Patent()
         {
-            this.Comment = new HashSet<Comment>();
             this.ExpertPatent = new HashSet<ExpertPatent>();
             this.Like = new HashSet<Like>();
             this.ManagePatent = new HashSet<ManagePatent>();
@@ -41,8 +40,6 @@ namespace WebAPI
         public string PublicNum { get; set; }
         public Nullable<bool> IsPass { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Comment> Comment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpertPatent> ExpertPatent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

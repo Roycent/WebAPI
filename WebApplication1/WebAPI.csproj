@@ -210,6 +210,7 @@
       <DependentUpon>WebAPI.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AdministratorsController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ExpertInfoesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PapersController.cs" />

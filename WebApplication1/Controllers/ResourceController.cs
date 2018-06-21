@@ -95,8 +95,6 @@ namespace WebAPI.Controllers
 
             return ConvertToJson(Rerurn);
         }
-
-
         private HttpResponseMessage ExpertType(string keywords, ref int page, ref string sortBy)
         {
             ReturnData<Returnexperts> returndata = new ReturnData<Returnexperts>();
@@ -272,8 +270,6 @@ namespace WebAPI.Controllers
         //    return ConvertToJson(returndata);
         //}
 
-
-        //TODO:还有三个接口不着急弄。将上个接口拆分的接口。
         [HttpGet]
         [Route("resource/expert")]
         public HttpResponseMessage GetExpert(long id)
@@ -316,7 +312,6 @@ namespace WebAPI.Controllers
                     Patent MidPatent = db.Patent.Find(mid.PatentID);
                     MidPatent.Review = null;
                     MidPatent.Review = null;
-                    MidPatent.Comment = null;
                     MidPatent.Like = null;
                     MidPatent.ExpertPatent = null;
                     MidPatent.ManagePatent = null;
@@ -354,7 +349,6 @@ namespace WebAPI.Controllers
                     {
                         Paper MidPaper = db.Paper.Find(mid.PaperID);
                         MidPaper.Review = null;
-                        MidPaper.Comment = null;
                         MidPaper.Like = null;
                         MidPaper.Download = null;
                         MidPaper.ExpertPaper = null;
@@ -507,5 +501,7 @@ namespace WebAPI.Controllers
                 return "error    " + ex.Message;
             }
         }
+
+
     }
 }

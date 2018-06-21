@@ -17,12 +17,11 @@ namespace WebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Paper()
         {
-            this.Comment = new HashSet<Comment>();
             this.Download = new HashSet<Download>();
             this.Like = new HashSet<Like>();
             this.ManagePaper = new HashSet<ManagePaper>();
-            this.Review = new HashSet<Review>();
             this.ExpertPaper = new HashSet<ExpertPaper>();
+            this.Review = new HashSet<Review>();
         }
     
         public long PaperID { get; set; }
@@ -46,8 +45,6 @@ namespace WebAPI
         public Nullable<int> PublishYear { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Comment> Comment { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Download> Download { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Like> Like { get; set; }
@@ -55,8 +52,8 @@ namespace WebAPI
         public virtual ICollection<ManagePaper> ManagePaper { get; set; }
         public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Review> Review { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpertPaper> ExpertPaper { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Review> Review { get; set; }
     }
 }
