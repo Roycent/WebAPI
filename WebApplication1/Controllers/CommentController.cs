@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
                 {
                     result.Review = null;
                     result.Users = null;
-                    returndata.Data.Add(result);
+                    if (result.IsPass==true) { returndata.Data.Add(result); }
                 }
             }
             return ConvertToJson(returndata);
