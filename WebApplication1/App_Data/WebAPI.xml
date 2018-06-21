@@ -246,9 +246,9 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ResourceController.GetExpert(System.Int64)">
+        <member name="M:WebAPI.Controllers.ResourceController.GetExpertYears(System.Int64)">
             <summary>
-            获取对应id的expert的详细信息,包含论文等
+            获取专家的每年成果
             </summary>
             <param name="id"></param>
             <returns></returns>

@@ -238,7 +238,7 @@ namespace WebAPI.Controllers
             return ConvertToJson(returndata);
         }
 
-
+        //TODO:未测试！！！
         /// <summary>
         /// 获取专家的每年成果
         /// </summary>
@@ -250,8 +250,8 @@ namespace WebAPI.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
             JavaScriptSerializer Json = new JavaScriptSerializer();
-            ReturnData<List<int>> returndata = new ReturnData<List<int>>();
-            returndata.Data = new List<int>();
+            ReturnData<Dictionary<string,long>> returndata = new ReturnData<Dictionary<string, long>>();
+            returndata.Data = new Dictionary<string, long>();
             var results =
                 from number in db.ExpertPaper
                 where number.ExpertID == id
@@ -261,7 +261,10 @@ namespace WebAPI.Controllers
                     year = g.Key,
                     count = g.Count()
                 };
-            //TODO:应添加逻辑代码。
+            foreach(var result in results)
+            {
+                returndata.Data.Add(result.year.ToString(), result.count);
+            }
             return ConvertToJson(returndata);
         }
 

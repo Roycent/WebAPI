@@ -18,14 +18,18 @@ namespace WebAPI.Controllers
         public HttpResponseMessage GetComment(long id,string type)
         {
             ReturnData<List<Comment>> returndata = new ReturnData<List<Comment>>();
+            returndata.Data = new List<Comment>();
             if (type == "") { returndata.Message = "Type Error"; }
             else if (id == null) { returndata.Message = "ID Empty"; }
-            var results =
-                from Comment in db.Comment
-                where Comment.TypeID == id && Comment.Type == type
-                select Comment;
-            foreach(var result in results)
-            {returndata.Data.Add(result);}
+            else
+            {
+                var results =
+                    from Comment in db.Comment
+                    where Comment.TypeID == id && Comment.Type == type
+                    select Comment;
+                foreach(var result in results)
+                {returndata.Data.Add(result);}
+            }
             return ConvertToJson(returndata);
         }
 
