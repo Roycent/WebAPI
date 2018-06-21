@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
         [Route("resource/comment")]
         public HttpResponseMessage GetComment(long id,string type)
         {
+            db.Configuration.ProxyCreationEnabled = false;
             ReturnData<List<Comment>> returndata = new ReturnData<List<Comment>>();
             returndata.Data = new List<Comment>();
             if (type == "") { returndata.Message = "Type Error"; }
@@ -28,7 +29,11 @@ namespace WebAPI.Controllers
                     where Comment.TypeID == id && Comment.Type == type
                     select Comment;
                 foreach(var result in results)
-                {returndata.Data.Add(result);}
+                {
+                    result.Review = null;
+                    result.Users = null;
+                    returndata.Data.Add(result);
+                }
             }
             return ConvertToJson(returndata);
         }
