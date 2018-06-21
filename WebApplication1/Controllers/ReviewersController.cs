@@ -109,7 +109,7 @@ namespace WebAPI.Controllers
                         string type="暂缺";
                         string detail="暂缺";
                         Dictionary<string, string> mid = new Dictionary<string, string>();
-                        mid.Add("id", result.ID.ToString());
+                        
                         //if (result.UserID != null)
                         //{
                         //    type = "user";
@@ -118,12 +118,14 @@ namespace WebAPI.Controllers
                         //}
                          if (result.PaperID != null)
                         {
+                            mid.Add("id", result.PaperID.ToString());
                             type = "paper";
                             Paper find = db.Paper.FirstOrDefault(Paper => Paper.PaperID == result.PaperID);
                             detail = find.Title;
                         }
                         else if (result.PatentID != null)
                         {
+                            mid.Add("id", result.PatentID.ToString());
                             type = "patent";
                             Patent find = db.Patent.FirstOrDefault(Patent => Patent.PatentID == result.PatentID);
                             detail = find.Title;

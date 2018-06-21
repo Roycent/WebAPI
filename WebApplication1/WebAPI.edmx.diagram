@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="72">
-        <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="21.5" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="26" PointY="26.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertPatent" Width="1.5" PointX="26" PointY="34.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Like" Width="1.5" PointX="29" PointY="36.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManageExpert" Width="1.5" PointX="29" PointY="23" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManagePaper" Width="1.5" PointX="26" PointY="36.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManagePatent" Width="1.5" PointX="26" PointY="40.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.ManageUser" Width="1.5" PointX="23.75" PointY="19.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="21.625" PointY="19.625" IsExpanded="true" />
+      <Diagram DiagramId="7c85f98c393f42b7bf4c845e3043b8de" Name="Diagram1" ZoomLevel="54">
+        <EntityTypeShape EntityType="WebAPIModel.Administrator" Width="1.5" PointX="17.5" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Download" Width="1.5" PointX="20.875" PointY="26.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertPatent" Width="1.5" PointX="16.125" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Like" Width="1.5" PointX="20.125" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManageExpert" Width="1.5" PointX="20.125" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManagePaper" Width="1.5" PointX="16.125" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManagePatent" Width="1.5" PointX="18" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.ManageUser" Width="1.5" PointX="21.625" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAPIModel.Users" Width="1.5" PointX="19.5" PointY="19.125" IsExpanded="true" />
 <<<<<<< HEAD
         
         
@@ -26,7 +26,7 @@
         
 <<<<<<< HEAD
         
-        <EntityTypeShape EntityType="WebAPIModel.Reviewer" Width="1.5" PointX="30.5" PointY="40" />
+        <EntityTypeShape EntityType="WebAPIModel.Reviewer" Width="1.5" PointX="18.25" PointY="28.75" />
         
 =======
         
@@ -40,14 +40,14 @@
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_ADMINIST" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_USERS" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEUS_REFERENCE_USERS" />
-        <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="1.9357755994125154" PointY="13.802934742440906" />
+        <EntityTypeShape EntityType="WebAPIModel.Attention" Width="1.5" PointX="13.125" PointY="20.625" />
         <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_USERS" />
-        <EntityTypeShape EntityType="WebAPIModel.Patent" Width="1.5" PointX="7.8178254830733991" PointY="4.8934861295360541" />
+        <EntityTypeShape EntityType="WebAPIModel.Patent" Width="1.5" PointX="15.125" PointY="16.5" />
         <AssociationConnector Association="WebAPIModel.ExpertPatent_Patent_PatentID_fk" />
         <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PATENT" />
         <AssociationConnector Association="WebAPIModel.FK_PATENT_REFERENCE_USERS" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="6.2900149087840767" PointY="20.623194078273695" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertInfo" Width="1.5" PointX="13.375" PointY="26.25" />
         <EntityTypeShape EntityType="WebAPIModel.Paper" Width="1.5" PointX="10.7515431934742" PointY="21.847239102165791" />
         <AssociationConnector Association="WebAPIModel.FK_ATTENTIO_REFERENCE_EXPERTIN" />
         <AssociationConnector Association="WebAPIModel.FK_DOWNLOAD_REFERENCE_PAPER" />
@@ -58,11 +58,11 @@
         <AssociationConnector Association="WebAPIModel.FK_LIKE_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_MANAGEPA_REFERENCE_PAPER" />
         <AssociationConnector Association="WebAPIModel.FK_PAPER_REFERENCE_USERS" />
-        <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="5.3833321097229287" PointY="3.4356395320201476" />
+        <EntityTypeShape EntityType="WebAPIModel.ExpertPaper" Width="1.5" PointX="12.375" PointY="12.375" />
         <AssociationConnector Association="WebAPIModel.ExpertPaper_ExpertInfo_ExpertID_fk" />
         <AssociationConnector Association="WebAPIModel.ExpertPaper_Paper_PaperID_fk" />
-        <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="6.625203064933979" PointY="18.77967076878048" />
-        <EntityTypeShape EntityType="WebAPIModel.Review" Width="1.5" PointX="4.4844950849583816" PointY="15.187032393732588" />
+        <EntityTypeShape EntityType="WebAPIModel.Comment" Width="1.5" PointX="12.375" PointY="17.625" />
+        <EntityTypeShape EntityType="WebAPIModel.Review" Width="1.5" PointX="10" PointY="17.875" />
         <AssociationConnector Association="WebAPIModel.Comment_Users_UserID_fk" />
         <AssociationConnector Association="WebAPIModel.Review_Comment_CommentID_fk" />
         <AssociationConnector Association="WebAPIModel.FK_REVIEWER_REFERENCE_PAPER" />
