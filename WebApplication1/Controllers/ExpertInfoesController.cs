@@ -140,7 +140,9 @@ namespace WebAPI.Controllers
             {
                 data.Add("number", "0");
                 data.Add("paper", "[]");
+                res.Add("Message", "success");
                 res.Add("Data", serializer.Serialize(data));
+                return ConvertToJson(res);
             }
             string papers = "[";
             var eps =
@@ -148,21 +150,23 @@ namespace WebAPI.Controllers
                 where ExpertPaper.ExpertID == expertID
                 select ExpertPaper;
             bool first = true;
-            foreach(var ep in eps)
+            foreach (var ep in eps)
             {
                 if (first != true)
                     papers = papers + ",";
                 Dictionary<string, string> paperData = new Dictionary<string, string>();
                 Paper paper = db.Paper.FirstOrDefault(Paper => Paper.PaperID == ep.PaperID);
-                paperData.Add("Id",paper.PaperID.ToString());
-                paperData.Add("Title",paper.Title);
-                paperData.Add("Abstract",paper.Abstract);
-                paperData.Add("Publisher",paper.Publisher);
+                paperData.Add("Id", paper.PaperID.ToString());
+                paperData.Add("Title", paper.Title);
+                paperData.Add("Abstract", paper.Abstract);
+                paperData.Add("Publisher", paper.Publisher);
                 papers = papers + serializer.Serialize(paperData);
                 first = false;
             }
+            papers += "]";
             data.Add("number", paperCount.ToString());
-            data.Add("Data", papers);
+            data.Add("papers", papers);
+            res.Add("Message", "success");
             res.Add("Data", serializer.Serialize(data));
             return ConvertToJson(res);
             
@@ -200,6 +204,7 @@ namespace WebAPI.Controllers
                 data.Add("number", "0");
                 data.Add("paper", "[]");
                 res.Add("Data", serializer.Serialize(data));
+                return ConvertToJson(res);
             }
             string papers = "[";
             var eps =
@@ -220,8 +225,10 @@ namespace WebAPI.Controllers
                 papers = papers + serializer.Serialize(paperData);
                 first = false;
             }
+            papers += "]";
             data.Add("number", paperCount.ToString());
             data.Add("Data", papers);
+            res.Add("Message", "success");
             res.Add("Data", serializer.Serialize(data));
             return ConvertToJson(res);
 
