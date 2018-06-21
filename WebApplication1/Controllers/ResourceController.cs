@@ -216,12 +216,10 @@ namespace WebAPI.Controllers
                 returndata.Data.paper = new Paper();
                 returndata.Data.paper = db.Paper.Find(id);
                 if (returndata.Data.paper != null)
-                { returndata.Data.paper.KeyWord = returndata.Data.paper.KeyWord.Replace("[", "").Replace("]", "").Replace("'", ""); }
+                { returndata.Data.paper.KeyWord = returndata.Data.paper.KeyWord.Replace("[", "").Replace("]", "").Replace("'", "").Replace("  ", ","); }
             }
             catch (Exception ex)
-            {
-                returndata.Message = "error   " + ex.Message;
-            }
+            {returndata.Message = "error   " + ex.Message;}
             return ConvertToJson(returndata);
         }
 
@@ -288,6 +286,7 @@ namespace WebAPI.Controllers
             {
             returndata.Message = "succcess";
             returndata.Data = db.ExpertInfo.Find(id);
+            returndata.Data.Field= returndata.Data.Field.Replace("[", "").Replace("]", "").Replace("'", "").Replace("  ",",");
             }
             catch (Exception ex)
             {
@@ -304,6 +303,7 @@ namespace WebAPI.Controllers
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<ExpertPatents> returndata = new ReturnData<ExpertPatents>();
             returndata.Data = new ExpertPatents();
+            returndata.Data.PatentList = new List<Patent>();
             try
             {
                 returndata.Message = "succcess";
@@ -312,7 +312,16 @@ namespace WebAPI.Controllers
                 where ExpertPatent.ExpertID == id
                 select ExpertPatent;
                 foreach (var mid in patents.Take(4))
-                { returndata.Data.PatentList.Add(mid.Patent); }
+                {
+                    Patent MidPatent = db.Patent.Find(mid.PatentID);
+                    MidPatent.Review = null;
+                    MidPatent.Review = null;
+                    MidPatent.Comment = null;
+                    MidPatent.Like = null;
+                    MidPatent.ExpertPatent = null;
+                    MidPatent.ManagePatent = null;
+                    returndata.Data.PatentList.Add(db.Patent.Find(MidPatent));
+                }
                 returndata.Data.number = returndata.Data.PatentList.Count.ToString();
             }
             catch (Exception ex)
@@ -330,17 +339,31 @@ namespace WebAPI.Controllers
             JavaScriptSerializer Json = new JavaScriptSerializer();
             ReturnData<ExpertPapers> returndata = new ReturnData<ExpertPapers>();
             returndata.Data = new ExpertPapers();
+            returndata.Data.PaperList = new List<Paper>();
             try
             {
                 returndata.Message = "succcess";
-                returndata.Data.number = 4.ToString();
+                returndata.Data.number = 0.ToString();
                 var papers =
                 from ExpertPaper in db.ExpertPaper
                 where ExpertPaper.ExpertID == id
                 select ExpertPaper;
-                foreach (var mid in papers.Take(4))
-                { returndata.Data.PaperList.Add(mid.Paper); }
-                returndata.Data.number = returndata.Data.PaperList.Count.ToString();
+                if (papers != null)
+                {
+                    foreach (var mid in papers.Take(4))
+                    {
+                        Paper MidPaper = db.Paper.Find(mid.PaperID);
+                        MidPaper.Review = null;
+                        MidPaper.Comment = null;
+                        MidPaper.Like = null;
+                        MidPaper.Download = null;
+                        MidPaper.ExpertPaper = null;
+                        MidPaper.ManagePaper = null;
+                        MidPaper.KeyWord = MidPaper.KeyWord.Replace("[", "").Replace("]", "").Replace("'", "").Replace("  ", ",");
+                        returndata.Data.PaperList.Add(MidPaper);
+                    }
+                    returndata.Data.number = returndata.Data.PaperList.Count.ToString();
+                }
             }
             catch (Exception ex)
             {
