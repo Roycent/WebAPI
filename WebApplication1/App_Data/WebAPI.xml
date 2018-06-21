@@ -283,6 +283,65 @@
             <param name="relation"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAPI.Controllers.ReviewersController.ReturnContent">
+            <summary>
+            返回CensorContent数据
+            </summary>
+        </member>
+        <member name="T:WebAPI.Controllers.ReviewersController.InCensor">
+            <summary>
+            传入审核判断
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.ReviewersController.GetCensoredContent(WebAPI.Reviewer)">
+            <summary>
+            审核者登录
+            </summary>
+            <param name="reviewer">
+            eg:{"Name":"user1","Password":"123456"}
+            </param>
+            <returns>成功:{"Message":"success"};密码错误:{"Message":"密码错误"};用户不存在{"Message":"用户不存在"}
+            </returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ReviewersController.GetCesoredCotent">
+            <summary>
+            获取审核全部内容
+            </summary>
+            <returns>
+            成功:{"Message":"success","Data":{"Content":[{"id":"12333","type":"paper","detail":"English Paper"}]};
+            失败:{"Message":"failed"};
+            权限不足:{"Message":"forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ReviewersController.GetCesoredPaper(System.String)">
+            <summary>
+            获取审核论文内容
+            </summary>
+            <param name="id"></param>
+            <returns>
+            成功:{"Message":"success","Data":{"Content":[{……}]};
+            失败:{"Message":"failed"};
+            权限不足:{"Message":"forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ReviewersController.GetCesoredPatent(System.String)">
+            <summary>
+            获取审核专利内容
+            </summary>
+            <param name="id"></param>
+            <returns>
+            成功:{"Message":"success","Data":{"Content":[{……}]};
+            失败:{"Message":"failed"};
+            权限不足:{"Message":"forbidden"}</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ReviewersController.ConfirmCensor(WebAPI.Controllers.ReviewersController.InCensor)">
+            <summary>
+            对审核的确认
+             </summary>
+             <param name="inCensor">eg:{"type":"type","id":"id","confirm":"true"}</param>
+             <returns>
+             成功:{"Message":"success"};
+             失败:{"Message":"failed"};
+             权限不足:{"Message":"forbidden"}</returns>
+        </member>
         <member name="T:WebAPI.Controllers.StressTestingController">
             <summary>
             用于压力测试的接口类
