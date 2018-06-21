@@ -238,37 +238,32 @@ namespace WebAPI.Controllers
             return ConvertToJson(returndata);
         }
 
+
         /// <summary>
-        /// 获取对应id的expert的详细信息,包含论文等
+        /// 获取专家的每年成果
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        //[HttpGet]
-        //[Route("resource/expert")]
-        //public HttpResponseMessage GetExpertInformation(long id)
-        //{
-        //    db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
-        //    JavaScriptSerializer Json = new JavaScriptSerializer();
-        //    ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
-        //    returndata.Data = new ExpertData();
-        //    returndata.Data.PaperList = new List<Paper>();
-        //    returndata.Data.PatentList = new List<Patent>();
-        //    returndata.Message = "succcess";
-        //    returndata.Data.expert = db.ExpertInfo.Find(id);
-        //    var papers =
-        //    from ExpertPaper in db.ExpertPaper
-        //    where ExpertPaper.ExpertID == id
-        //    select ExpertPaper;
-        //    foreach (var mid in papers)
-        //    { returndata.Data.PaperList.Add(mid.Paper); }
-        //    var patents =
-        //    from ExpertPatent in db.ExpertPatent
-        //    where ExpertPatent.ExpertID == id
-        //    select ExpertPatent;
-        //    foreach (var mid in patents)
-        //    { returndata.Data.PatentList.Add(mid.Patent); }
-        //    return ConvertToJson(returndata);
-        //}
+        [HttpPost]
+        [Route("resource/getexpertyears")]
+        public HttpResponseMessage GetExpertYears(long id)
+        {
+            db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnData<List<int>> returndata = new ReturnData<List<int>>();
+            returndata.Data = new List<int>();
+            var results =
+                from number in db.ExpertPaper
+                where number.ExpertID == id
+                group number by number.Paper.PublishYear into g
+                select new
+                {
+                    year = g.Key,
+                    count = g.Count()
+                };
+            //TODO:应添加逻辑代码。
+            return ConvertToJson(returndata);
+        }
 
         [HttpGet]
         [Route("resource/expert")]

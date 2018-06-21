@@ -34,12 +34,15 @@ namespace WebAPI.Controllers
         public HttpResponseMessage PostComment(Comment comment)
         {
             comment.Time = System.DateTime.Now;
-            ReturnData<List<Comment>> returndata = new ReturnData<List<Comment>>();
+            ReturnData<string> returndata = new ReturnData<string>();
             var cookie = HttpContext.Current.Request.Cookies["account"];
             if (cookie != null)
             {
                 comment.UserID= long.Parse(cookie["userID"]);
                 comment.IsPass = true;
+                db.Comment.Add(comment);
+                db.SaveChanges();
+                returndata.Message = "success";
                 return ConvertToJson(returndata);
             }
             returndata.Message = "No Loging";
