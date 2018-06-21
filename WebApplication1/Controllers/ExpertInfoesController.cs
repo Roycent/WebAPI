@@ -12,6 +12,8 @@ using System.Web.Http.Description;
 using System.Web.Script.Serialization;
 using WebAPI;
 using static WebAPI.Controllers.Utils;
+using static WebAPI.Controllers.ResourceController;
+using Newtonsoft.Json;
 
 namespace WebAPI.Controllers
 {
@@ -116,6 +118,7 @@ namespace WebAPI.Controllers
         [HttpPost, Route("Expert/GetPapers")]
         public HttpResponseMessage GetPapersInfo()
         {
+            db.Configuration.ProxyCreationEnabled = false;
             Dictionary<string, string> res = new Dictionary<string, string>();
             var cookie = HttpContext.Current.Request.Cookies["account"];
             if (cookie == null)
@@ -140,31 +143,30 @@ namespace WebAPI.Controllers
             {
                 data.Add("number", "0");
                 data.Add("paper", "[]");
+                res.Add("Message", "success");
                 res.Add("Data", serializer.Serialize(data));
+                return ConvertToJson(res);
             }
-            string papers = "[";
+            ReturnData<ExpertPapers> ret = new ReturnData<ExpertPapers>();
+            ret.Message = "success";
+            ret.Data = new ExpertPapers();
+            ret.Data.PaperList = new List<Paper>();
+            ret.Data.number = paperCount.ToString();
             var eps =
                 from ExpertPaper in db.ExpertPaper
                 where ExpertPaper.ExpertID == expertID
                 select ExpertPaper;
-            bool first = true;
-            foreach(var ep in eps)
+            foreach (var ep in eps)
             {
-                if (first != true)
-                    papers = papers + ",";
-                Dictionary<string, string> paperData = new Dictionary<string, string>();
                 Paper paper = db.Paper.FirstOrDefault(Paper => Paper.PaperID == ep.PaperID);
-                paperData.Add("Id",paper.PaperID.ToString());
-                paperData.Add("Title",paper.Title);
-                paperData.Add("Abstract",paper.Abstract);
-                paperData.Add("Publisher",paper.Publisher);
-                papers = papers + serializer.Serialize(paperData);
-                first = false;
+                paper.Review = null;
+                paper.Like = null;
+                paper.ExpertPaper = null;
+                paper.Download = null;
+                paper.ManagePaper = null;
+                ret.Data.PaperList.Add(paper);
             }
-            data.Add("number", paperCount.ToString());
-            data.Add("Data", papers);
-            res.Add("Data", serializer.Serialize(data));
-            return ConvertToJson(res);
+            return ConvertToJson(ret);
             
         }
 
@@ -200,30 +202,28 @@ namespace WebAPI.Controllers
                 data.Add("number", "0");
                 data.Add("paper", "[]");
                 res.Add("Data", serializer.Serialize(data));
+                return ConvertToJson(res);
             }
-            string papers = "[";
+            ReturnData<ExpertPatents> ret = new ReturnData<ExpertPatents>();
+            ret.Message = "success";
+            ret.Data = new ExpertPatents();
+            ret.Data.number = paperCount.ToString();
+            ret.Data.PatentList = new List<Patent>();
+
             var eps =
                 from ExpertPatent in db.ExpertPatent
                 where ExpertPatent.ExpertID == expertID
                 select ExpertPatent;
-            bool first = true;
             foreach (var ep in eps)
             {
-                if (first != true)
-                    papers = papers + ",";
-                Dictionary<string, string> paperData = new Dictionary<string, string>();
                 Patent paper = db.Patent.FirstOrDefault(Patent => Patent.PatentID == ep.PatentID);
-                paperData.Add("Id", paper.PatentID.ToString());
-                paperData.Add("Title", paper.Title);
-                paperData.Add("Abstract", paper.Abstract);
-                paperData.Add("Publisher", paper.ApplyDate.ToString());
-                papers = papers + serializer.Serialize(paperData);
-                first = false;
+                paper.Review = null;
+                paper.Like = null;
+                paper.ExpertPatent = null;
+                paper.ManagePatent = null;
+                ret.Data.PatentList.Add(paper);
             }
-            data.Add("number", paperCount.ToString());
-            data.Add("Data", papers);
-            res.Add("Data", serializer.Serialize(data));
-            return ConvertToJson(res);
+            return ConvertToJson(ret);
 
         }
     }

@@ -63,6 +63,11 @@ namespace WebAPI.Controllers
         public string number { get; set; }
         public List<Patent> PatentList { get; set; }
     }
+    public class ExpertYear
+    {
+        public List<string> labels { get; set; }
+        public List<int> series { get; set; }
+    }
 
 
     public class ResourceController : ApiController
@@ -124,7 +129,7 @@ namespace WebAPI.Controllers
             }
             return ConvertToJson(returndata);
         }
-        //TODO：下面两个的函数没有写按照什么排序，全部按照默认来排序的。以后要写一下
+        //TODO：下面连个要修改一下，如果未审核通过就不要显示。这个已经修改完了。
         private HttpResponseMessage PatentType(string keywords, ref int page, ref string sortBy)
         {
             ReturnData<Returnpatents> returndata = new ReturnData<Returnpatents>();
@@ -149,7 +154,7 @@ namespace WebAPI.Controllers
                 mid.Add("publicnum", result.PublicNum);
                 mid.Add("patentee", result.Applicant);
                 mid.Add("address", result.ApplicantAddress);
-                returndata.Data.patents.Add(mid);
+                if (result.IsPass == true) { returndata.Data.patents.Add(mid); }
             }
             return ConvertToJson(returndata);
         }
@@ -178,7 +183,7 @@ namespace WebAPI.Controllers
                 mid.Add("publisher", result.Publisher);
                 mid.Add("keywords", result.KeyWord);
                 mid.Add("summary", result.Abstract);
-                returndata.Data.papers.Add(mid);
+                if (result.IsPass == true) { returndata.Data.papers.Add(mid); }
             }
             return ConvertToJson(returndata);
         }
@@ -239,36 +244,36 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// 获取对应id的expert的详细信息,包含论文等
+        /// 获取专家的每年成果
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        //[HttpGet]
-        //[Route("resource/expert")]
-        //public HttpResponseMessage GetExpertInformation(long id)
-        //{
-        //    db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
-        //    JavaScriptSerializer Json = new JavaScriptSerializer();
-        //    ReturnData<ExpertData> returndata = new ReturnData<ExpertData>();
-        //    returndata.Data = new ExpertData();
-        //    returndata.Data.PaperList = new List<Paper>();
-        //    returndata.Data.PatentList = new List<Patent>();
-        //    returndata.Message = "succcess";
-        //    returndata.Data.expert = db.ExpertInfo.Find(id);
-        //    var papers =
-        //    from ExpertPaper in db.ExpertPaper
-        //    where ExpertPaper.ExpertID == id
-        //    select ExpertPaper;
-        //    foreach (var mid in papers)
-        //    { returndata.Data.PaperList.Add(mid.Paper); }
-        //    var patents =
-        //    from ExpertPatent in db.ExpertPatent
-        //    where ExpertPatent.ExpertID == id
-        //    select ExpertPatent;
-        //    foreach (var mid in patents)
-        //    { returndata.Data.PatentList.Add(mid.Patent); }
-        //    return ConvertToJson(returndata);
-        //}
+        [HttpGet]
+        [Route("resource/getexpertlinegraph")]
+        public HttpResponseMessage GetExpertYears(long id)
+        {
+            db.Configuration.ProxyCreationEnabled = false;//禁用外键防止循环引用。
+            JavaScriptSerializer Json = new JavaScriptSerializer();
+            ReturnData<ExpertYear> returndata = new ReturnData<ExpertYear>();
+            returndata.Data = new ExpertYear();
+            returndata.Data.labels = new List<string>();
+            returndata.Data.series = new List<int>();
+            var results =
+                from number in db.ExpertPaper
+                where number.ExpertID == id
+                group number by number.Paper.PublishYear into g
+                select new
+                {
+                    year = g.Key.ToString(),
+                    count = g.Count()
+                };
+            foreach(var result in results)
+            {
+                returndata.Data.labels.Add(result.year);
+                returndata.Data.series.Add(result.count);
+            }
+            return ConvertToJson(returndata);
+        }
 
         [HttpGet]
         [Route("resource/expert")]
