@@ -62,6 +62,10 @@ namespace WebAPI.Controllers
                 {
                     res.Add("Message", "密码错误");
                     return ConvertToJson(res);
+                }else if (find.IsDelete == true)
+                {
+                    res.Add("Message", "你的账户已被禁止");
+                    return ConvertToJson(res);
                 }
                 else
                 {
